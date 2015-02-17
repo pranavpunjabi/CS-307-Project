@@ -1,0 +1,6 @@
+Return all users: curl -i http://localhost:5000/server/api/v1.0/users
+
+Return user with a particular ID : curl -i http://localhost:5000/server/api/v1.0/users/n
+(n is the ID, eg - 1, 2 etc)
+
+Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"name":"kumar","location":"west"}' http://localhost:5000/server/api/v1.0/users
