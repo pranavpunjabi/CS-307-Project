@@ -17,8 +17,15 @@ def get_users():
         return jsonify({'users': users})
 
 @app.route('/server/api/v1.0/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
+def get_user_id(user_id):
         user = [user for user in users if user['id'] == user_id]
+        if len(user) == 0:
+                abort(404)
+        return jsonify({'users': user[0]})
+
+@app.route('/server/api/v1.0/users/<user_location>', methods=['GET'])
+def get_user_location(user_location):
+        user = [user for user in users if user['location'] == user_location]
         if len(user) == 0:
                 abort(404)
         return jsonify({'users': user[0]})
