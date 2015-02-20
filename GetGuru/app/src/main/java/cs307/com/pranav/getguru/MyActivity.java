@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -26,12 +29,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+
 public class MyActivity extends Activity implements View.OnClickListener {
+
+
+    Button GET;
+    TextView display;
+    EditText URLinput;
+    String displayString;
+    String URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        GET = (Button) findViewById(R.id.button);
+        display = (TextView) findViewById(R.id.display);
+        URLinput = (EditText) findViewById(R.id.editText);
+
+        GET.setOnClickListener(this);
+        displayString = "";
+        URL = "";
+
     }
 
 
@@ -75,6 +95,11 @@ public class MyActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.button:
+                URL = URLinput.getText().toString();
+                new NetworkTask().execute();
+                display.setText(displayString);
+                break;
 
         }
     }
@@ -83,7 +108,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
         @Override
         protected Object doInBackground(Object... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(addLocationToUrl("http://ec2-54-91-89-2.compute-1.amazonaws.com:8080/box"));
+            HttpGet httpGet = new HttpGet(addLocationToUrl(URL));
 
             //making GET request.
             InputStream inputStream = null;
@@ -104,7 +129,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 responsestr = sb.toString();
                 Log.d("Http Get Response:", responsestr);
                 JSONObject json = new JSONObject(responsestr);
-
+                displayString = responsestr;
 
             } catch (ClientProtocolException e) {
                 // Log exception
