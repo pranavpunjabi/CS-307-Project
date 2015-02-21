@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -34,8 +35,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
 
     Button signUpButton, signInButton;
     EditText signInEmail, signInPass, signUpName, signUpEmail, signUpPass, signUpRepass;
-    String displayString;
-    String URL;
+    protected String URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class MyActivity extends Activity implements View.OnClickListener {
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
-        displayString = "";
         URL = "";
 
     }
@@ -97,16 +96,56 @@ public class MyActivity extends Activity implements View.OnClickListener {
         return url;
     }
 
+    private boolean inputValidated(int buttonPressed) {
+        boolean validated = false;
+        switch (buttonPressed) {
+            case 1:
+                String siEmail = signInEmail.getText().toString();
+                String siPass = signInPass.getText().toString();
+                if (!siEmail.matches("") && !siPass.matches("")) {
+                    validated = true;
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "One or more required fields is empty",
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case 2:
+                String suName = signUpName.getText().toString();
+                String suEmail = signUpEmail.getText().toString();
+                String suPass = signUpPass.getText().toString();
+                String suRepass = signUpRepass.getText().toString();
+                if (!suName.matches("") && !suEmail.matches("")
+                        && !suPass.matches("") && !suRepass.matches("")) {
+                    if (suPass.matches(suRepass)) {
+                        validated = true;
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please enter matching passwords",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "One or more required fields is empty",
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+        return validated;
+    }
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.button:
-                //URL = URLinput.getText().toString();
-                new NetworkTask().execute();
-                //display.setText(displayString);
+            case R.id.sibutton:
+                if (inputValidated(1))
+                    new NetworkTask().execute();
                 break;
-
+            case R.id.subutton:
+                if (inputValidated(2))
+                    new NetworkTask().execute();
+                break;
         }
     }
 
@@ -135,7 +174,6 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 responsestr = sb.toString();
                 Log.d("Http Get Response:", responsestr);
                 JSONObject json = new JSONObject(responsestr);
-                displayString = responsestr;
 
             } catch (ClientProtocolException e) {
                 // Log exception
