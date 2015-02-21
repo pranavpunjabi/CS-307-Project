@@ -1,8 +1,8 @@
 package cs307.com.pranav.getguru;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
@@ -31,7 +31,7 @@ import java.util.List;
 
 
 
-public class MyActivity extends Activity implements View.OnClickListener {
+public class MyActivity extends ActionBarActivity implements View.OnClickListener {
 
 
     Button signUpButton, signInButton;
