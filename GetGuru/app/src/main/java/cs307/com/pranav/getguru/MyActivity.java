@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,7 +89,13 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 String siEmail = signInEmail.getText().toString();
                 String siPass = signInPass.getText().toString();
                 if (!siEmail.matches("") && !siPass.matches("")) {
-                    validated = true;
+                    if (Patterns.EMAIL_ADDRESS.matcher(siEmail).matches()) {
+                        validated = true;
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please enter a valid email",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "One or more required fields is empty",
@@ -103,7 +110,13 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 if (!suName.matches("") && !suEmail.matches("")
                         && !suPass.matches("") && !suRepass.matches("")) {
                     if (suPass.matches(suRepass)) {
-                        validated = true;
+                        if (Patterns.EMAIL_ADDRESS.matcher(suEmail).matches()) {
+                            validated = true;
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Please enter a valid email",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Please enter matching passwords",
