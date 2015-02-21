@@ -18,6 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".StudentProfile"
+            android:label="@string/title_activity_student_profile" >
+        </activity>
     </application>
 
 </manifest>
