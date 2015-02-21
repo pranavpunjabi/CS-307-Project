@@ -37,6 +37,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
     EditText signInEmail, signInPass, signUpName, signUpEmail, signUpPass, signUpRepass;
     protected String URL;
 
+    private int buttonPressed = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,23 +79,6 @@ public class MyActivity extends Activity implements View.OnClickListener {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    protected String addLocationToUrl(String url){
-        if(!url.endsWith("?"))
-            url += "?";
-
-        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-
-
-        params.add(new BasicNameValuePair("message", "hello"));
-        params.add(new BasicNameValuePair("me", "1"));
-        params.add(new BasicNameValuePair("you", "2"));
-
-        String paramString = URLEncodedUtils.format(params, "utf-8");
-
-        url += paramString;
-        return url;
     }
 
     private boolean inputValidated(int buttonPressed) {
@@ -139,25 +124,55 @@ public class MyActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.sibutton:
+                buttonPressed = 1;
                 if (inputValidated(1))
                     new NetworkTask().execute();
                 break;
             case R.id.subutton:
+                buttonPressed = 2;
                 if (inputValidated(2))
                     new NetworkTask().execute();
                 break;
         }
     }
 
+    protected String addParametersToUrl(String url){
+        if(!url.endsWith("?"))
+            url += "?";
+
+        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+        switch (buttonPressed) {
+            case 0:
+                break;
+            case 1:
+                params.add(new BasicNameValuePair("requestType", "Sign In"));
+                params.add(new BasicNameValuePair("email", signInEmail.getText().toString()));
+                params.add(new BasicNameValuePair("password", signInPass.getText().toString()));
+                url += paramString;
+                break;
+            case 2:
+                params.add(new BasicNameValuePair("requestType", "Sign Up"));
+                params.add(new BasicNameValuePair("name", signUpName.getText().toString()));
+                params.add(new BasicNameValuePair("email", signUpEmail.getText().toString()));
+                params.add(new BasicNameValuePair("password", signUpPass.getText().toString()));
+                url += paramString;
+                break;
+        }
+
+        return url;
+    }
+
     private class NetworkTask extends AsyncTask {
         @Override
         protected Object doInBackground(Object... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(addLocationToUrl(URL));
+            HttpGet httpGet = new HttpGet(addParametersToUrl(URL));
 
             //making GET request.
             InputStream inputStream = null;
-            String responsestr = "";
+            String responseString = "";
             try {
                 HttpResponse response = httpClient.execute(httpGet);
                 // write response to log
@@ -171,9 +186,9 @@ public class MyActivity extends Activity implements View.OnClickListener {
                     sb.append(line + "\n");
                 }
 
-                responsestr = sb.toString();
-                Log.d("Http Get Response:", responsestr);
-                JSONObject json = new JSONObject(responsestr);
+                responseString = sb.toString();
+                Log.d("Http Get Response:", responseString);
+                JSONObject json = new JSONObject(responseString);
 
             } catch (ClientProtocolException e) {
                 // Log exception
