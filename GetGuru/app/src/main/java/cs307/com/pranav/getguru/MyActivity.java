@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -33,9 +32,8 @@ import java.util.List;
 public class MyActivity extends Activity implements View.OnClickListener {
 
 
-    Button GET;
-    TextView display;
-    EditText URLinput;
+    Button signUpButton, signInButton;
+    EditText signInEmail, signInPass, signUpName, signUpEmail, signUpPass, signUpRepass;
     String displayString;
     String URL;
 
@@ -44,11 +42,19 @@ public class MyActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        GET = (Button) findViewById(R.id.button);
-        display = (TextView) findViewById(R.id.display);
-        URLinput = (EditText) findViewById(R.id.editText);
+        signInEmail = (EditText) findViewById(R.id.sieditTextemail);
+        signInPass = (EditText) findViewById(R.id.sieditTextpass);
+        signUpName = (EditText) findViewById(R.id.suedittextname);
+        signUpEmail = (EditText) findViewById(R.id.suedittextemail);
+        signUpPass = (EditText) findViewById(R.id.suedittextpass);
+        signUpRepass = (EditText) findViewById(R.id.suedittextrepass);
 
-        GET.setOnClickListener(this);
+        signInButton = (Button) findViewById(R.id.sibutton);
+        signUpButton = (Button) findViewById(R.id.subutton);
+
+        signInButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
+
         displayString = "";
         URL = "";
 
@@ -96,9 +102,9 @@ public class MyActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.button:
-                URL = URLinput.getText().toString();
+                //URL = URLinput.getText().toString();
                 new NetworkTask().execute();
-                display.setText(displayString);
+                //display.setText(displayString);
                 break;
 
         }
