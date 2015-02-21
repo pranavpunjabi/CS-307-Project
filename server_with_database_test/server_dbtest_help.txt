@@ -1,0 +1,34 @@
+Original commands - 
+NOTE : these commands still execute but WONT be testing the database. Check below for database testing
+
+
+Return all users: curl -i http://localhost:5000/server/api/v1.0/users
+
+Return user with a particular ID : curl -i http://localhost:5000/server/api/v1.0/users/n
+(n is the ID, eg $ curl -i http://localhost:5000/server/api/v1.0/users/1)
+
+Return user with a particular location : curl -i http://localhost:5000/server/api/v1.0/users/Lafayette
+
+Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"name":"kumar","location":"west"}' http://localhost:5000/server/api/v1.0/users
+
+-------------------------------------
+
+New commands to test database - 
+
+run the code by typing $ python run.py
+
+curl -i http://localhost:5000/testdb (returns 'it works.' in html format)
+
+Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"name":"kumar"}' http://localhost:5000/server/api/v1.0/signup (returns DONE in html format if worked correctly)
+
+-------------------------------------
+
+Only implemented signup with name and a primary key (auto increment)
+mysql info - 
+username: sharoons 
+password : password
+
+using database 'development'
+using table 'allusers' (already created before running the server with columns uid and name)
+
+can view this table and see the new user data stored. 
