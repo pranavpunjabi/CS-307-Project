@@ -1,15 +1,16 @@
 package cs307.com.pranav.getguru;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -30,26 +31,33 @@ import java.util.List;
 
 
 
-public class MyActivity extends Activity implements View.OnClickListener {
+public class MyActivity extends ActionBarActivity implements View.OnClickListener {
 
 
-    Button GET;
-    TextView display;
-    EditText URLinput;
-    String displayString;
-    String URL;
+    Button signUpButton, signInButton;
+    EditText signInEmail, signInPass, signUpName, signUpEmail, signUpPass, signUpRepass;
+    protected String URL;
+
+    private int buttonPressed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        GET = (Button) findViewById(R.id.button);
-        display = (TextView) findViewById(R.id.display);
-        URLinput = (EditText) findViewById(R.id.editText);
+        signInEmail = (EditText) findViewById(R.id.sieditTextemail);
+        signInPass = (EditText) findViewById(R.id.sieditTextpass);
+        signUpName = (EditText) findViewById(R.id.suedittextname);
+        signUpEmail = (EditText) findViewById(R.id.suedittextemail);
+        signUpPass = (EditText) findViewById(R.id.suedittextpass);
+        signUpRepass = (EditText) findViewById(R.id.suedittextrepass);
 
-        GET.setOnClickListener(this);
-        displayString = "";
+        signInButton = (Button) findViewById(R.id.sibutton);
+        signUpButton = (Button) findViewById(R.id.subutton);
+
+        signInButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
+
         URL = "";
 
     }
@@ -74,45 +82,110 @@ public class MyActivity extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    protected String addLocationToUrl(String url){
-        if(!url.endsWith("?"))
-            url += "?";
-
-        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-
-
-        params.add(new BasicNameValuePair("message", "hello"));
-        params.add(new BasicNameValuePair("me", "1"));
-        params.add(new BasicNameValuePair("you", "2"));
-
-        String paramString = URLEncodedUtils.format(params, "utf-8");
-
-        url += paramString;
-        return url;
+    private boolean inputValidated(int buttonPressed) {
+        boolean validated = false;
+        switch (buttonPressed) {
+            case 1:
+                String siEmail = signInEmail.getText().toString();
+                String siPass = signInPass.getText().toString();
+                if (!siEmail.matches("") && !siPass.matches("")) {
+                    if (Patterns.EMAIL_ADDRESS.matcher(siEmail).matches()) {
+                        validated = true;
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please enter a valid email",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "One or more required fields is empty",
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case 2:
+                String suName = signUpName.getText().toString();
+                String suEmail = signUpEmail.getText().toString();
+                String suPass = signUpPass.getText().toString();
+                String suRepass = signUpRepass.getText().toString();
+                if (!suName.matches("") && !suEmail.matches("")
+                        && !suPass.matches("") && !suRepass.matches("")) {
+                    if (suPass.matches(suRepass)) {
+                        if (Patterns.EMAIL_ADDRESS.matcher(suEmail).matches()) {
+                            validated = true;
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Please enter a valid email",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please enter matching passwords",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "One or more required fields is empty",
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+        return validated;
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.button:
-                URL = URLinput.getText().toString();
-                new NetworkTask().execute();
-                display.setText(displayString);
+            case R.id.sibutton:
+                buttonPressed = 1;
+                if (inputValidated(1))
+                    new NetworkTask().execute();
                 break;
-
+            case R.id.subutton:
+                buttonPressed = 2;
+                if (inputValidated(2))
+                    new NetworkTask().execute();
+                break;
         }
+    }
+
+    protected String addParametersToUrl(String url){
+        if(!url.endsWith("?"))
+            url += "?";
+
+        List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+        switch (buttonPressed) {
+            case 0:
+                break;
+            case 1:
+                params.add(new BasicNameValuePair("requestType", "Sign In"));
+                params.add(new BasicNameValuePair("email", signInEmail.getText().toString()));
+                params.add(new BasicNameValuePair("password", signInPass.getText().toString()));
+                url += paramString;
+                break;
+            case 2:
+                params.add(new BasicNameValuePair("requestType", "Sign Up"));
+                params.add(new BasicNameValuePair("name", signUpName.getText().toString()));
+                params.add(new BasicNameValuePair("email", signUpEmail.getText().toString()));
+                params.add(new BasicNameValuePair("password", signUpPass.getText().toString()));
+                url += paramString;
+                break;
+        }
+
+        return url;
     }
 
     private class NetworkTask extends AsyncTask {
         @Override
         protected Object doInBackground(Object... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(addLocationToUrl(URL));
+            HttpGet httpGet = new HttpGet(addParametersToUrl(URL));
 
             //making GET request.
             InputStream inputStream = null;
-            String responsestr = "";
+            String responseString = "";
             try {
                 HttpResponse response = httpClient.execute(httpGet);
                 // write response to log
@@ -126,10 +199,9 @@ public class MyActivity extends Activity implements View.OnClickListener {
                     sb.append(line + "\n");
                 }
 
-                responsestr = sb.toString();
-                Log.d("Http Get Response:", responsestr);
-                JSONObject json = new JSONObject(responsestr);
-                displayString = responsestr;
+                responseString = sb.toString();
+                Log.d("Http Get Response:", responseString);
+                JSONObject json = new JSONObject(responseString);
 
             } catch (ClientProtocolException e) {
                 // Log exception
