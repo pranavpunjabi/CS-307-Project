@@ -2,19 +2,9 @@ from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response
 from models import db, User
 
-users = [
-    {
-	'id':1,
-	'name': u'Random User',
-	'location': u'Lafayette',
-	'isTutor': False
-    }
-]
-
-@myApp.route('/server/api/v1.0/signup', methods=['POST'])
+@myApp.route('/server/signup', methods=['POST'])
 def signup():
-	print "hey"
-	newuser = User(request.json['name'])
+	newuser = User(request.json['firstname'], request.json['lastname'], request.json['email'], request.json['password'])
 	db.session.add(newuser)
 	db.session.commit()
 	return 'DONE'
