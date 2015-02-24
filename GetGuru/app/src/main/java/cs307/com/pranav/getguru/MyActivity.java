@@ -1,5 +1,6 @@
 package cs307.com.pranav.getguru;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -36,9 +37,11 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
     Button signUpButton, signInButton;
     EditText signInEmail, signInPass, signUpName, signUpEmail, signUpPass, signUpRepass;
+
     protected String URL;
 
     private int buttonPressed = 0;
+    private boolean success = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,11 +143,30 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 buttonPressed = 1;
                 if (inputValidated(1))
                     new NetworkTask().execute();
+
+                if (success) {
+                    Intent i = new Intent(MyActivity.this, StudentProfile.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please enter a valid email/password combination",
+                            Toast.LENGTH_LONG).show();
+                }
+
                 break;
             case R.id.subutton:
                 buttonPressed = 2;
                 if (inputValidated(2))
                     new NetworkTask().execute();
+
+                if (success) {
+                    Intent i = new Intent(MyActivity.this, StudentProfile.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Network Error",
+                            Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -167,7 +189,10 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 break;
             case 2:
                 params.add(new BasicNameValuePair("requestType", "Sign Up"));
-                params.add(new BasicNameValuePair("name", signUpName.getText().toString()));
+                params.add(new BasicNameValuePair("firstName", signUpName.getText().toString()
+                        .substring(0, signUpName.getText().toString().indexOf(" "))));
+                params.add(new BasicNameValuePair("lastName", signUpName.getText().toString()
+                        .substring(signUpName.getText().toString().indexOf(" "), signUpName.getText().toString().length() - 1)));
                 params.add(new BasicNameValuePair("email", signUpEmail.getText().toString()));
                 params.add(new BasicNameValuePair("password", signUpPass.getText().toString()));
                 url += paramString;
@@ -202,16 +227,20 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 responseString = sb.toString();
                 Log.d("Http Get Response:", responseString);
                 JSONObject json = new JSONObject(responseString);
+                if (json.getBoolean("success")) {
+                    success = true;
+                }
 
             } catch (ClientProtocolException e) {
                 // Log exception
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Network Error",
+                        Toast.LENGTH_LONG).show();
             } catch (IOException e) {
-                // Log exception
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "IO Error",
+                        Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "JSON Error",
+                        Toast.LENGTH_LONG).show();
             }
             return null;
         }
