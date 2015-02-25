@@ -13,7 +13,11 @@ def check():
 
 @myApp.route('/server/signin', methods=['GET'])
 def signin():
-	#Add code here
+	user = User.query.filter_by(email = request.json['email']).first()
+        if user and user.check_password(request.json['password']):
+                return jsonify({'return':'success'})
+        else:
+                return jsonify({'return':'invalid email and password'})	
 
 @myApp.route('/server/signup', methods=['POST'])
 def signup():
