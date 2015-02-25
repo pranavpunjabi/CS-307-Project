@@ -1,0 +1,68 @@
+New commands to test database - 
+
+run the code by typing 
+$ python run.py
+
+Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
+
+Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"requestType":"signup", "firstName":"arun", "lastName":"kumar", "email":"srivas15@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
+
+-------------------------------------
+
+Create new user with the database
+
+check mysql version by typing 
+$ mysql --version
+login with the root
+$ mysql -u root
+$ <leave password blank on prompt>
+$ CREATE USER 'sharoons'@'localhost' IDENTIFIED BY 'password';
+$ GRANT ALL PRIVILEGES ON * . * TO 'sharoons'@'localhost';
+$ exit
+
+Now log in with this user
+
+$ mysql -u sharoons -p
+$ <enter password on prompt, password is 'password' without quotes>
+$ create database GetGuru; 
+$ use GetGuru; <change the current database to GetGuru>
+$ create table allusers (
+uid INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+firstname VARCHAR(100) NOT NULL,
+lastname VARCHAR(100) NOT NULL,
+email VARCHAR(120) NOT NULL UNIQUE,
+pwdhash VARCHAR(100) NOT NULL
+);
+$ describe allusers; <just to see if it has been created properly or not>
+$ exit
+
+Note: You can use any username and password to create this. You can also use any database name. Make sure you change the required fields in __init__.py file
+example for user: 'amit' password: 'alright' and database 'development'
+
+myApp.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://amit:alright@localhost/development' <change to this in __init__.py>
+
+Similarly you can also use a separate table name and change the required fields in models.py
+
+ITS PREFERED TO KEEP IT THE SAME USER NAME AND PASSWORD <sharoons:password> AND DATABASE <GetGuru> SO WE DONT HAVE TO CHANGE OUR CODE EVERYTIME WE PUSH/PULL
+_____________________________________
+
+Check if the data has been stored correctly or not
+
+mysql info - 
+username: sharoons 
+password : password
+
+using database 'GetGuru'
+using table 'allusers' (already created before running the server with columns uid and name)
+
+can view this table and see the new user data stored. 
+login by typing 
+$ mysql -u sharoons -p
+$ <enter password on prompt, password is 'password' without quotes>
+$ use GetGuru; <switches to desired database>
+$ show tables; <shows all tables>
+$ describe allusers; <shows the columns of the table>
+$ SELECT * FROM allusers; <shows all information stored in the table>
+$ exit
+
+just google mysql commands and you'll find plenty of resources
