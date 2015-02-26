@@ -3,6 +3,7 @@
     package="cs307.com.pranav.getguru" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-sdk android:minSdkVersion="11"></uses-sdk>
 
     <application
         android:allowBackup="true"
