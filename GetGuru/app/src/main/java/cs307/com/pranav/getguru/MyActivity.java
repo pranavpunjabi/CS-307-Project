@@ -16,8 +16,12 @@ import android.widget.Toast;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -27,9 +31,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class MyActivity extends ActionBarActivity implements View.OnClickListener {
@@ -61,7 +68,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
-        URL = "";
+        URL = "http://364ea48c.ngrok.com/server/signup";
 
     }
 
@@ -202,9 +209,111 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         return url;
     }
 
+    private static JSONObject getJsonObjectFromMap(Map params) throws JSONException {
+
+        //all the passed parameters from the post request
+        //iterator used to loop through all the parameters
+        //passed in the post request
+        Iterator iter = params.entrySet().iterator();
+
+        //Stores JSON
+        JSONObject holder = new JSONObject();
+
+        //using the earlier example your first entry would get email
+        //and the inner while would get the value which would be 'foo@bar.com'
+        //{ fan: { email : 'foo@bar.com' } }
+
+        //While there is another entry
+        while (iter.hasNext())
+        {
+            //gets an entry in the params
+            Map.Entry pairs = (Map.Entry)iter.next();
+
+            //creates a key for Map
+            String key = (String)pairs.getKey();
+
+            //Create a new map
+            Map m = (Map)pairs.getValue();
+
+            //object for storing Json
+            JSONObject data = new JSONObject();
+
+            //gets the value
+            Iterator iter2 = m.entrySet().iterator();
+            while (iter2.hasNext())
+            {
+                Map.Entry pairs2 = (Map.Entry)iter2.next();
+                data.put((String)pairs2.getKey(), (String)pairs2.getValue());
+            }
+
+            //puts email and 'foo@bar.com'  together in map
+            holder.put(key, data);
+        }
+        return holder;
+    }
+
     private class NetworkTask extends AsyncTask {
         @Override
         protected Object doInBackground(Object... params) {
+            HashMap values = new HashMap();
+
+            switch (buttonPressed) {
+                case 0:
+                    break;
+                case 1:
+                    values.put(new String("requestType"), "signIn");
+                    values.put(new String("email"), signInEmail.getText().toString());
+                    values.put(new String("password"), signInPass.getText().toString());
+                    break;
+                case 2:
+                    values.put(new String("requestType"), "signUp");
+                    values.put(new String("firstName"), signUpName.getText().toString()
+                            .substring(0, signUpName.getText().toString().indexOf(" ")));
+                    values.put(new String("lastName"), signUpName.getText().toString()
+                            .substring(signUpName.getText().toString().indexOf(" "),
+                                    signUpName.getText().toString().length() - 1));
+                    values.put(new String("email"), signUpEmail.getText().toString());
+                    values.put(new String("password"), signUpPass.getText().toString());
+                    break;
+            }
+            makePostRequest(values);
+            return null;
+        }
+
+        protected Object makePostRequest(Map params) {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(URL);
+
+            JSONObject holder = new JSONObject(params);
+
+            //passes the results to a string builder/entity
+            StringEntity se = null;
+            try {
+                se = new StringEntity(holder.toString());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            //sets the post request as the resulting string
+            httpPost.setEntity(se);
+            //sets a request header so the page receving the request
+            //will know what to do with it
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            //Handles what is returned from the page
+            ResponseHandler responseHandler = new BasicResponseHandler();
+            HttpResponse httpResponse = null;
+            try {
+                httpResponse = httpClient.execute(httpPost);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d("Http Post Response:", httpResponse.toString());
+            return null;
+        }
+
+        protected void makeGetRequest() {
             HttpClient httpClient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(addParametersToUrl(URL));
 
@@ -232,17 +341,12 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 }
 
             } catch (ClientProtocolException e) {
-                // Log exception
-                Toast.makeText(getApplicationContext(), "Network Error",
-                        Toast.LENGTH_LONG).show();
+
             } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), "IO Error",
-                        Toast.LENGTH_LONG).show();
+
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Error",
-                        Toast.LENGTH_LONG).show();
+
             }
-            return null;
         }
     }
 }
