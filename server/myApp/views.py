@@ -1,6 +1,6 @@
 from myApp import myApp
-from flask import Flask, jsonify, request, abort, make_response
-from models import db, User
+from flask import Flask, jsonify, request, abort, make_response, session
+from models import db, User 
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():
@@ -14,22 +14,28 @@ def check():
 @myApp.route('/server/signin', methods=['GET'])
 def signin():
 	user = User.query.filter_by(email = request.json['email']).first()
-        if user and user.check_password(request.json['password']):
-                return jsonify({'return':'success'})
-        else:
-                return jsonify({'return':'invalid email and password'})	
+	if user and user.check_password(request.json['password']):
+		session['email'] = request.json['email']
+		return jsonify({'return':'success'})
+	else:
+		return jsonify({'return':'invalid email and password'})
+		
 
 @myApp.route('/server/signup', methods=['POST'])
 def signup():
 	newuser = User(request.json['firstName'], request.json['lastName'], request.json['email'], request.json['password'])
 	db.session.add(newuser)
 	db.session.commit()
+	session['email'] = newuser.email
 	return jsonify({'return':'success'})
 
-@myApp.route('/server/signout')
+@myApp.route('/server/signout', methods=['GET'])
 def signout():
-	#Add code here
-
+	if 'email' not in session:
+		return jsonify({'return':'failed to signout'})
+	else:
+		session.pop('email', None)
+		return jsonify({'return':'success'}) 
 @myApp.route('/testdb', methods=['GET'])
 def testdb():
   print "hey"
