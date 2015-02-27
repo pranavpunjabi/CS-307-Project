@@ -74,14 +74,6 @@ just google mysql commands and you'll find plenty of resources
 //to delete any table
 DROP TABLE table_name;
 
-//to create tutor table with primary key being the tutid and FOREIGN KEY being studentID
-create table tutors (
-tutID int not null primary key,
-lastname varchar(100) not null,
-firstname varchar(100) not null,
-email varchar(120) not null unique,
-pwdhash varchar(100) not null
-);
 
 //to create student table with primary key being the stuID
 create table students (
@@ -90,6 +82,7 @@ lastname varchar(100) not null,
 firstname varchar(100) not null,
 email varchar(120) not null unique,
 pwdhash varchar(100) not null,
+ifTutor boolean NOT NULL default 0,
 );
 
 //to create a subject table
