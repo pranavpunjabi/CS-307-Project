@@ -31,6 +31,16 @@ def signup():
 	id = newuser.stuID
 	return jsonify({'return':'success','ID':id})
 
+@myApp.route('/server/tutor', methods=['POST'])
+def maketutor():
+	tutor = User.query.filter_by(stuID = request.json['stuID']).first()
+	if tutor is None:
+		return jsonify({'return':'student with this ID has not been registered'})
+	else:
+		tutor.ifTutor = 1
+		db.session.commit()
+		return jsonify({'return':'success'})
+
 @myApp.route('/testdb', methods=['GET'])
 def testdb():
   print "hey"

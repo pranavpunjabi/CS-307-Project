@@ -9,8 +9,11 @@ Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"request
 
 Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestType":"signIn",firstName":"asad", "lastName":"kumar", "email":"srivas5@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
 
-Both these return success as well as the ID number of the corresponding user.
+Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d '{"stuID":"1"}' http://localhost:5000/server/tutor 
 
+Add new user and Sign-in return success as well as the ID number of the corresponding user.
+
+Sign-up user as a tutor returns success or 'student with this ID has not been registered'.
 -------------------------------------
 
 Create new user with the database
