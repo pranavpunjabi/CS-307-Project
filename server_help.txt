@@ -5,9 +5,11 @@ $ python run.py
 
 Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
 
-Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"requestType":"signup", "firstName":"arun", "lastName":"kumar", "email":"srivas15@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
+Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"requestType":"signUp", "firstName":"arun", "lastName":"kumar", "email":"srivas15@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
 
-Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestType":"signin",firstName":"asad", "lastName":"kumar", "email":"sriva5@purdue.edu", "password":"ello"}' http://localhost:5000/server/index
+Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestType":"signIn",firstName":"asad", "lastName":"kumar", "email":"srivas5@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
+
+Both these return success as well as the ID number of the corresponding user.
 
 -------------------------------------
 

@@ -4,38 +4,33 @@ from models import db, User
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():
-	if request.json['requestType'] == 'signin':
+	if request.json['requestType'] == 'signIn':
 		return signin()
-	elif request.json['requestType'] == 'signup':
+	elif request.json['requestType'] == 'signUp':
 		return signup()
 	else:
 		return jsonify({'return':'noSuccess'})
 
-@myApp.route('/server/signin', methods=['GET'])
+@myApp.route('/server/signin', methods=['GET', 'POST'])
 def signin():
-	user = User.query.filter_by(email = request.json['email']).first()
-	if user and user.check_password(request.json['password']):
+	student = User.query.filter_by(email = request.json['email']).first()
+	if student and student.check_password(request.json['password']):
 		session['email'] = request.json['email']
-		return jsonify({'return':'success'})
+		id = student.stuID
+		return jsonify({'return':'success','ID':id})
 	else:
 		return jsonify({'return':'invalid email and password'})
 		
 
 @myApp.route('/server/signup', methods=['POST'])
 def signup():
-	newuser = User(request.json['firstName'], request.json['lastName'], request.json['email'], request.json['password'], request.json['ifTutor'])
+	newuser = User(request.json['firstName'], request.json['lastName'], request.json['email'], request.json['password'])
 	db.session.add(newuser)
 	db.session.commit()
 	session['email'] = newuser.email
-	return jsonify({'return':'success'})
+	id = newuser.stuID
+	return jsonify({'return':'success','ID':id})
 
-@myApp.route('/server/signout', methods=['GET'])
-def signout():
-	if 'email' not in session:
-		return jsonify({'return':'failed to signout'})
-	else:
-		session.pop('email', None)
-		return jsonify({'return':'success'}) 
 @myApp.route('/testdb', methods=['GET'])
 def testdb():
   print "hey"
