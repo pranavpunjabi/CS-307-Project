@@ -4,12 +4,13 @@ from werkzeug import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 class User(db.Model):
-	__tablename__ = 'allusers'
-	uid = db.Column(db.Integer, primary_key = True);
+	__tablename__ = 'students'
+	stuID = db.Column(db.Integer, primary_key = True);
 	firstname = db.Column(db.String(100))
 	lastname = db.Column(db.String(100))
 	email = db.Column(db.String(100))
 	pwdhash = db.Column(db.String(54))
+     ifTutor = db.Column(db.String(5))
 
 	def __init__(self, firstname, lastname, email, password):
 		self.firstname = firstname.title()

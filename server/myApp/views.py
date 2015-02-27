@@ -23,7 +23,7 @@ def signin():
 
 @myApp.route('/server/signup', methods=['POST'])
 def signup():
-	newuser = User(request.json['firstName'], request.json['lastName'], request.json['email'], request.json['password'])
+	newuser = User(request.json['firstName'], request.json['lastName'], request.json['email'], request.json['password'], request.json['ifTutor'])
 	db.session.add(newuser)
 	db.session.commit()
 	session['email'] = newuser.email
