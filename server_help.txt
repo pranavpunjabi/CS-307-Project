@@ -76,12 +76,13 @@ DROP TABLE table_name;
 
 //to create tutor table with primary key being the tutid and FOREIGN KEY being studentID
 create table tutors (
-tutID int not null primary key auto_increment,
+tutID int not null primary key,
 lastname varchar(100) not null,
 firstname varchar(100) not null,
 email varchar(120) not null unique,
 pwdhash varchar(100) not null
 );
+
 //to create student table with primary key being the stuID
 create table students (
 stuID int not null primary key auto_increment,
@@ -89,7 +90,6 @@ lastname varchar(100) not null,
 firstname varchar(100) not null,
 email varchar(120) not null unique,
 pwdhash varchar(100) not null,
-FORIEGN KEY (stuID) REFERENCES tutors(tutID)
 );
 
 //to create a subject table
@@ -100,5 +100,7 @@ CHEM boolean NOT NULL default 0
 );
 
 //to make sure the tutID in subjects table match with tutID in tutors table
-alter table tutors
-ADD CONSTRAINT FK_tutID FOREIGN KEY (tutID) REFERENCES subjects(tutID);
+alter table subjects
+ADD CONSTRAINT FK_subtutID FOREIGN KEY (tutID) REFERENCES tutors(tutID);
+ALTER TABLE tutors
+ADD CONSTRAINT FK_tutID FOREIGN KEY (tutID) REFERENCES students(stuID);
