@@ -10,7 +10,7 @@ class User(db.Model):
 	lastname = db.Column(db.String(100))
 	email = db.Column(db.String(100))
 	pwdhash = db.Column(db.String(54))
-     ifTutor = db.Column(db.String(5))
+	ifTutor = db.Column(db.String(5))
 
 	def __init__(self, firstname, lastname, email, password):
 		self.firstname = firstname.title()
