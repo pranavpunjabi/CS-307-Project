@@ -1,6 +1,7 @@
 package cs307.com.pranav.getguru;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -52,6 +53,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
@@ -68,7 +70,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
-        URL = "http://364ea48c.ngrok.com/server/signup";
+        URL = "http://1cbf193.ngrok.com/server/index";
 
     }
 
@@ -150,30 +152,11 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 buttonPressed = 1;
                 if (inputValidated(1))
                     new NetworkTask().execute();
-
-                if (success) {
-                    Intent i = new Intent(MyActivity.this, StudentProfile.class);
-                    startActivity(i);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Please enter a valid email/password combination",
-                            Toast.LENGTH_LONG).show();
-                }
-
                 break;
             case R.id.subutton:
                 buttonPressed = 2;
                 if (inputValidated(2))
                     new NetworkTask().execute();
-
-                if (success) {
-                    Intent i = new Intent(MyActivity.this, StudentProfile.class);
-                    startActivity(i);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Network Error",
-                            Toast.LENGTH_LONG).show();
-                }
                 break;
         }
     }
@@ -280,6 +263,12 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            Intent j = new Intent(MyActivity.this, StudentProfile.class);
+            startActivity(j);
+        }
+
         protected Object makePostRequest(Map params) {
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(URL);
@@ -303,13 +292,26 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
             //Handles what is returned from the page
             ResponseHandler responseHandler = new BasicResponseHandler();
-            HttpResponse httpResponse = null;
+            InputStream inputStream = null;
+            String responseString = "";
             try {
-                httpResponse = httpClient.execute(httpPost);
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                inputStream = httpResponse.getEntity().getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+                StringBuilder sb = new StringBuilder();
+
+                String line = null;
+                while ((line = reader.readLine()) != null)
+                {
+                    sb.append(line + "\n");
+                }
+
+                responseString = sb.toString();
+                Log.d("Http Post Response:", responseString);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Log.d("Http Post Response:", httpResponse.toString());
+
             return null;
         }
 
