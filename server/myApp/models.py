@@ -17,10 +17,16 @@ class User(db.Model):
 		self.lastname = lastname.title()
 		self.email = email.lower()
 		self.set_password(password)
-		self.ifTutor = 0;
+		self.ifTutor = 0
 
 	def set_password(self, password):
 		self.pwdhash = generate_password_hash(password)
 
 	def check_password(self, password):
 		return check_password_hash(self.pwdhash, password)
+
+class Subjects(db.Model):
+	__tablename__ = 'subjects'
+	id = db.Column(db.Integer, primary_key = True)
+	def __init__(self, id):
+		self.id = id.title()
