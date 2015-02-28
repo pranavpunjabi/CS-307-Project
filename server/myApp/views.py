@@ -16,8 +16,8 @@ def signin():
 	student = User.query.filter_by(email = request.json['email']).first()
 	if student and student.check_password(request.json['password']):
 		session['email'] = request.json['email']
-		id = student.stuID
-		return jsonify({'return':'success','ID':id})
+		id = student.id
+		return jsonify({'return':'success','id':id})
 	else:
 		return jsonify({'return':'invalid email and password'})
 		
@@ -28,12 +28,12 @@ def signup():
 	db.session.add(newuser)
 	db.session.commit()
 	session['email'] = newuser.email
-	id = newuser.stuID
-	return jsonify({'return':'success','ID':id})
+	id = newuser.id
+	return jsonify({'return':'success','id':id})
 
 @myApp.route('/server/tutor', methods=['POST'])
 def maketutor():
-	tutor = User.query.filter_by(stuID = request.json['stuID']).first()
+	tutor = User.query.filter_by(id = request.json['id']).first()
 	if tutor is None:
 		return jsonify({'return':'student with this ID has not been registered'})
 	else:
