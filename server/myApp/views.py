@@ -1,13 +1,7 @@
 from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
-from models import db, User, newUser
+from models import db, User, Subjects
 
-@myApp.route('/server/addSubjects', methods = ['GET', 'POST'])
-def add():
-	subject = Subjects(request.json['id'])
-	db.session.add(subject)
-	db.session.commit()
-	return jsonify({'return':'success'})
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():

@@ -27,6 +27,8 @@ class User(db.Model):
 
 class Subjects(db.Model):
 	__tablename__ = 'subjects'
-	id = db.Column(db.Integer, primary_key = True)
-	def __init__(self, id):
-		self.id = id.title()
+	subject = db.Column(db.String(100), primary_key = True)
+	ids = db.Column(db.String(100))
+	def __init__(self, subject, ids):
+		self.ids = ids.title()
+		self.subject = subject.title();

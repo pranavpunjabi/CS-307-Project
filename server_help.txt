@@ -96,6 +96,6 @@ ifTutor boolean NOT NULL default 0,
 
 //to create a subject table
 create table subjects( 
-id INT NOT NULL PRIMARY KEY,
-);
+subject varchar(100) not null unique,
+ids varchar(100) not null);
 
