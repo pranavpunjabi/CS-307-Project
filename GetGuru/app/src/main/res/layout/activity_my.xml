@@ -61,10 +61,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="FirstName LastName"
+        android:hint="First Name"
         android:ems="10"
-        android:id="@+id/suedittextname"
+        android:id="@+id/suedittextfirstname"
         android:layout_below="@+id/sutextView"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Last Name"
+        android:ems="10"
+        android:id="@+id/suedittextlastname"
+        android:layout_below="@+id/suedittextfirstname"
         android:layout_centerHorizontal="true" />
 
     <EditText
@@ -74,7 +84,7 @@
         android:ems="10"
         android:hint="Email"
         android:id="@+id/suedittextemail"
-        android:layout_below="@+id/suedittextname"
+        android:layout_below="@+id/suedittextlastname"
         android:layout_centerHorizontal="true" />
 
     <EditText

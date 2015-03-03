@@ -7,6 +7,7 @@
     <string name="title_activity_student_profile">StudentProfile</string>
     <string name="first">Go to first</string>
     <string name="last">Go to last</string>
+    <string name="title_activity_tutor_profile">TutorProfile</string>
 
 
 
