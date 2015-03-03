@@ -44,7 +44,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
 
     Button signUpButton, signInButton;
-    EditText signInEmail, signInPass, signUpName, signUpEmail, signUpPass, signUpRepass;
+    EditText signInEmail, signInPass, signUpName1, signUpName2, signUpEmail, signUpPass, signUpRepass;
 
     protected String URL;
 
@@ -59,7 +59,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         signInEmail = (EditText) findViewById(R.id.sieditTextemail);
         signInPass = (EditText) findViewById(R.id.sieditTextpass);
-        signUpName = (EditText) findViewById(R.id.suedittextname);
+        signUpName1 = (EditText) findViewById(R.id.suedittextfirstname);
+        signUpName2 = (EditText) findViewById(R.id.suedittextlastname);
         signUpEmail = (EditText) findViewById(R.id.suedittextemail);
         signUpPass = (EditText) findViewById(R.id.suedittextpass);
         signUpRepass = (EditText) findViewById(R.id.suedittextrepass);
@@ -70,7 +71,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
-        URL = "http://1cbf193.ngrok.com/server/index";
+        URL = "http://141d5973.ngrok.com/server/index";
 
     }
 
@@ -115,11 +116,12 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 }
                 break;
             case 2:
-                String suName = signUpName.getText().toString();
+                String suName1 = signUpName1.getText().toString();
+                String suName2 = signUpName2.getText().toString();
                 String suEmail = signUpEmail.getText().toString();
                 String suPass = signUpPass.getText().toString();
                 String suRepass = signUpRepass.getText().toString();
-                if (!suName.matches("") && !suEmail.matches("")
+                if (!suName1.matches("") && !suEmail.matches("")
                         && !suPass.matches("") && !suRepass.matches("")) {
                     if (suPass.matches(suRepass)) {
                         if (Patterns.EMAIL_ADDRESS.matcher(suEmail).matches()) {
@@ -179,10 +181,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 break;
             case 2:
                 params.add(new BasicNameValuePair("requestType", "Sign Up"));
-                params.add(new BasicNameValuePair("firstName", signUpName.getText().toString()
-                        .substring(0, signUpName.getText().toString().indexOf(" "))));
-                params.add(new BasicNameValuePair("lastName", signUpName.getText().toString()
-                        .substring(signUpName.getText().toString().indexOf(" "), signUpName.getText().toString().length() - 1)));
+                params.add(new BasicNameValuePair("firstName", signUpName1.getText().toString()));
+                params.add(new BasicNameValuePair("lastName", signUpName2.getText().toString()));
                 params.add(new BasicNameValuePair("email", signUpEmail.getText().toString()));
                 params.add(new BasicNameValuePair("password", signUpPass.getText().toString()));
                 url += paramString;
@@ -250,11 +250,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                     break;
                 case 2:
                     values.put(new String("requestType"), "signUp");
-                    values.put(new String("firstName"), signUpName.getText().toString()
-                            .substring(0, signUpName.getText().toString().indexOf(" ")));
-                    values.put(new String("lastName"), signUpName.getText().toString()
-                            .substring(signUpName.getText().toString().indexOf(" "),
-                                    signUpName.getText().toString().length() - 1));
+                    values.put(new String("firstName"), signUpName1.getText().toString());
+                    values.put(new String("lastName"), signUpName2.getText().toString());
                     values.put(new String("email"), signUpEmail.getText().toString());
                     values.put(new String("password"), signUpPass.getText().toString());
                     break;

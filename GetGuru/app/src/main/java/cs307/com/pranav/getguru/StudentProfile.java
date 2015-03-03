@@ -29,11 +29,14 @@ public class StudentProfile extends FragmentActivity {
             public void onTabChanged(String tabId) {
                 android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
                 AndroidFragment androidFragment = (AndroidFragment) fm.findFragmentByTag("android");
+                Profile profileFragment = (Profile) fm.findFragmentByTag("profile");
                 android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
 
                 /** Detaches the androidfragment if exists */
                 if(androidFragment!=null)
                     ft.detach(androidFragment);
+                if(profileFragment!=null)
+                    ft.detach(profileFragment);
 
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("android")){
@@ -47,6 +50,17 @@ public class StudentProfile extends FragmentActivity {
                     }
 
                 }
+                if(tabId.equalsIgnoreCase("profile")){
+
+                    if(profileFragment==null){
+                        /** Create AndroidFragment and adding to fragmenttransaction */
+                        ft.add(R.id.realtabcontent,new Profile(), "profile");
+                    }else{
+                        /** Bring to the front, if already exists in the fragmenttransaction */
+                        ft.attach(profileFragment);
+                    }
+
+                }
                 ft.commit();
             }
         };
@@ -55,16 +69,16 @@ public class StudentProfile extends FragmentActivity {
         tHost.setOnTabChangedListener(tabChangeListener);
 
         /** Defining tab builder for Andriod tab */
-        TabHost.TabSpec tSpecAndroid = tHost.newTabSpec("android");
-        tSpecAndroid.setIndicator("Android");
-        tSpecAndroid.setContent(new TabContent(getBaseContext()));
-        tHost.addTab(tSpecAndroid);
+        TabHost.TabSpec tSpecProfile = tHost.newTabSpec("profile");
+        tSpecProfile.setIndicator("Profile");
+        tSpecProfile.setContent(new TabContent(getBaseContext()));
+        tHost.addTab(tSpecProfile);
 
         /** Defining tab builder for Apple tab */
-        TabHost.TabSpec tSpecApple = tHost.newTabSpec("apple");
-        tSpecApple.setIndicator("Apple");
-        tSpecApple.setContent(new TabContent(getBaseContext()));
-        tHost.addTab(tSpecApple);
+        TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");
+        tSpecAnd.setIndicator("Android");
+        tSpecAnd.setContent(new TabContent(getBaseContext()));
+        tHost.addTab(tSpecAnd);
 
     }
 }
