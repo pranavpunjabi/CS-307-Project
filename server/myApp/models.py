@@ -32,3 +32,11 @@ class Subjects(db.Model):
 	def __init__(self, subject, ids):
 		self.ids = ids.title()
 		self.subject = subject.title()
+
+class Tutor(db.Model):
+	__tablename__ = 'tutors'
+	id = db.Column(db.Integer, primary_key = True)
+	subjects = db.Column(db.String(100))
+	def __init__(self, id, subjects):
+		self.id = id.title()
+		self.subjects = subjects.title()
