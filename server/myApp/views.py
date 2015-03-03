@@ -42,6 +42,31 @@ def maketutor():
 		db.session.commit()
 		return jsonify({'return':'success'})
 
+@myApp.route('/server/addSubjects', methods=['POST'])
+def makesubjects():
+     inst  = Subjects.query.filter(Subjects.subject == request.json['subject']).order_by(Subjects.subject).first()
+     if inst is None:
+          newid = request.json['id']
+          newsubject = Subjects(request.json['subject'], newid)
+          db.session.add(newsubject)
+          db.session.commit()
+          return jsonify({'return':'success'})
+     else:
+          idlist = inst.ids.split(',')
+          idexist = 0
+          for idval in idlist:
+               if (idval == request.json['id']):
+                    idexist = 1
+                    break
+          if (idexist == 0):
+               newid = inst.ids + "," + request.json['id']
+               newsubject = Subjects(request.json['subject'], newid)
+               db.session.merge(newsubject)
+               db.session.commit()
+               return jsonify({'return':'success'})
+          else: 
+               return jsonify({'return':'duplicate id'})
+
 @myApp.route('/testdb', methods=['GET'])
 def testdb():
   print "hey"

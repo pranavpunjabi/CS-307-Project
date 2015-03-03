@@ -31,4 +31,4 @@ class Subjects(db.Model):
 	ids = db.Column(db.String(100))
 	def __init__(self, subject, ids):
 		self.ids = ids.title()
-		self.subject = subject.title();
+		self.subject = subject.title()
