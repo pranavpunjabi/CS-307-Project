@@ -159,6 +159,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 buttonPressed = 2;
                 if (inputValidated(2))
                     new NetworkTask().execute();
+
                 break;
         }
     }
