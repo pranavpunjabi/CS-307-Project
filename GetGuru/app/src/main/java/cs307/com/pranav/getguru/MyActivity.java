@@ -70,7 +70,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
-        URL = "http://1cbf193.ngrok.com/server/index";
+        URL = "http://141d5973.ngrok.com/server/index";
 
     }
 
@@ -157,6 +157,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 buttonPressed = 2;
                 if (inputValidated(2))
                     new NetworkTask().execute();
+
                 break;
         }
     }

@@ -2,8 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs307.com.pranav.getguru" >
 
+    <uses-sdk android:minSdkVersion="11" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-sdk android:minSdkVersion="11"></uses-sdk>
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +31,10 @@
         <activity
             android:name=".StudentProfile"
             android:label="@string/title_activity_student_profile" >
+        </activity>
+        <activity
+            android:name=".TutorProfile"
+            android:label="@string/title_activity_tutor_profile" >
         </activity>
     </application>
 
