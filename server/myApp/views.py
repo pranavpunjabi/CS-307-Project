@@ -1,6 +1,6 @@
 from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
-from models import db, User, Subjects
+from models import db, User, Subjects, Tutor
 
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
@@ -40,32 +40,74 @@ def maketutor():
 	else:
 		tutor.ifTutor = 1
 		db.session.commit()
+		newTutor = Tutor(request.json['id'], '')
+		db.session.add(newTutor)
+		db.session.commit()
 		return jsonify({'return':'success'})
 
 @myApp.route('/server/addSubjects', methods=['POST'])
 def makesubjects():
-     inst  = Subjects.query.filter(Subjects.subject == request.json['subject']).order_by(Subjects.subject).first()
-     if inst is None:
-          newid = request.json['id']
-          newsubject = Subjects(request.json['subject'], newid)
-          db.session.add(newsubject)
-          db.session.commit()
-          return jsonify({'return':'success'})
-     else:
-          idlist = inst.ids.split(',')
-          idexist = 0
-          for idval in idlist:
-               if (idval == request.json['id']):
-                    idexist = 1
-                    break
-          if (idexist == 0):
-               newid = inst.ids + "," + request.json['id']
-               newsubject = Subjects(request.json['subject'], newid)
-               db.session.merge(newsubject)
-               db.session.commit()
-               return jsonify({'return':'success'})
-          else: 
-               return jsonify({'return':'duplicate id'})
+	#adding to tutor table here
+	id = request.json['id']
+	tutor = Tutor.query.filter_by(id = request.json['id']).first()
+	if tutor is None:
+		return jsonify({'return':'error'})
+	else:
+		eraseTutor = Tutor(id, '')
+		db.session.merge(eraseTutor)
+		db.session.commit()
+		#erase end
+		allSubjects = ""
+		i = 0
+		for subject in request.json['subjects']:
+			if (i == 0):
+				allSubjects = subject["subject"]
+				i = i + 1
+			else:
+				i = i+1
+				allSubjects = allSubjects + "," + subject["subject"]
+		myTutor = Tutor(id, allSubjects)
+		db.session.merge(myTutor)
+		db.session.commit()
+	#finished adding to tutor table
+
+	subjects = Subjects.query.all()
+	for subject in subjects:
+		ids = ""
+		idlist = subject.ids.split(',')
+		for idval in idlist:
+			if idval != request.json['id']:
+				if not ids:
+					ids = idval
+				else:
+					ids = ids + "," + idval
+		subject.ids = ids
+		if not ids:
+			db.session.delete(subject)
+		db.session.commit()
+	for subject in request.json['subjects']:
+		sub = Subjects.query.filter_by(subject = subject["subject"]).first()
+		if sub is None:
+			newID = request.json['id']
+			newSubject = Subjects(subject["subject"],newID)
+			db.session.add(newSubject)
+			db.session.commit()
+		else:
+			if not sub.ids:
+				sub.ids = request.json['id']
+			else:
+				sub.ids = sub.ids + "," + request.json['id']
+			db.session.commit()
+	return jsonify({'return':'success','id':request.json['id']})	
+
+@myApp.route('/server/getSubjects', methods=['GET'])
+def getsubjects():
+	tutor = Tutor.query.filter_by(id = request.json['id']).first()
+	if tutor is None:
+		return jsonify({'return':'no success'})
+	else:
+		subjectList = tutor.subjects.split(',')
+		return jsonify({'return':subjectList})
 
 @myApp.route('/testdb', methods=['GET'])
 def testdb():
