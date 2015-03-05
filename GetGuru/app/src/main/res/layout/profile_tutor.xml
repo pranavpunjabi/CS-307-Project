@@ -71,7 +71,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SWITCH TO TUTOR"
+        android:text="SWITCH TO STUDENT"
         android:id="@+id/toggle"
         android:layout_marginBottom="42dp"
         android:layout_alignParentBottom="true"
