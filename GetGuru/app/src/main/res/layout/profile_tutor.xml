@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="MAJOR"
+        android:text="EDUCATION"
         android:id="@+id/education"
         android:layout_below="@+id/age"
         android:layout_toRightOf="@+id/profilePicture"
@@ -59,8 +59,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="CLASSIFICATION"
-        android:id="@+id/classification"
+        android:text="LOCATION"
+        android:id="@+id/location"
         android:layout_below="@+id/education"
         android:layout_toRightOf="@+id/profilePicture"
         android:gravity="center_horizontal"
@@ -87,5 +87,29 @@
         android:layout_alignTop="@+id/toggle"
         android:layout_toRightOf="@+id/toggle"
         android:layout_toEndOf="@+id/toggle" />
+
+    <ListView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/subjectList"
+        android:choiceMode="none"
+        android:layout_above="@+id/toggle"
+        android:layout_alignLeft="@+id/toggle"
+        android:layout_alignStart="@+id/toggle"
+        android:layout_marginBottom="44dp"
+        android:layout_alignRight="@+id/editInfo"
+        android:layout_alignEnd="@+id/editInfo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SUBJECTS OF EXPERTISE"
+        android:id="@+id/subjectLabel"
+        android:gravity="center_horizontal"
+        android:layout_above="@+id/subjectList"
+        android:layout_alignLeft="@+id/subjectList"
+        android:layout_alignStart="@+id/subjectList" />
+
 
 </RelativeLayout>
