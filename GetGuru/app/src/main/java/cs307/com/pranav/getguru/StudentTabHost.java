@@ -19,7 +19,7 @@ public class StudentTabHost extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_tab_host);
 
-        tHost = (TabHost) findViewById(android.R.id.tabhost);
+        tHost = (TabHost) findViewById(R.id.tabhost1);
         tHost.setup();
 
         /** Defining Tab Change Listener event. This is invoked when tab is changed */

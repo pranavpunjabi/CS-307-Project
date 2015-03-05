@@ -18,45 +18,24 @@ public class TutorTabHost extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_tab_host);
 
-        tHost = (TabHost) findViewById(R.id.tabHost2);
+        tHost = (TabHost) findViewById(R.id.tabhost2);
         tHost.setup();
 
-        /** Defining Tab Change Listener event. This is invoked when tab is changed */
         TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
+            android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
+            TutorProfileFragment profileFragment = (TutorProfileFragment) fm.findFragmentByTag("profile");
+            android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
 
             @Override
             public void onTabChanged(String tabId) {
-                android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
-                AndroidFragment androidFragment = (AndroidFragment) fm.findFragmentByTag("android");
-                TutorProfileFragment profileFragment = (TutorProfileFragment) fm.findFragmentByTag("profile");
-                SearchFragment searchFragment = (SearchFragment) fm.findFragmentByTag("search");
-                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-
-                /** Detaches the androidfragment if exists */
-                if(androidFragment!=null)
-                    ft.detach(androidFragment);
                 if(profileFragment!=null)
                     ft.detach(profileFragment);
-                if(searchFragment!=null)
-                    ft.detach(searchFragment);
 
-                /** If current tab is android */
-                if(tabId.equalsIgnoreCase("android")){
-
-                    if(androidFragment==null){
-                        /** Create AndroidFragment and adding to fragmenttransaction */
-                        ft.add(R.id.realtabcontent,new AndroidFragment(), "android");
-                    }else{
-                        /** Bring to the front, if already exists in the fragmenttransaction */
-                        ft.attach(androidFragment);
-                    }
-
-                }
                 if(tabId.equalsIgnoreCase("profile")){
 
                     if(profileFragment==null){
                         /** Create AndroidFragment and adding to fragmenttransaction */
-                        ft.add(R.id.realtabcontent,new StudentProfileFragment(), "profile");
+                        ft.add(R.id.realtabcontent2,new TutorProfileFragment(), "profile");
                     }else{
                         /** Bring to the front, if already exists in the fragmenttransaction */
                         ft.attach(profileFragment);
@@ -64,29 +43,16 @@ public class TutorTabHost extends FragmentActivity {
 
                 }
                 ft.commit();
+
             }
+
         };
 
-        /** Setting tabchangelistener for the tab */
         tHost.setOnTabChangedListener(tabChangeListener);
 
-        /** Defining tab builder for Profile tab */
         TabHost.TabSpec tSpecProfile = tHost.newTabSpec("profile");
         tSpecProfile.setIndicator("Profile");
         tSpecProfile.setContent(new TabContent(getBaseContext()));
         tHost.addTab(tSpecProfile);
-
-        /** Defining tab builder for Search tab */
-        TabHost.TabSpec tSpecSearch = tHost.newTabSpec("search");
-        tSpecSearch.setIndicator("Search");
-        tSpecSearch.setContent(new TabContent(getBaseContext()));
-        tHost.addTab(tSpecSearch);
-
-        /** Defining tab builder for Android (test) tab */
-        TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");
-        tSpecAnd.setIndicator("Android");
-        tSpecAnd.setContent(new TabContent(getBaseContext()));
-        tHost.addTab(tSpecAnd);
-
     }
 }

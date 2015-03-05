@@ -24,7 +24,7 @@ public class StudentProfileFragment extends Fragment implements OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //return super.onCreateView(inflater, container, savedInstanceState);
-        View masterView = inflater.inflate(R.layout.profile_student, container, false);
+        masterView = inflater.inflate(R.layout.profile_student, container, false);
 
         toggle = (Button) masterView.findViewById(R.id.toggle);
         edit = (Button) masterView.findViewById(R.id.editInfo);
