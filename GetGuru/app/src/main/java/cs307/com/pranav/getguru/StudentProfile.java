@@ -17,7 +17,7 @@ public class StudentProfile extends FragmentActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_profile);
+        setContentView(R.layout.tab_host_layout);
 
         tHost = (TabHost) findViewById(android.R.id.tabhost);
         tHost.setup();
