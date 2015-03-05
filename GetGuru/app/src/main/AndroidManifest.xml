@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StudentProfile"
+            android:name=".MasterTabHost"
             android:label="@string/title_activity_student_profile" >
         </activity>
         <activity
