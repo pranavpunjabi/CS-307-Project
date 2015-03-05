@@ -49,7 +49,7 @@ public class StudentProfileFragment extends Fragment implements OnClickListener 
                 startActivity(i);
                 break;
             case R.id.toggle:
-                Intent j = new Intent(this.getActivity(), TutorProfile.class);
+                Intent j = new Intent(this.getActivity(), TutorTabHost.class);
                 startActivity(j);
                 break;
         }

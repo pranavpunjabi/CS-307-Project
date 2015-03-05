@@ -40,6 +40,10 @@
             android:name=".Edit"
             android:label="@string/title_activity_edit" >
         </activity>
+        <activity
+            android:name=".TutorTabHost"
+            android:label="@string/title_activity_tutor_tab_host" >
+        </activity>
     </application>
 
 </manifest>

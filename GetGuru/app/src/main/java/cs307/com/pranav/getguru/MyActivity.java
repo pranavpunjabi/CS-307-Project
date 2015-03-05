@@ -263,7 +263,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(Object o) {
-            Intent j = new Intent(MyActivity.this, MasterTabHost.class);
+            Intent j = new Intent(MyActivity.this, StudentTabHost.class);
             startActivity(j);
         }
 
