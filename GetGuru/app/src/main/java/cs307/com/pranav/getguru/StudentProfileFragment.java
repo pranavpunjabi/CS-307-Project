@@ -26,8 +26,8 @@ public class StudentProfileFragment extends Fragment implements OnClickListener 
         //return super.onCreateView(inflater, container, savedInstanceState);
         masterView = inflater.inflate(R.layout.profile_student, container, false);
 
-        toggle = (Button) masterView.findViewById(R.id.toggle);
-        edit = (Button) masterView.findViewById(R.id.editInfo);
+        toggle = (Button) masterView.findViewById(R.id.toggle2);
+        edit = (Button) masterView.findViewById(R.id.editInfo2);
 
         toggle.setOnClickListener(this);
         edit.setOnClickListener(this);
@@ -44,11 +44,11 @@ public class StudentProfileFragment extends Fragment implements OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.editInfo:
+            case R.id.editInfo2:
                 Intent i = new Intent(this.getActivity(), Edit.class);
                 startActivity(i);
                 break;
-            case R.id.toggle:
+            case R.id.toggle2:
                 Intent j = new Intent(this.getActivity(), TutorTabHost.class);
                 startActivity(j);
                 break;
