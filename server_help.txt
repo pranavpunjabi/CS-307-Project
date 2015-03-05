@@ -11,7 +11,9 @@ Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestT
 
 Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1"}' http://localhost:5000/server/tutor 
 
-Test subjects :curl -i -H "Contet-Type: application/json" -X POST -d '{"subject":"phys","id":"54"}' http://localhost:5000/server/addSubjects
+Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
+
+Get subjects for a particular tutor: curl -i -H "Content-Type: application/json" -X GET -d '{"id":"3"}' http://localhost:5000/server/getSubjects
 
 Add new user and Sign-in return success as well as the ID number of the corresponding user.
 
@@ -98,4 +100,9 @@ ifTutor boolean NOT NULL default 0,
 create table subjects( 
 subject varchar(100) not null unique,
 ids varchar(100) not null);
+
+//create tutor table
+create table tutors(
+id int not null unique primary_kay,
+subjects varchar(100));
 

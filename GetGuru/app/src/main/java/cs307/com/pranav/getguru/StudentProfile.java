@@ -17,7 +17,7 @@ public class StudentProfile extends FragmentActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_profile);
+        setContentView(R.layout.tab_host_layout);
 
         tHost = (TabHost) findViewById(android.R.id.tabhost);
         tHost.setup();
@@ -30,6 +30,7 @@ public class StudentProfile extends FragmentActivity {
                 android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
                 AndroidFragment androidFragment = (AndroidFragment) fm.findFragmentByTag("android");
                 Profile profileFragment = (Profile) fm.findFragmentByTag("profile");
+                Search searchFragment = (Search) fm.findFragmentByTag("search");
                 android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
 
                 /** Detaches the androidfragment if exists */
@@ -37,6 +38,8 @@ public class StudentProfile extends FragmentActivity {
                     ft.detach(androidFragment);
                 if(profileFragment!=null)
                     ft.detach(profileFragment);
+                if(searchFragment!=null)
+                    ft.detach(searchFragment);
 
                 /** If current tab is android */
                 if(tabId.equalsIgnoreCase("android")){
@@ -68,13 +71,19 @@ public class StudentProfile extends FragmentActivity {
         /** Setting tabchangelistener for the tab */
         tHost.setOnTabChangedListener(tabChangeListener);
 
-        /** Defining tab builder for Andriod tab */
+        /** Defining tab builder for Profile tab */
         TabHost.TabSpec tSpecProfile = tHost.newTabSpec("profile");
         tSpecProfile.setIndicator("Profile");
         tSpecProfile.setContent(new TabContent(getBaseContext()));
         tHost.addTab(tSpecProfile);
 
-        /** Defining tab builder for Apple tab */
+        /** Defining tab builder for Search tab */
+        TabHost.TabSpec tSpecSearch = tHost.newTabSpec("search");
+        tSpecSearch.setIndicator("Search");
+        tSpecSearch.setContent(new TabContent(getBaseContext()));
+        tHost.addTab(tSpecSearch);
+
+        /** Defining tab builder for Android (test) tab */
         TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");
         tSpecAnd.setIndicator("Android");
         tSpecAnd.setContent(new TabContent(getBaseContext()));
