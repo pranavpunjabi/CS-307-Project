@@ -9,7 +9,7 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
 
-        android:id="@+id/profilePictureStudent"
+        android:id="@+id/profilePictureTutor"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -23,12 +23,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NAME"
-        android:id="@+id/nameStudent"
-        android:layout_alignTop="@+id/profilePictureStudent"
+        android:id="@+id/nameTutor"
+        android:layout_alignTop="@+id/profilePictureTutor"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/profilePictureStudent"
-        android:layout_toEndOf="@+id/profilePictureStudent"
+        android:layout_toRightOf="@+id/profilePictureTutor"
+        android:layout_toEndOf="@+id/profilePictureTutor"
         android:gravity="center_horizontal" />
 
     <TextView
@@ -36,33 +36,33 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="AGE"
-        android:id="@+id/ageStudent"
-        android:layout_below="@+id/nameStudent"
-        android:layout_toRightOf="@+id/profilePictureStudent"
+        android:id="@+id/ageTutor"
+        android:layout_below="@+id/nameTutor"
+        android:layout_toRightOf="@+id/profilePictureTutor"
         android:gravity="center_horizontal"
-        android:layout_alignRight="@+id/nameStudent"
-        android:layout_alignEnd="@+id/nameStudent" />
+        android:layout_alignRight="@+id/nameTutor"
+        android:layout_alignEnd="@+id/nameTutor" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="MAJOR"
+        android:text="EDUCATION"
         android:id="@+id/education"
-        android:layout_below="@+id/ageStudent"
-        android:layout_toRightOf="@+id/profilePictureStudent"
+        android:layout_below="@+id/ageTutor"
+        android:layout_toRightOf="@+id/profilePictureTutor"
         android:gravity="center_horizontal"
-        android:layout_alignRight="@+id/ageStudent"
-        android:layout_alignEnd="@+id/ageStudent" />
+        android:layout_alignRight="@+id/ageTutor"
+        android:layout_alignEnd="@+id/ageTutor" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="CLASSIFICATION"
-        android:id="@+id/classification"
+        android:text="LOCATION"
+        android:id="@+id/location"
         android:layout_below="@+id/education"
-        android:layout_toRightOf="@+id/profilePictureStudent"
+        android:layout_toRightOf="@+id/profilePictureTutor"
         android:gravity="center_horizontal"
         android:layout_alignRight="@+id/education"
         android:layout_alignEnd="@+id/education" />
@@ -71,21 +71,45 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SWITCH TO TUTOR"
-        android:id="@+id/toggle"
+        android:text="SWITCH TO STUDENT"
+        android:id="@+id/toggle2"
         android:layout_marginBottom="42dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/profilePictureStudent"
-        android:layout_alignStart="@+id/profilePictureStudent" />
+        android:layout_alignLeft="@+id/profilePictureTutor"
+        android:layout_alignStart="@+id/profilePictureTutor" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="EDIT YOUR INFO"
-        android:id="@+id/editInfo"
-        android:layout_alignTop="@+id/toggle"
-        android:layout_toRightOf="@+id/toggle"
-        android:layout_toEndOf="@+id/toggle" />
+        android:id="@+id/editInfo2"
+        android:layout_alignTop="@+id/toggle2"
+        android:layout_toRightOf="@+id/toggle2"
+        android:layout_toEndOf="@+id/toggle2" />
+
+    <ExpandableListView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/subjectList"
+        android:choiceMode="none"
+        android:layout_above="@+id/toggle2"
+        android:layout_alignLeft="@+id/toggle2"
+        android:layout_alignStart="@+id/toggle2"
+        android:layout_marginBottom="44dp"
+        android:layout_alignRight="@+id/editInfo2"
+        android:layout_alignEnd="@+id/editInfo2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SUBJECTS OF EXPERTISE"
+        android:id="@+id/subjectLabel"
+        android:gravity="center_horizontal"
+        android:layout_above="@+id/subjectList"
+        android:layout_alignLeft="@+id/subjectList"
+        android:layout_alignStart="@+id/subjectList" />
+
 
 </RelativeLayout>

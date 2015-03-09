@@ -8,6 +8,8 @@
     <string name="first">Go to first</string>
     <string name="last">Go to last</string>
     <string name="title_activity_tutor_profile">TutorProfile</string>
+    <string name="title_activity_edit">Edit</string>
+    <string name="title_activity_tutor_tab_host">TutorTabHost</string>
 
 
 

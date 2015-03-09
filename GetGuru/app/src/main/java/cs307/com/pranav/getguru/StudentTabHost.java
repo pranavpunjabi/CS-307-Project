@@ -8,7 +8,7 @@ import android.view.Window;
 import android.widget.TabHost;
 
 
-public class StudentProfile extends FragmentActivity {
+public class StudentTabHost extends FragmentActivity {
 
     TabHost tHost;
 
@@ -17,9 +17,9 @@ public class StudentProfile extends FragmentActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_profile);
+        setContentView(R.layout.activity_student_tab_host);
 
-        tHost = (TabHost) findViewById(android.R.id.tabhost);
+        tHost = (TabHost) findViewById(R.id.tabhost1);
         tHost.setup();
 
         /** Defining Tab Change Listener event. This is invoked when tab is changed */
@@ -29,8 +29,8 @@ public class StudentProfile extends FragmentActivity {
             public void onTabChanged(String tabId) {
                 android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
                 AndroidFragment androidFragment = (AndroidFragment) fm.findFragmentByTag("android");
-                Profile profileFragment = (Profile) fm.findFragmentByTag("profile");
-                Search searchFragment = (Search) fm.findFragmentByTag("search");
+                StudentProfileFragment profileFragment = (StudentProfileFragment) fm.findFragmentByTag("profile");
+                SearchFragment searchFragment = (SearchFragment) fm.findFragmentByTag("search");
                 android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
 
                 /** Detaches the androidfragment if exists */
@@ -57,7 +57,7 @@ public class StudentProfile extends FragmentActivity {
 
                     if(profileFragment==null){
                         /** Create AndroidFragment and adding to fragmenttransaction */
-                        ft.add(R.id.realtabcontent,new Profile(), "profile");
+                        ft.add(R.id.realtabcontent,new StudentProfileFragment(), "profile");
                     }else{
                         /** Bring to the front, if already exists in the fragmenttransaction */
                         ft.attach(profileFragment);

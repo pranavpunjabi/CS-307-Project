@@ -21,12 +21,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StudentProfile"
-            android:label="@string/title_activity_student_profile" >
+            android:name=".StudentTabHost"
+            android:label="StudentTabHost" >
         </activity>
         <activity
-            android:name=".TutorProfile"
-            android:label="@string/title_activity_tutor_profile" >
+            android:name=".TutorTabHost"
+            android:label="TutorTabHost" >
+        </activity>
+        <activity
+            android:name=".Edit"
+            android:label="@string/title_activity_edit" >
         </activity>
     </application>
 
