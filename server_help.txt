@@ -13,6 +13,9 @@ Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d 
 
 Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
 
+Test query : curl -i -H "Content-Type: application/json" -X GET -d '{"firstName":"arun"}' http://localhost:5000/server/test
+NOTE : make sure you have at least 3 or more students with the same first name arun for the original code to work. You can change the code to test it accordingly. It's a small fix.
+
 Get subjects for a particular tutor: curl -i -H "Content-Type: application/json" -X GET -d '{"id":"3"}' http://localhost:5000/server/getSubjects
 
 Add new user and Sign-in return success as well as the ID number of the corresponding user.
