@@ -2,7 +2,6 @@ from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
 from models import db, User, Subjects, Tutor
 
-
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():
 	if request.json['requestType'] == 'signIn':
@@ -25,6 +24,9 @@ def signin():
 
 @myApp.route('/server/signup', methods=['POST'])
 def signup():
+	student = User.query.filter_by(email = request.json['email']).first()
+	if student:
+		return jsonify({'return':'noSuccess'})
 	newuser = User(request.json['firstName'], request.json['lastName'], request.json['email'], request.json['password'])
 	db.session.add(newuser)
 	db.session.commit()
@@ -108,6 +110,12 @@ def getsubjects():
 	else:
 		subjectList = tutor.subjects.split(',')
 		return jsonify({'return':subjectList})
+
+#@myApp.route('/server/addShortList', methods = ['GET','POST'])
+#def addShortList():
+#	id = request.json['id']
+#	shortlist = Students.shortlist
+#	print shortlist
 
 @myApp.route('/testdb', methods=['GET'])
 def testdb():
