@@ -2,6 +2,15 @@ from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
 from models import db, User, Subjects, Tutor
 
+@myApp.route('/server/test', methods=['GET'])
+def testing():
+	firstName = request.json['firstName']
+	student = User.query.filter_by(firstname = request.json['firstName']).all()
+	print student[1].id
+	print student[2].id
+	print student[0].id
+	return jsonify({'return':'test'})
+
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():
 	if request.json['requestType'] == 'signIn':
