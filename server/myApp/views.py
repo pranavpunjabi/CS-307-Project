@@ -51,7 +51,7 @@ def maketutor():
 	else:
 		tutor.ifTutor = 1
 		db.session.commit()
-		newTutor = Tutor(request.json['id'], '')
+		newTutor = Tutor(request.json['id'],request.json['location'], '')
 		db.session.add(newTutor)
 		db.session.commit()
 		return jsonify({'return':'success'})

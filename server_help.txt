@@ -7,9 +7,9 @@ Testing database connection: curl -i http://localhost:5000/testdb (returns ({'re
 
 Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"requestType":"signUp", "firstName":"arun", "lastName":"kumar", "email":"srivas15@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
 
-Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestType":"signIn",firstName":"asad", "lastName":"kumar", "email":"srivas5@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
+Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestType":"signIn","firstName":"asad", "lastName":"kumar", "email":"srivas5@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
 
-Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1"}' http://localhost:5000/server/tutor 
+Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1", "location":"lafayette"}' http://localhost:5000/server/tutor 
 
 Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
 
