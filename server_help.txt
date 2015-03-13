@@ -96,7 +96,7 @@ lastname varchar(100) not null,
 firstname varchar(100) not null,
 email varchar(120) not null unique,
 pwdhash varchar(100) not null,
-ifTutor boolean NOT NULL default 0,
+ifTutor boolean NOT NULL default 0
 );
 
 //to create a subject table
@@ -106,6 +106,8 @@ ids varchar(100) not null);
 
 //create tutor table
 create table tutors(
-id int not null unique primary_kay,
+id int not null unique primary key,
+location varchar(100), 
 subjects varchar(100));
-
+//if you already have a table you can add the column using 
+alter table tutors add column location varchar(100) after id;
