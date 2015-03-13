@@ -64,7 +64,8 @@ def makesubjects():
 	if tutor is None:
 		return jsonify({'return':'error'})
 	else:
-		eraseTutor = Tutor(id, '')
+		loc = tutor.location
+		eraseTutor = Tutor(id, loc, '')
 		db.session.merge(eraseTutor)
 		db.session.commit()
 		#erase end
@@ -77,7 +78,7 @@ def makesubjects():
 			else:
 				i = i+1
 				allSubjects = allSubjects + "," + subject["subject"]
-		myTutor = Tutor(id, allSubjects)
+		myTutor = Tutor(id, loc, allSubjects)
 		db.session.merge(myTutor)
 		db.session.commit()
 	#finished adding to tutor table
