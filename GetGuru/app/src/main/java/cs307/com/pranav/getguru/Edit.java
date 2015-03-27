@@ -44,7 +44,7 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
         sub2 = (EditText) findViewById(R.id.sub2);
         sub3 = (EditText) findViewById(R.id.sub3);
         sendSubjects = (Button) findViewById(R.id.buttonsendsubs);
-        URL = "http://1cbf193.ngrok.com/server/addSubjects";
+        URL = ApplicationManager.URL;
 
         sendSubjects.setOnClickListener(this);
     }

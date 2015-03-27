@@ -22,6 +22,8 @@ public class StudentTabHost extends FragmentActivity {
         tHost = (TabHost) findViewById(R.id.tabhost1);
         tHost.setup();
 
+        ApplicationManager.context = this.getBaseContext();
+
         /** Defining Tab Change Listener event. This is invoked when tab is changed */
         TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
 

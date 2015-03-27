@@ -43,8 +43,9 @@ import java.util.Map;
 public class MyActivity extends ActionBarActivity implements View.OnClickListener {
 
 
-    Button signUpButton, signInButton;
+    Button signUpButton, signInButton, test;
     EditText signInEmail, signInPass, signUpName1, signUpName2, signUpEmail, signUpPass, signUpRepass;
+    EditText testURL;
 
     protected String URL;
 
@@ -65,13 +66,18 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signUpPass = (EditText) findViewById(R.id.suedittextpass);
         signUpRepass = (EditText) findViewById(R.id.suedittextrepass);
 
+        testURL = (EditText) findViewById(R.id.testURL);
+
         signInButton = (Button) findViewById(R.id.sibutton);
         signUpButton = (Button) findViewById(R.id.subutton);
+        test = (Button) findViewById(R.id.buttontest);
 
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
+        test.setOnClickListener(this);
 
-        URL = "http://1cbf193.ngrok.com/server/index";
+        ApplicationManager.URL = testURL.getText().toString();
+        URL = ApplicationManager.URL;
 
     }
 
@@ -149,6 +155,9 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
 
+        ApplicationManager.URL = testURL.getText().toString();
+        URL = ApplicationManager.URL;
+
         switch (v.getId()) {
             case R.id.sibutton:
                 buttonPressed = 1;
@@ -159,7 +168,10 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 buttonPressed = 2;
                 if (inputValidated(2))
                     new NetworkTask().execute();
-
+                break;
+            case R.id.buttontest:
+                Intent j = new Intent(MyActivity.this, StudentTabHost.class);
+                startActivity(j);
                 break;
         }
     }
@@ -263,8 +275,10 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(Object o) {
-            Intent j = new Intent(MyActivity.this, StudentTabHost.class);
-            startActivity(j);
+            if (success) {
+                Intent j = new Intent(MyActivity.this, StudentTabHost.class);
+                startActivity(j);
+            }
         }
 
         protected Object makePostRequest(Map params) {
@@ -306,8 +320,15 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
                 responseString = sb.toString();
                 Log.d("Http Post Response:", responseString);
+                JSONObject json = new JSONObject(responseString);
+                Log.d("Http Post Response:", json.getString("return"));
+                if (json.getString("return").equals("success")) {
+                    success = true;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (JSONException e) {
+
             }
 
             return null;
@@ -336,7 +357,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 responseString = sb.toString();
                 Log.d("Http Get Response:", responseString);
                 JSONObject json = new JSONObject(responseString);
-                if (json.getBoolean("success")) {
+                Log.d("Http Get Response:", json.getString("return"));
+                if (json.getString("return").equals("success")) {
                     success = true;
                 }
 
