@@ -50,7 +50,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         toggle.setOnClickListener(this);
         edit.setOnClickListener(this);
 
-        URL = "http://1cbf193.ngrok.com/server/tutor";
+        URL = ApplicationManager.URL;
 
         //return super.onCreateView(inflater, container, savedInstanceState);
 
