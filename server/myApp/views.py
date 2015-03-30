@@ -1,6 +1,8 @@
 from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
 from models import db, User, Subjects, Tutor
+from geopy.geocoders import Nominatim
+geolocator = Nominatim()
 
 @myApp.route('/server/test', methods=['GET'])
 def testing():
@@ -10,6 +12,26 @@ def testing():
 	print student[2].id
 	print student[0].id
 	return jsonify({'return':'test'})
+
+@myApp.route('/server/locSearch', methods=['GET'])
+def locSearch():
+	#making temporary variables since not sure how the client will pass them
+	temp1 = 40.425869
+	temp2 = -86.908066
+	tempLoc = geolocator.reverse("40.425869, -86.908066")
+	#print(tempLoc.address)
+	tempZip = tempLoc.raw["address"]["postcode"]
+	tutor = Tutor.query.filter_by(location = tempZip).all()	
+	if(len(tutor) == 0):
+		return jsonify ({'return':'noSuccess'})
+	else: 
+		tutors = []
+		for myTutor in tutor:
+			tutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects})
+		#	{"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects}
+		#tutors.append({"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects})
+		return jsonify({'return':tutors})
+	return jsonify ({'return':'success'})
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():

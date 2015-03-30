@@ -3,6 +3,10 @@ New commands to test database -
 run the code by typing 
 $ python run.py
 
+Testing search by location : 
+NOTE : currently works only for postal code 47906 which is hardcoded in the program. you can pass whatever variable you like in this curl statement and it'll still only return for 47906. 
+curl -i -H "Content-Type: application/json" -X GET -d '{"location":"47906"}' http://localhost:5000/server/locSearch
+
 Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
 
 Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"requestType":"signUp", "firstName":"arun", "lastName":"kumar", "email":"srivas15@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
@@ -107,7 +111,7 @@ ids varchar(100) not null);
 //create tutor table
 create table tutors(
 id int not null unique primary key,
-location varchar(100), 
+location int, 
 subjects varchar(100));
 //if you already have a table you can add the column using 
 alter table tutors add column location varchar(100) after id;
