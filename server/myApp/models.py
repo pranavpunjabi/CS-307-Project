@@ -40,5 +40,5 @@ class Tutor(db.Model):
 	subjects = db.Column(db.String(100))
 	def __init__(self, id, location, subjects):
 		self.id = id.title()
-		self.location = location.lower()
+		self.location = location
 		self.subjects = subjects.title()
