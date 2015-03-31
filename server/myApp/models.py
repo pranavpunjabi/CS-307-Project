@@ -36,7 +36,7 @@ class Subjects(db.Model):
 class Tutor(db.Model):
 	__tablename__ = 'tutors'
 	id = db.Column(db.Integer, primary_key = True)
-	location = db.Column(db.String(100))
+	location = db.Column(db.Integer)
 	subjects = db.Column(db.String(100))
 	def __init__(self, id, location, subjects):
 		self.id = id.title()
