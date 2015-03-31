@@ -6,20 +6,23 @@ geolocator = Nominatim()
 
 @myApp.route('/server/test', methods=['GET'])
 def testing():
-	firstName = request.json['firstName']
-	student = User.query.filter_by(firstname = request.json['firstName']).all()
-	print student[1].id
-	print student[2].id
-	print student[0].id
+	#student = User.query.filter(User.firstname == request.json['firstName'], User.lastname == request.json['lastName']).all()
+	sub = request.json['subject']
+	print sub
+	newSub = "%" + sub + "%"
+	print newSub
+	student = Tutor.query.filter(Tutor.subjects.like(newSub)).all()
+	print len(student)
 	return jsonify({'return':'test'})
 
 @myApp.route('/server/locSearch', methods=['GET'])
 def locSearch():
 	#making temporary variables since not sure how the client will pass them
-	temp1 = 40.425869
-	temp2 = -86.908066
-	tempLoc = geolocator.reverse("40.425869, -86.908066")
-	#print(tempLoc.address)
+	latitude = request.json['latitude']
+	longitude = request.json['longitude']
+	#tempLoc = geolocator.reverse("40.425869, -86.908066")
+	tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)))
+	print(tempLoc.address)
 	tempZip = tempLoc.raw["address"]["postcode"]
 	tutor = Tutor.query.filter_by(location = tempZip).all()	
 	if(len(tutor) == 0):
@@ -32,6 +35,27 @@ def locSearch():
 		#tutors.append({"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects})
 		return jsonify({'return':tutors})
 	return jsonify ({'return':'success'})
+
+@myApp.route('/server/search', methods=['GET'])
+def search():
+	finalTutors = []
+	latitude = request.json['latitude']
+        longitude = request.json['longitude']
+        #tempLoc = geolocator.reverse("40.425869, -86.908066")
+        tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)))
+	tempZip = tempLoc.raw["address"]["postcode"]
+        #tutor = Tutor.query.filter(Tutor.id.in_(ids), Tutor.location == tempZip).all()
+	sub = "%" + request.json['subject'] + "%"
+	tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location == tempZip).all()
+	if(len(tutor) == 0):
+                return jsonify ({'return':'noSuccess'})
+        else:
+                for myTutor in tutor:
+                        finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects})
+                #       {"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects}
+                #tutors.append({"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects})
+                return jsonify({'return':finalTutors})
+        return jsonify ({'return':'success'})
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():
@@ -87,7 +111,7 @@ def makesubjects():
 		return jsonify({'return':'error'})
 	else:
 		loc = tutor.location
-		eraseTutor = Tutor(id, loc, '')
+		eraseTutor = Tutor(id, int(loc), '')
 		db.session.merge(eraseTutor)
 		db.session.commit()
 		#erase end

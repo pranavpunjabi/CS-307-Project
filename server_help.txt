@@ -3,9 +3,11 @@ New commands to test database -
 run the code by typing 
 $ python run.py
 
-Testing search by location : 
-NOTE : currently works only for postal code 47906 which is hardcoded in the program. you can pass whatever variable you like in this curl statement and it'll still only return for 47906. 
-curl -i -H "Content-Type: application/json" -X GET -d '{"location":"47906"}' http://localhost:5000/server/locSearch
+Search by location : 
+curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066}' http://localhost:5000/server/locSearch
+
+Search by location + subjects : 
+curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066", "subject":"math"}' http://localhost:5000/server/search
 
 Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
 
@@ -17,7 +19,7 @@ Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d 
 
 Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
 
-Test query : curl -i -H "Content-Type: application/json" -X GET -d '{"firstName":"arun"}' http://localhost:5000/server/test
+Test query : curl -i -H "Content-Type: application/json" -X GET -d '{"firstName":"arun"}' http://localhost:5000/server/test (Changed - not updated)
 NOTE : make sure you have at least 3 or more students with the same first name arun for the original code to work. You can change the code to test it accordingly. It's a small fix.
 
 Get subjects for a particular tutor: curl -i -H "Content-Type: application/json" -X GET -d '{"id":"3"}' http://localhost:5000/server/getSubjects
