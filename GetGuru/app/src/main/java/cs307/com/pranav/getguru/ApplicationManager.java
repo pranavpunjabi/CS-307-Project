@@ -8,4 +8,5 @@ import android.content.Context;
 public final class ApplicationManager {
     public static String URL;
     public static Context context;
+    public static User user;
 }
