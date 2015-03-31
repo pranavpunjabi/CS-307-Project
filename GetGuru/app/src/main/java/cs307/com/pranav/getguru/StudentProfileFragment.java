@@ -5,6 +5,7 @@ package cs307.com.pranav.getguru;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -36,8 +38,11 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
 
     View masterView;
-    Button toggle, edit;
+    Button toggle, edit, logout;
+    TextView name, major, clss, age;
     String URL;
+
+    SharedPreferences prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,9 +51,19 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         masterView = inflater.inflate(R.layout.profile_student, container, false);
         toggle = (Button) masterView.findViewById(R.id.toggle);
         edit = (Button) masterView.findViewById(R.id.editInfo);
+        logout = (Button) masterView.findViewById(R.id.buttonlogout);
+
+        name = (TextView) masterView.findViewById(R.id.nameStudent);
+        major = (TextView) masterView.findViewById(R.id.education);
+        clss = (TextView) masterView.findViewById(R.id.classification);
+        age = (TextView) masterView.findViewById(R.id.ageStudent);
+
+        name.setText(ApplicationManager.user.firstName + ApplicationManager.user.lastName);
+
 
         toggle.setOnClickListener(this);
         edit.setOnClickListener(this);
+        logout.setOnClickListener(this);
 
         URL = ApplicationManager.URL;
 
@@ -75,6 +90,15 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                 new NetworkTask().execute();
                 Intent j = new Intent(this.getActivity(),  TutorTabHost.class);
                 startActivity(j);
+                break;
+            case R.id.buttonlogout:
+                prefs.edit().putString("UserFirstName", "");
+                prefs.edit().putString("UserLastName", "");
+                prefs.edit().putString("UserEmail", "");
+                prefs.edit().putInt("UserID", -1);
+                ApplicationManager.resetApplication();
+                Intent k = new Intent(this.getActivity(),  MyActivity.class);
+                startActivity(k);
                 break;
         }
     }
