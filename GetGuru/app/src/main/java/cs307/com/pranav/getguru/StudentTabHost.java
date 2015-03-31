@@ -66,6 +66,17 @@ public class StudentTabHost extends FragmentActivity {
                     }
 
                 }
+                if(tabId.equalsIgnoreCase("search")){
+
+                    if(searchFragment==null){
+                        /** Create AndroidFragment and adding to fragmenttransaction */
+                        ft.add(R.id.realtabcontent,new SearchFragment(), "search");
+                    }else{
+                        /** Bring to the front, if already exists in the fragmenttransaction */
+                        ft.attach(searchFragment);
+                    }
+
+                }
                 ft.commit();
             }
         };
@@ -84,6 +95,12 @@ public class StudentTabHost extends FragmentActivity {
         tSpecSearch.setIndicator("Search");
         tSpecSearch.setContent(new TabContent(getBaseContext()));
         tHost.addTab(tSpecSearch);
+
+        /** Defining tab builder for Favorite tab */
+        TabHost.TabSpec tSpecFavorite = tHost.newTabSpec("favorite");
+        tSpecFavorite.setIndicator("Favorite");
+        tSpecFavorite.setContent(new TabContent(getBaseContext()));
+        tHost.addTab(tSpecFavorite);
 
         /** Defining tab builder for Android (test) tab */
         TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");

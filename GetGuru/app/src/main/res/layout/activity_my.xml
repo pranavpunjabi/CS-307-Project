@@ -9,130 +9,151 @@
     tools:context=".MyActivity">
 
 
-    <TextView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Sign In"
-        android:id="@+id/sitextview"
+        android:id="@+id/scrollView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" >
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:hint="Email"
-        android:id="@+id/sieditTextemail"
-        android:layout_below="@+id/sitextview"
-        android:layout_centerHorizontal="true" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Password"
-        android:password="true"
-        android:ems="10"
-        android:id="@+id/sieditTextpass"
-        android:layout_below="@+id/sieditTextemail"
-        android:layout_centerHorizontal="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Sign In"
+                android:id="@+id/sitextview"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign In"
-        android:id="@+id/sibutton"
-        android:layout_below="@+id/sieditTextpass"
-        android:layout_centerHorizontal="true"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:hint="Email"
+                android:id="@+id/sieditTextemail"
+                android:layout_below="@+id/sitextview"
+                android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Sign Up"
-        android:id="@+id/sutextView"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/sibutton"
-        android:layout_marginTop="30dp"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Password"
+                android:password="true"
+                android:ems="10"
+                android:id="@+id/sieditTextpass"
+                android:layout_below="@+id/sieditTextemail"
+                android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="First Name"
-        android:ems="10"
-        android:id="@+id/suedittextfirstname"
-        android:layout_below="@+id/sutextView"
-        android:layout_centerHorizontal="true" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:id="@+id/sibutton"
+                android:layout_below="@+id/sieditTextpass"
+                android:layout_centerHorizontal="true"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="Last Name"
-        android:ems="10"
-        android:id="@+id/suedittextlastname"
-        android:layout_below="@+id/suedittextfirstname"
-        android:layout_centerHorizontal="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Sign Up"
+                android:id="@+id/sutextView"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/sibutton"
+                android:layout_marginTop="30dp"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:hint="Email"
-        android:id="@+id/suedittextemail"
-        android:layout_below="@+id/suedittextlastname"
-        android:layout_centerHorizontal="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="First Name"
+                android:ems="10"
+                android:id="@+id/suedittextfirstname"
+                android:layout_below="@+id/sutextView"
+                android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:hint="Password"
-        android:password="true"
-        android:id="@+id/suedittextpass"
-        android:layout_below="@+id/suedittextemail"
-        android:layout_centerHorizontal="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Last Name"
+                android:ems="10"
+                android:id="@+id/suedittextlastname"
+                android:layout_below="@+id/suedittextfirstname"
+                android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:hint="Re-enter Password"
-        android:password="true"
-        android:id="@+id/suedittextrepass"
-        android:layout_below="@+id/suedittextpass"
-        android:layout_centerHorizontal="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:hint="Email"
+                android:id="@+id/suedittextemail"
+                android:layout_below="@+id/suedittextlastname"
+                android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:id="@+id/subutton"
-        android:layout_below="@+id/suedittextrepass"
-        android:layout_centerHorizontal="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:hint="Password"
+                android:password="true"
+                android:id="@+id/suedittextpass"
+                android:layout_below="@+id/suedittextemail"
+                android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:id="@+id/buttontest"
-        android:layout_below="@+id/subutton"
-        android:layout_centerHorizontal="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:hint="Re-enter Password"
+                android:password="true"
+                android:id="@+id/suedittextrepass"
+                android:layout_below="@+id/suedittextpass"
+                android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:hint="Test URL"
-        android:id="@+id/testURL"
-        android:layout_below="@+id/buttontest"
-        android:layout_centerHorizontal="true" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:id="@+id/subutton"
+                android:layout_below="@+id/suedittextrepass"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:id="@+id/buttontest"
+                android:layout_below="@+id/subutton"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:hint="Test URL"
+                android:id="@+id/testURL"
+                android:layout_below="@+id/buttontest"
+                android:layout_centerHorizontal="true" />
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
 
 </RelativeLayout>
