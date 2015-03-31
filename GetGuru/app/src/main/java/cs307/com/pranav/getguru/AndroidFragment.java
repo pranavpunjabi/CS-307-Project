@@ -11,6 +11,8 @@ import android.widget.ListView;
 /**
  * Created by DiGiT_WiZARD on 2/26/15.
  */
+
+//Taken from tutorial. Meant for testing.
 public class AndroidFragment extends ListFragment{
 
     /** An array of items to display in ArrayList */
