@@ -1,5 +1,5 @@
 from myApp import myApp
-from flask import Flask, jsonify, request, abort, make_response, session
+from flask import Flask, request, jsonify, request, abort, make_response, session
 from models import db, User, Subjects, Tutor
 from geopy.geocoders import Nominatim
 geolocator = Nominatim()
@@ -17,9 +17,17 @@ def testing():
 
 @myApp.route('/server/locSearch', methods=['GET'])
 def locSearch():
+	print request.query_string
+	print request.url
 	#making temporary variables since not sure how the client will pass them
-	latitude = request.json['latitude']
-	longitude = request.json['longitude']
+	#print request.json['latitude']
+	#latitude = request.json['latitude']
+	#longitude = request.json['longitude']
+	latitude = request.args.get('latitude')
+	longitude = request.args.get('longitude')
+	print 'here'
+	print latitude
+	print type(latitude)
 	#tempLoc = geolocator.reverse("40.425869, -86.908066")
 	tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)))
 	print(tempLoc.address)
