@@ -1,6 +1,8 @@
 package cs307.com.pranav.getguru;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,6 +54,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     private int buttonPressed = 0;
     private boolean success = false;
 
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -76,6 +80,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signUpButton.setOnClickListener(this);
         test.setOnClickListener(this);
 
+        prefs = this.getSharedPreferences("GetGuruPrefs", Context.MODE_PRIVATE);
         ApplicationManager.URL = testURL.getText().toString();
         URL = ApplicationManager.URL;
 
@@ -276,6 +281,27 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         @Override
         protected void onPostExecute(Object o) {
             if (success) {
+                //Populate shared prefrences, Add data to ApplicationManager.user
+                //Server must return all user data so it can be stored on sign in/ sign up
+
+                switch (buttonPressed) {
+                    case 0:
+                        break;
+                    case 1:
+                        ApplicationManager.user = new User("", "", signInEmail.getText().toString(), 1);
+                        break;
+                    case 2:
+                        ApplicationManager.user = new User(signUpName1.getText().toString(), signUpName2.getText().toString(),
+                                signUpEmail.getText().toString(), 1
+                        );
+                        break;
+                }
+
+                prefs.edit().putString("UserFirstName", ApplicationManager.user.firstName);
+                prefs.edit().putString("UserLastName", ApplicationManager.user.lastName);
+                prefs.edit().putString("UserEmail", ApplicationManager.user.email);
+                prefs.edit().putInt("UserID", ApplicationManager.user.ID);
+
                 Intent j = new Intent(MyActivity.this, StudentTabHost.class);
                 startActivity(j);
             }

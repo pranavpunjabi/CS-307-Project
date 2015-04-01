@@ -73,10 +73,8 @@
         android:layout_height="wrap_content"
         android:text="SWITCH TO TUTOR"
         android:id="@+id/toggle"
-        android:layout_marginBottom="42dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/profilePictureStudent"
-        android:layout_alignStart="@+id/profilePictureStudent" />
+        android:layout_below="@+id/editInfo"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -84,8 +82,16 @@
         android:layout_height="wrap_content"
         android:text="EDIT YOUR INFO"
         android:id="@+id/editInfo"
-        android:layout_alignTop="@+id/toggle"
-        android:layout_toRightOf="@+id/toggle"
-        android:layout_toEndOf="@+id/toggle" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:id="@+id/buttonlogout"
+        android:layout_below="@+id/toggle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp" />
 
 </RelativeLayout>
