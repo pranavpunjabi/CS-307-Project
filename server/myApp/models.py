@@ -38,7 +38,25 @@ class Tutor(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	location = db.Column(db.Integer)
 	subjects = db.Column(db.String(100))
+	avgRatings = db.Column(db.Integer)
+	ratingCount = db.Column(db.Integer)
 	def __init__(self, id, location, subjects):
-		self.id = id.title()
-		self.location = location
-		self.subjects = subjects.title()
+          self.id = id.title()
+          self.location = location
+          self.subjects = subjects.title()
+          self.avgRatings = 0
+          self.ratingCount = 0
+
+class Rating(db.Model):
+     __tablename__ = 'rating'
+     tutID = db.Column(db.Integer, db.ForeignKey('tutors.id'),primary_key = True)
+     stuID = db.Column(db.Integer, db.ForeignKey('students.id'),primary_key = True)
+     ratings = db.Column(db.Integer)
+     reviews = db.Column(db.String(300))
+
+     def __init__(self, tutID, stuID, ratings, reviews):
+          self.tutID = tutID.title()
+          self.stuID = stuID.title()
+          self.ratings = ratings.title()
+          self.reviews = reviews.title()
+

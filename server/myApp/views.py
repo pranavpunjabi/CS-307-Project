@@ -1,6 +1,7 @@
 from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
-from models import db, User, Subjects, Tutor
+from models import db, User, Subjects, Tutor, Rating
+from sqlalchemy import update
 from geopy.geocoders import Nominatim
 geolocator = Nominatim()
 
@@ -17,9 +18,17 @@ def testing():
 
 @myApp.route('/server/locSearch', methods=['GET'])
 def locSearch():
+	print request.query_string
+	print request.url
 	#making temporary variables since not sure how the client will pass them
-	latitude = request.json['latitude']
-	longitude = request.json['longitude']
+	#print request.json['latitude']
+	#latitude = request.json['latitude']
+	#longitude = request.json['longitude']
+	latitude = request.args.get('latitude')
+	longitude = request.args.get('longitude')
+	print 'here'
+	print latitude
+	print type(latitude)
 	#tempLoc = geolocator.reverse("40.425869, -86.908066")
 	tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)))
 	print(tempLoc.address)
@@ -101,6 +110,19 @@ def maketutor():
 		db.session.add(newTutor)
 		db.session.commit()
 		return jsonify({'return':'success'})
+
+@myApp.route('/server/ratings',methods=['POST'])
+def ratetut():
+     newrate = Rating(request.json['tutID'], request.json['stuID'], request.json['ratings'], request.json['reviews'])    
+     tutor = Tutor.query.filter_by(id = request.json['tutID']).first()
+     newCount = tutor.ratingCount + 1
+     newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings)) / newCount
+     Tutor.query.filter_by(id = request.json['tutID']).update(dict(ratingCount=newCount))
+     Tutor.query.filter_by(id = request.json['tutID']).update(dict(avgRatings=newAvg))
+     db.session.add(newrate)
+     db.session.commit()
+     
+     return jsonify({'return':'rating added'})
 
 @myApp.route('/server/addSubjects', methods=['POST'])
 def makesubjects():

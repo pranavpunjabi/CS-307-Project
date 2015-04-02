@@ -9,6 +9,11 @@ curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", 
 Search by location + subjects : 
 curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066", "subject":"math"}' http://localhost:5000/server/search
 
+Rate tutor: curl --ipv4 -i -H "Content-Type: application/json" -X POST -d '{"tutID":"1", "stuID":"36", "ratings":"2", "reviews":"no problem"}' http://localhost:5000/server/ratings
+
+//rating table created and tutor table has two extra columns. SEE BELOW for DETAILS
+
+
 Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
 
 Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"requestType":"signUp", "firstName":"arun", "lastName":"kumar", "email":"srivas15@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
@@ -114,6 +119,20 @@ ids varchar(100) not null);
 create table tutors(
 id int not null unique primary key,
 location int, 
-subjects varchar(100));
+subjects varchar(100)
+avgRatings double
+ratingCount int
+);
 //if you already have a table you can add the column using 
 alter table tutors add column location varchar(100) after id;
+alter table tutors add column avgRatings double after subjects;
+alter table tutors add column ratingCount int after avgRatings;
+
+//create rating table
+create table rating(
+tutID int 
+stuID int
+PRIMARY KEY(tutID,stuID)
+ratings int
+reviews varchar(300)
+);
