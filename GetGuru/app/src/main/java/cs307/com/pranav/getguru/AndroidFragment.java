@@ -13,7 +13,7 @@ import android.widget.ListView;
  */
 
 //Taken from tutorial. Meant for testing.
-public class AndroidFragment extends ListFragment{
+public class AndroidFragment extends ListFragment {
 
     /** An array of items to display in ArrayList */
     String android_versions[] = new String[]{

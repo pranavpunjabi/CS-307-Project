@@ -9,36 +9,29 @@
     tools:context=".MyActivity">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coordinates"
-        android:id="@+id/textViewc1"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coordinates"
-        android:id="@+id/textViewc2"
-        android:layout_below="@+id/textViewc1"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Coordinates"
-        android:id="@+id/buttongetc"
-        android:layout_below="@+id/textViewc2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send Coordinates"
+        android:text="Search"
         android:id="@+id/buttonsendc"
-        android:layout_below="@+id/buttongetc"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Options"
+        android:id="@+id/buttonsrchpts"
+        android:layout_alignBottom="@+id/buttonsendc"
+        android:layout_toRightOf="@+id/buttonsendc"
+        android:layout_toEndOf="@+id/buttonsendc" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewSearch"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/buttonsendc" />
 </RelativeLayout>
