@@ -49,6 +49,10 @@
             android:name=".SearchOptions"
             android:label="@string/title_activity_search_options" >
         </activity>
+        <activity
+            android:name=".TestListView"
+            android:label="@string/title_activity_test_list_view" >
+        </activity>
     </application>
 
 </manifest>

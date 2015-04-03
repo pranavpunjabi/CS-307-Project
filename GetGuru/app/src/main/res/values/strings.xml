@@ -11,6 +11,7 @@
     <string name="title_activity_edit">Edit</string>
     <string name="title_activity_tutor_tab_host">TutorTabHost</string>
     <string name="title_activity_search_options">SearchOptions</string>
+    <string name="title_activity_test_list_view">TestListView</string>
 
 
 
