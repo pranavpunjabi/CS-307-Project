@@ -136,14 +136,25 @@ def maketutor():
 def ratetut():
      newrate = Rating(request.json['tutID'], request.json['stuID'], request.json['ratings'], request.json['reviews'])    
      tutor = Tutor.query.filter_by(id = request.json['tutID']).first()
-     newCount = tutor.ratingCount + 1
-     newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings)) / newCount
-     Tutor.query.filter_by(id = request.json['tutID']).update(dict(ratingCount=newCount))
-     Tutor.query.filter_by(id = request.json['tutID']).update(dict(avgRatings=newAvg))
-     db.session.add(newrate)
-     db.session.commit()
      
-     return jsonify({'return':'rating added'})
+     if newrate.tutID == newrate.stuID:
+          return jsonify({'return':'Tutor cant rate himself'})
+     elif float(newrate.ratings) > 5:
+          return jsonify({'return':'Please give a rating between 0 to 5'})
+     elif float(newrate.ratings) < 0:
+          return jsonify({'return':'Please give a rating between 0 to 5'})
+     else:
+          sturate = Rating.query.filter_by(tutID = request.json['tutID'], stuID = request.json['stuID']).all()
+          if sturate:
+		     return jsonify({'return':'Student has already rated this tutor'})
+          else:
+               newCount = tutor.ratingCount + 1
+               newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings)) / newCount
+               Tutor.query.filter_by(id = request.json['tutID']).update(dict(ratingCount=newCount))
+               Tutor.query.filter_by(id = request.json['tutID']).update(dict(avgRatings=newAvg))
+               db.session.add(newrate)
+               db.session.commit()
+               return jsonify({'return':'rating added'})
 
 @myApp.route('/server/addSubjects', methods=['POST'])
 def makesubjects():
