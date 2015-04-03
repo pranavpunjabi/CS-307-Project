@@ -6,8 +6,8 @@ $ python run.py
 Search by location : 
 curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066}' http://localhost:5000/server/locSearch
 
-Search by location + subjects : 
-curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066", "subject":"math"}' http://localhost:5000/server/search
+Search by location + subjects + ratings: 
+curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/search?"latitude=40.42&longitude=-86.9&subject=math&subject=chem&rating=0"
 
 Rate tutor: curl --ipv4 -i -H "Content-Type: application/json" -X POST -d '{"tutID":"1", "stuID":"36", "ratings":"2", "reviews":"no problem"}' http://localhost:5000/server/ratings
 
