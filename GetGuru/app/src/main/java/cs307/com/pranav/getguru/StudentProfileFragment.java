@@ -58,7 +58,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         clss = (TextView) masterView.findViewById(R.id.classification);
         age = (TextView) masterView.findViewById(R.id.ageStudent);
 
-        name.setText(ApplicationManager.user.firstName + ApplicationManager.user.lastName);
+        //name.setText(ApplicationManager.user.firstName + ApplicationManager.user.lastName);
 
 
         toggle.setOnClickListener(this);

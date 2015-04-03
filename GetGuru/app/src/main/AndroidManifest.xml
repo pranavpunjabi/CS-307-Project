@@ -5,7 +5,15 @@
     <uses-sdk android:minSdkVersion="11" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -32,6 +40,14 @@
         <activity
             android:name=".Edit"
             android:label="@string/title_activity_edit" >
+        </activity>
+        <activity
+            android:name=".SearchSettingsActivity"
+            android:label="@string/title_activity_search_settings" >
+        </activity>
+        <activity
+            android:name=".SearchOptions"
+            android:label="@string/title_activity_search_options" >
         </activity>
     </application>
 

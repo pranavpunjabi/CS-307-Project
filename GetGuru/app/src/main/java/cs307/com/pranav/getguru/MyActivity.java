@@ -80,9 +80,10 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         signUpButton.setOnClickListener(this);
         test.setOnClickListener(this);
 
+        ApplicationManager.initApplication();
         prefs = this.getSharedPreferences("GetGuruPrefs", Context.MODE_PRIVATE);
         ApplicationManager.URL = testURL.getText().toString();
-        URL = ApplicationManager.URL;
+        //URL = ApplicationManager.URL;
 
     }
 
