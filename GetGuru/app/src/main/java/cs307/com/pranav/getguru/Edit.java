@@ -45,7 +45,8 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
         sub3 = (EditText) findViewById(R.id.sub3);
         sendSubjects = (Button) findViewById(R.id.buttonsendsubs);
         URL = ApplicationManager.URL;
-
+        URL += ApplicationManager.routes.get("Edit");
+        //Log.d("");
         sendSubjects.setOnClickListener(this);
     }
 
@@ -105,13 +106,14 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
                 list.put(new JSONObject().put("subject", sub2.getText().toString()));
                 list.put(new JSONObject().put("subject", sub3.getText().toString()));
 
-                holder.put("id", "1");
+                holder.put("id", Integer.toString(ApplicationManager.user.ID));
                 holder.put("subjects", list);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            Log.d("JSON created", holder.toString());
 
             //passes the results to a string builder/entity
             StringEntity se = null;

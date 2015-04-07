@@ -12,16 +12,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/spinnerLoc"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner2Sub"
         android:layout_below="@+id/spinnerLoc"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -45,6 +45,5 @@
         android:text="Save"
         android:id="@+id/button2Save"
         android:layout_above="@+id/buttonCancel"
-        android:layout_alignLeft="@+id/buttonCancel"
-        android:layout_alignStart="@+id/buttonCancel" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
