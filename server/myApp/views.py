@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request, abort, make_response, session
 from models import db, User, Subjects, Tutor, Rating
 from sqlalchemy import update
 from geopy.geocoders import Nominatim
+import collections
 geolocator = Nominatim()
 
 @myApp.route('/server/test', methods=['GET'])
@@ -15,7 +16,6 @@ def testing():
 	student = Tutor.query.filter(Tutor.subjects.like(newSub)).all()
 	print len(student)
 	return jsonify({'return':'test'})
-
 @myApp.route('/server/locSearch', methods=['GET'])
 def locSearch():
 	print request.query_string
@@ -48,23 +48,45 @@ def locSearch():
 @myApp.route('/server/search', methods=['GET'])
 def search():
 	finalTutors = []
-	latitude = request.json['latitude']
-        longitude = request.json['longitude']
-        #tempLoc = geolocator.reverse("40.425869, -86.908066")
+	latitude = request.args.get('latitude')
+        longitude = request.args.get('longitude')
         tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)))
+        if tempLoc.address is None:
+        	return jsonify({'return':'error'})
 	tempZip = tempLoc.raw["address"]["postcode"]
-        #tutor = Tutor.query.filter(Tutor.id.in_(ids), Tutor.location == tempZip).all()
-	sub = "%" + request.json['subject'] + "%"
-	tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location == tempZip).all()
+	tutor = []
+	rating = 0
+	rate = request.args.get('rating')
+	
+	if not rate:
+		rating = 0
+	else:
+		rating = int(rate)
+	
+	subjects = request.args.getlist('subject')
+
+	if not subjects:
+		tutor = Tutor.query.filter(Tutor.location == tempZip, Tutor.avgRatings >= rating).all()
+	elif len(subjects) == 1:
+		sub = "%" + request.args.get('subject') + "%"
+		tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location == tempZip, Tutor.avgRatings >= rating).all()
+	else:
+		idlist = []
+		for subject in subjects:
+			ids = Subjects.query.filter(Subjects.subject == subject).first()
+			curr_ids = ids.ids.split(',')
+			idlist.extend(curr_ids)
+		idslist =  [x for x, y in collections.Counter(idlist).items() if y > 1]
+		if not idslist:
+			return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
+		tutor = Tutor.query.filter(Tutor.location == tempZip, Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all()
+	
 	if(len(tutor) == 0):
-                return jsonify ({'return':'noSuccess'})
-        else:
-                for myTutor in tutor:
-                        finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects})
-                #       {"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects}
-                #tutors.append({"id":tutor[0].id, "location":tutor[0].location, "subjects":tutor[0].subjects})
-                return jsonify({'return':finalTutors})
-        return jsonify ({'return':'success'})
+		return jsonify ({'return':'noSuccess'})
+	else:
+		for myTutor in tutor:
+			finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects})
+		return jsonify({'return':finalTutors})
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
 def check():
@@ -80,8 +102,7 @@ def signin():
 	student = User.query.filter_by(email = request.json['email']).first()
 	if student and student.check_password(request.json['password']):
 		session['email'] = request.json['email']
-		id = student.id
-		return jsonify({'return':'success','id':id})
+		return jsonify({'return':'success','id':student.id,'firstname':student.firstname,'lastname':student.lastname,'email':student.email})
 	else:
 		return jsonify({'return':'invalid email and password'})
 		
@@ -95,8 +116,7 @@ def signup():
 	db.session.add(newuser)
 	db.session.commit()
 	session['email'] = newuser.email
-	id = newuser.id
-	return jsonify({'return':'success','id':id})
+	return jsonify({'return':'success','id':newuser.id,'firstname':newuser.firstname,'lastname':newuser.lastname,'email':newuser.email})
 
 @myApp.route('/server/tutor', methods=['POST'])
 def maketutor():
@@ -106,23 +126,42 @@ def maketutor():
 	else:
 		tutor.ifTutor = 1
 		db.session.commit()
-		newTutor = Tutor(request.json['id'],request.json['location'], '')
+		newTutor = Tutor(request.json['id'],request.json['location'], '',0,0)
 		db.session.add(newTutor)
 		db.session.commit()
 		return jsonify({'return':'success'})
+
+@myApp.route('/server/getTutor', methods=['GET'])
+def tutdetails():
+     tut = User.query.filter_by(id = request.json['id']).first()
+     if tut.ifTutor == 0:
+		return jsonify({'return':'tutor with this ID has not been registered'})
+     else:
+	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
 
 @myApp.route('/server/ratings',methods=['POST'])
 def ratetut():
      newrate = Rating(request.json['tutID'], request.json['stuID'], request.json['ratings'], request.json['reviews'])    
      tutor = Tutor.query.filter_by(id = request.json['tutID']).first()
-     newCount = tutor.ratingCount + 1
-     newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings)) / newCount
-     Tutor.query.filter_by(id = request.json['tutID']).update(dict(ratingCount=newCount))
-     Tutor.query.filter_by(id = request.json['tutID']).update(dict(avgRatings=newAvg))
-     db.session.add(newrate)
-     db.session.commit()
      
-     return jsonify({'return':'rating added'})
+     if newrate.tutID == newrate.stuID:
+          return jsonify({'return':'Tutor cant rate himself'})
+     elif float(newrate.ratings) > 5:
+          return jsonify({'return':'Please give a rating between 0 to 5'})
+     elif float(newrate.ratings) < 0:
+          return jsonify({'return':'Please give a rating between 0 to 5'})
+     else:
+          sturate = Rating.query.filter_by(tutID = request.json['tutID'], stuID = request.json['stuID']).all()
+          if sturate:
+		     return jsonify({'return':'Student has already rated this tutor'})
+          else:
+               newCount = tutor.ratingCount + 1
+               newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings)) / newCount
+               Tutor.query.filter_by(id = request.json['tutID']).update(dict(ratingCount=newCount))
+               Tutor.query.filter_by(id = request.json['tutID']).update(dict(avgRatings=newAvg))
+               db.session.add(newrate)
+               db.session.commit()
+               return jsonify({'return':'rating added'})
 
 @myApp.route('/server/addSubjects', methods=['POST'])
 def makesubjects():
@@ -133,7 +172,7 @@ def makesubjects():
 		return jsonify({'return':'error'})
 	else:
 		loc = tutor.location
-		eraseTutor = Tutor(id, int(loc), '')
+		eraseTutor = Tutor(id, int(loc),'',tutor.avgRatings,tutor.ratingCount)
 		db.session.merge(eraseTutor)
 		db.session.commit()
 		#erase end
@@ -146,7 +185,7 @@ def makesubjects():
 			else:
 				i = i+1
 				allSubjects = allSubjects + "," + subject["subject"]
-		myTutor = Tutor(id, loc, allSubjects)
+		myTutor = Tutor(id, loc, allSubjects, tutor.avgRatings, tutor.ratingCount)
 		db.session.merge(myTutor)
 		db.session.commit()
 	#finished adding to tutor table

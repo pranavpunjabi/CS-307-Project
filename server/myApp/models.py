@@ -40,12 +40,12 @@ class Tutor(db.Model):
 	subjects = db.Column(db.String(100))
 	avgRatings = db.Column(db.Integer)
 	ratingCount = db.Column(db.Integer)
-	def __init__(self, id, location, subjects):
+	def __init__(self, id, location, subjects, avgRatings, ratingCount):
           self.id = id.title()
           self.location = location
           self.subjects = subjects.title()
-          self.avgRatings = 0
-          self.ratingCount = 0
+          self.avgRatings = avgRatings
+          self.ratingCount = ratingCount
 
 class Rating(db.Model):
      __tablename__ = 'rating'
