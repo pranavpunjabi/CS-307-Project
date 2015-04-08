@@ -9,8 +9,8 @@ import android.widget.TabHost;
 
 
 public class StudentTabHost extends FragmentActivity {
-
     TabHost tHost;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

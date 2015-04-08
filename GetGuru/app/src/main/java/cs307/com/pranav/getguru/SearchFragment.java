@@ -74,7 +74,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         searchHolder = (ListView) masterView.findViewById(R.id.listViewSearch);
 
         searchResults = new ArrayList<String>();
-        searchResults.add("");
+        searchResults.add("Tutor 1");
+        searchResults.add("Tutor 2");
+        searchResults.add("Tutor 3");
+        searchResults.add("Tutor 4");
+        searchResults.add("Tutor 5");
+        searchResults.add("Tutor 6");
+
+
+
+
         searchAdapter = new ArrayAdapter<String>(ApplicationManager.context, android.R.layout.simple_list_item_1, searchResults);
 
         searchHolder.setAdapter(searchAdapter);
@@ -95,7 +104,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
 
         URL = ApplicationManager.URL;
-        URL.concat(ApplicationManager.routes.get("Search"));
+        URL += ApplicationManager.routes.get("Search");
 
         return masterView;
 
@@ -133,6 +142,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         params.add(new BasicNameValuePair("requestType", "locSearch"));
         params.add(new BasicNameValuePair("latitude", String.valueOf(lat)));
         params.add(new BasicNameValuePair("longitude", String.valueOf(lng)));
+        params.add(new BasicNameValuePair("radius", ApplicationManager.userPrefrences.get("searchRadius")));
+        params.add(new BasicNameValuePair("subject", ApplicationManager.userPrefrences.get("searchSubject")));
+        params.add(new BasicNameValuePair("rating", ApplicationManager.userPrefrences.get("searchRating")));
 
 
         String paramString = URLEncodedUtils.format(params, "utf-8");
@@ -164,6 +176,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             try {
                 holder.put("latitude", lat);
                 holder.put("longitude", lng);
+                holder.put("radius", ApplicationManager.userPrefrences.get("searchRadius"));
+                holder.put("subject", ApplicationManager.userPrefrences.get("searchSubject"));
+                holder.put("rating", ApplicationManager.userPrefrences.get("searchRating"));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -234,6 +249,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 Log.d("Http Get Response:", responseString);
                 JSONObject json = new JSONObject(responseString);
                 Log.d("Http Get Response:", json.getString("return"));
+
+                //json.get("return").toString();
 
             } catch (ClientProtocolException e) {
 

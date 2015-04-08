@@ -3,9 +3,11 @@ package cs307.com.pranav.getguru;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -13,7 +15,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 
-public class SearchOptions extends ActionBarActivity implements View.OnClickListener {
+public class SearchOptions extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
     Spinner subjects, ratings, loc;
@@ -35,9 +37,23 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
         loc = (Spinner) findViewById(R.id.spinnerLoc);
 
 
-        subList.add("");
-        ratList.add("");
-        locList.add("");
+        subList = new ArrayList<String>();
+        ratList = new ArrayList<String>();
+        locList = new ArrayList<String>();
+
+        for (int i = 0; i < ApplicationManager.subjects.size(); i++) {
+            subList.add(ApplicationManager.subjects.get(i));
+        }
+        ratList.add("None");
+        ratList.add("1 and above");
+        ratList.add("2 and above");
+        ratList.add("3 and above");
+        ratList.add("4 and above");
+        ratList.add("5 and above");
+        locList.add("10");
+        locList.add("20");
+        locList.add("30");
+        locList.add("40");
 
 
         subAdapter = new ArrayAdapter(this,
@@ -49,6 +65,12 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
 
 
         subjects.setAdapter(subAdapter);
+        ratings.setAdapter(ratAdapter);
+        loc.setAdapter(locAdapter);
+
+        subjects.setOnItemSelectedListener(this);
+        ratings.setOnItemSelectedListener(this);
+        loc.setOnItemSelectedListener(this);
 
         save.setOnClickListener(this);
         cancel.setOnClickListener(this);
@@ -87,5 +109,62 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
             Intent i = new Intent(this, StudentTabHost.class);
             startActivity(i);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("Parent:", parent.toString());
+        Log.d("View:", view.toString());
+        Log.d("Position:", Integer.toString(position));
+        Log.d("ID:", Long.toString(id));
+
+
+        if (parent.getId() == R.id.spinner2Sub) {
+            ApplicationManager.userPrefrences.put("searchSubject", ApplicationManager.subjects.get(position));
+        }
+        if (parent.getId() == R.id.spinner3Rat) {
+            switch (position) {
+                case 0:
+                    ApplicationManager.userPrefrences.put("searchRating", "0");
+                    break;
+                case 1:
+                    ApplicationManager.userPrefrences.put("searchRating", "1");
+                    break;
+                case 2:
+                    ApplicationManager.userPrefrences.put("searchRating", "2");
+                    break;
+                case 3:
+                    ApplicationManager.userPrefrences.put("searchRating", "3");
+                    break;
+                case 4:
+                    ApplicationManager.userPrefrences.put("searchRating", "4");
+                    break;
+                case 5:
+                    ApplicationManager.userPrefrences.put("searchRating", "5");
+                    break;
+            }
+        }
+        if (parent.getId() == R.id.spinnerLoc) {
+            switch (position) {
+                case 0:
+                    ApplicationManager.userPrefrences.put("searchRadius", "10");
+                    break;
+                case 1:
+                    ApplicationManager.userPrefrences.put("searchRadius", "20");
+                    break;
+                case 2:
+                    ApplicationManager.userPrefrences.put("searchRadius", "30");
+                    break;
+                case 3:
+                    ApplicationManager.userPrefrences.put("searchRadius", "40");
+                    break;
+            }
+        }
+        Log.d("Changes", ApplicationManager.userPrefrences.toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
