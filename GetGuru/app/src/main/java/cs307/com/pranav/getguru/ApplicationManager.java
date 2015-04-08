@@ -30,6 +30,7 @@ public final class ApplicationManager {
         routes.put("TutorInfo", "/server/getTutor"); //GET
         routes.put("StudentInfo", "/server/getStudent"); //GET
         routes.put("Rate", "");
+        routes.put("Favorite", "");
 
         userPrefrences.put("searchRadius", "10");
         userPrefrences.put("searchSubject", "Mathematics");

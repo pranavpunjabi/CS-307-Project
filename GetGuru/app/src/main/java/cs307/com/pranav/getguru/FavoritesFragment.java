@@ -1,10 +1,5 @@
 package cs307.com.pranav.getguru;
 
-import android.content.Context;
-import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import org.apache.http.HttpResponse;
@@ -43,76 +36,44 @@ import java.util.List;
 /**
  * Created by DiGiT_WiZARD on 2/26/15.
  */
-public class SearchFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
-
-    //
+public class FavoritesFragment extends Fragment implements View.OnClickListener {
 
     View masterView;
     String URL;
-    Button searchOptions, sendC, test;
-    ListView searchHolder;
+    ListView favoriteHolder;
 
-    private String provider;
-
-    float lat;
-    float lng;
-    private LocationManager locationManager;
-    Location location;
-
-    ArrayAdapter<String> searchAdapter;
-    ArrayList<String> searchResults;
+    ArrayAdapter<String> favoriteAdapter;
+    ArrayList<String> favorites;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        masterView = inflater.inflate(R.layout.search_student, container, false);
-        searchOptions = (Button) masterView.findViewById(R.id.buttonsrchpts);
-        searchOptions.setOnClickListener(this);
-        sendC = (Button) masterView.findViewById(R.id.buttonsendc);
-        sendC.setOnClickListener(this);
-        test = (Button) masterView.findViewById(R.id.buttontest);
-        test.setOnClickListener(this);
+        masterView = inflater.inflate(R.layout.favorites_student, container, false);
 
-        searchHolder = (ListView) masterView.findViewById(R.id.listViewSearch);
-
-        searchResults = new ArrayList<String>();
-        searchResults.add("Tutor 1");
-        searchResults.add("Tutor 2");
-        searchResults.add("Tutor 3");
-        searchResults.add("Tutor 4");
-        searchResults.add("Tutor 5");
-        searchResults.add("Tutor 6");
-
-        searchAdapter = new ArrayAdapter<String>(ApplicationManager.context, android.R.layout.simple_list_item_1, searchResults);
-
-        searchHolder.setAdapter(searchAdapter);
-        searchHolder.setOnItemClickListener(this);
+        favoriteHolder = (ListView) masterView.findViewById(R.id.listViewFav);
 
 
-        locationManager = (LocationManager) ApplicationManager.context.getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        location = locationManager.getLastKnownLocation(provider);
+        favorites = new ArrayList<String>();
+        favorites.add("Tutor 1");
+        favorites.add("Tutor 2");
+        favorites.add("Tutor 3");
+        favorites.add("Tutor 4");
+        favorites.add("Tutor 5");
+        favorites.add("Tutor 6");
 
-        if (location != null) {
-            System.out.println("Provider " + provider + " has been selected.");
-            onLocationChanged(location);
-        }
-        else {
 
-        }
+
+
+        favoriteAdapter = new ArrayAdapter<String>(ApplicationManager.context, android.R.layout.simple_list_item_1, favorites);
+
+        favoriteHolder.setAdapter(favoriteAdapter);
 
         URL = ApplicationManager.URL;
-        URL += ApplicationManager.routes.get("Search");
+        URL += ApplicationManager.routes.get("Favorite");
 
         return masterView;
 
-    }
-
-    public void onLocationChanged(Location location) {
-        lat = (float) (location.getLatitude());
-        lng = (float) (location.getLongitude());
     }
 
     @Override
@@ -122,18 +83,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.buttonsrchpts) {
-            Intent i = new Intent(this.getActivity(), SearchOptions.class);
-            startActivity(i);
-        }
 
-        if (v.getId() == R.id.buttonsendc) {
-            new NetworkTask().execute();
-        }
-
-        if (v.getId() == R.id.buttontest) {
-            searchAdapter.add("Another result");
-        }
     }
 
     protected String addParametersToUrl(String url){
@@ -144,8 +94,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
 
         params.add(new BasicNameValuePair("requestType", "locSearch"));
-        params.add(new BasicNameValuePair("latitude", String.valueOf(lat)));
-        params.add(new BasicNameValuePair("longitude", String.valueOf(lng)));
         params.add(new BasicNameValuePair("radius", ApplicationManager.userPrefrences.get("searchRadius")));
         params.add(new BasicNameValuePair("subject", ApplicationManager.userPrefrences.get("searchSubject")));
         params.add(new BasicNameValuePair("rating", ApplicationManager.userPrefrences.get("searchRating")));
@@ -155,15 +103,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
         url += paramString;
 
         return url;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("Parent", parent.toString());
-        Log.d("Position", Integer.toString(position));
-
-        Intent i = new Intent(this.getActivity(), TutorDisplay.class);
-        startActivity(i);
     }
 
 
@@ -187,8 +126,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
             JSONObject holder = new JSONObject();
 
             try {
-                holder.put("latitude", lat);
-                holder.put("longitude", lng);
                 holder.put("radius", ApplicationManager.userPrefrences.get("searchRadius"));
                 holder.put("subject", ApplicationManager.userPrefrences.get("searchSubject"));
                 holder.put("rating", ApplicationManager.userPrefrences.get("searchRating"));
