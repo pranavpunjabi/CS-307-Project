@@ -131,9 +131,20 @@ def maketutor():
 		db.session.commit()
 		return jsonify({'return':'success'})
 
+@myApp.route('/server/addtutorlocation', methods=['POST'])
+def addlocation():
+	tutor = Tutor.query.filter(Tutor.id == request.json['id']).first()
+	if tutor is None:
+		return jsonify({'return':'noSuccess'})
+	tutor.location = request.json['location']
+	db.session.commit()
+	return jsonify({'return':'success','id':request.json['id']})
+
+
+
 @myApp.route('/server/getTutor', methods=['GET'])
 def tutdetails():
-     tut = User.query.filter_by(id = request.json['id']).first()
+     tut = User.query.filter_by(id = request.args.get('id')).first()
      if tut.ifTutor == 0:
 		return jsonify({'return':'tutor with this ID has not been registered'})
      else:

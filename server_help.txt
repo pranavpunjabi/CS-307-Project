@@ -11,6 +11,8 @@ curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/
 
 Rate tutor: curl --ipv4 -i -H "Content-Type: application/json" -X POST -d '{"tutID":"1", "stuID":"36", "ratings":"2", "reviews":"no problem"}' http://localhost:5000/server/ratings
 
+Add tutor location: curl -i -H "Content-type: application/json" -X POST -d '{"id":"1", "location":"47906"}' http://localhost:5000/server/addtutorlocation
+
 //rating table created and tutor table has two extra columns. SEE BELOW for DETAILS
 
 
