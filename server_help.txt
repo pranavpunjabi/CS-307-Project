@@ -15,6 +15,9 @@ Add tutor location: curl -i -H "Content-type: application/json" -X POST -d '{"id
 
 //rating table created and tutor table has two extra columns. SEE BELOW for DETAILS
 
+Add favorites for a student: curl -i -H "Content-type: application/json" -X POST -d '{"studentID":"1", "tutorID":"2"}' http://localhost:5000/server/addfavorites
+
+Get favorites for a student: curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/getfavorites?"studentID=1"
 
 Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
 
@@ -131,6 +134,7 @@ ratingCount int
 alter table tutors add column location varchar(100) after id;
 alter table tutors add column avgRatings double after subjects;
 alter table tutors add column ratingCount int after avgRatings;
+alter table tutors add column favorites varchar(1000) after ifTutor;
 
 //create rating table
 create table rating(
