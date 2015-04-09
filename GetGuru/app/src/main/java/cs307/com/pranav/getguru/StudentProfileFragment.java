@@ -58,7 +58,12 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         clss = (TextView) masterView.findViewById(R.id.classification);
         age = (TextView) masterView.findViewById(R.id.ageStudent);
 
-        //name.setText(ApplicationManager.user.firstName + ApplicationManager.user.lastName);
+
+        String namestr = ApplicationManager.user.firstName;
+        namestr += " ";
+        namestr += ApplicationManager.user.lastName;
+        name.setText(namestr);
+
 
 
         toggle.setOnClickListener(this);
@@ -66,6 +71,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         logout.setOnClickListener(this);
 
         URL = ApplicationManager.URL;
+        URL += ApplicationManager.routes.get("Toggle");
 
         //return super.onCreateView(inflater, container, savedInstanceState);
 
@@ -87,7 +93,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                 startActivity(i);
                 break;
             case R.id.toggle:
-                new NetworkTask().execute();
+                if (!ApplicationManager.user.isTutor) {
+                    new NetworkTask().execute();
+                }
                 Intent j = new Intent(this.getActivity(),  TutorTabHost.class);
                 startActivity(j);
                 break;
@@ -125,7 +133,8 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
             try {
 
-                holder.put("id", "1");
+                holder.put("id", Integer.toString(ApplicationManager.user.ID));
+                holder.put("location", "47906");
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -54,6 +54,7 @@ def search():
         if tempLoc.address is None:
         	return jsonify({'return':'error'})
 	tempZip = tempLoc.raw["address"]["postcode"]
+	print tempZip
 	tutor = []
 	rating = 0
 	rate = request.args.get('rating')
@@ -64,12 +65,20 @@ def search():
 		rating = int(rate)
 	
 	subjects = request.args.getlist('subject')
-
+	pincodes = []
+	#pincodes.append(tempZip + 0)
+	#pincodes.append(tempZip + 1)
+	#pincodes.append(tempZip - 1)
+	#var = tempZip + 1
+	#var1 = tempZip - 1
+	pincodes = pincodes + [int(tempZip)]
+	pincodes = pincodes + [int(tempZip) + 1]
+	pincodes = pincodes + [int(tempZip) - 1]
 	if not subjects:
-		tutor = Tutor.query.filter(Tutor.location == tempZip, Tutor.avgRatings >= rating).all()
+		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
 	elif len(subjects) == 1:
 		sub = "%" + request.args.get('subject') + "%"
-		tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location == tempZip, Tutor.avgRatings >= rating).all()
+		tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
 	else:
 		idlist = []
 		for subject in subjects:
@@ -79,7 +88,7 @@ def search():
 		idslist =  [x for x, y in collections.Counter(idlist).items() if y > 1]
 		if not idslist:
 			return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
-		tutor = Tutor.query.filter(Tutor.location == tempZip, Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all()
+		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all()
 	
 	if(len(tutor) == 0):
 		return jsonify ({'return':'noSuccess'})
@@ -102,7 +111,7 @@ def signin():
 	student = User.query.filter_by(email = request.json['email']).first()
 	if student and student.check_password(request.json['password']):
 		session['email'] = request.json['email']
-		return jsonify({'return':'success','id':student.id,'firstname':student.firstname,'lastname':student.lastname,'email':student.email})
+		return jsonify({'return':'success','id':student.id,'firstname':student.firstname,'lastname':student.lastname,'email':student.email,'ifTutor':student.ifTutor})
 	else:
 		return jsonify({'return':'invalid email and password'})
 		
@@ -140,6 +149,34 @@ def addlocation():
 	db.session.commit()
 	return jsonify({'return':'success','id':request.json['id']})
 
+@myApp.route('/server/addfavorites', methods=['POST'])
+def addfav():
+	student = User.query.filter(User.id == request.json['studentID']).first()
+	if student is None:
+		return jsonify({'return':'noSuccess'})
+	if not student.favorites:
+		student.favorites = request.json['tutorID']
+	else:
+		student.favorites = student.favorites + "," + request.json['tutorID']
+	db.session.commit()
+	return jsonify({'return':'Success','studentID':request.json['studentID']})	
+	
+@myApp.route('/server/getfavorites', methods=['GET'])
+def getfav():
+	finalTutors = []
+	student = User.query.filter(User.id == request.args.get('studentID')).first()
+	if not student.favorites:
+		return jsonify({'return':'noSuccess'})
+	tutors = student.favorites.split(',')
+	tutor = Tutor.query.filter(Tutor.id.in_(tutors)).all()
+
+	for myTutor in tutor:
+		student = User.query.filter_by(id = myTutor.id).first()
+		finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects, "firstName":student.firstname, "lastName":student.lastname})
+	return jsonify({'return':finalTutors})
+
+
+
 
 
 @myApp.route('/server/getTutor', methods=['GET'])
@@ -148,7 +185,16 @@ def tutdetails():
      if tut.ifTutor == 0:
 		return jsonify({'return':'tutor with this ID has not been registered'})
      else:
-	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
+	     subjects = Tutor.query.filter_by(id = request.args.get('id')).first()
+	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email, 'subjects':subjects.subjects})
+
+@myApp.route('/server/getStudent', methods=['GET'])
+def studetails():
+     tut = User.query.filter_by(id = request.args.get('id')).first()
+     if tut.ifTutor == 0:
+                return jsonify({'return':'tutor with this ID has not been registered'})
+     else:
+             return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
 
 @myApp.route('/server/ratings',methods=['POST'])
 def ratetut():
@@ -178,6 +224,7 @@ def ratetut():
 def makesubjects():
 	#adding to tutor table here
 	id = request.json['id']
+	print id
 	tutor = Tutor.query.filter_by(id = request.json['id']).first()
 	if tutor is None:
 		return jsonify({'return':'error'})
@@ -190,6 +237,7 @@ def makesubjects():
 		allSubjects = ""
 		i = 0
 		for subject in request.json['subjects']:
+			print subject["subject"]
 			if (i == 0):
 				allSubjects = subject["subject"]
 				i = i + 1

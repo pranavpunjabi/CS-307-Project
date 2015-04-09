@@ -34,4 +34,13 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/buttonsendc" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        android:id="@+id/buttontest"
+        android:layout_above="@+id/listViewSearch"
+        android:layout_toRightOf="@+id/buttonsrchpts"
+        android:layout_toEndOf="@+id/buttonsrchpts" />
 </RelativeLayout>

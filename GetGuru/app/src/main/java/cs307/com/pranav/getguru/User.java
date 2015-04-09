@@ -7,10 +7,15 @@ import java.util.ArrayList;
  */
 public class User {
 
+    //Primary data
     String firstName;
     String lastName;
     String email;
     int ID;
+
+    //Secondary data
+    String major;
+    String classification;
 
     boolean isTutor = false;
     ArrayList<String> Subjects, Favorites;

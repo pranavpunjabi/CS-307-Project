@@ -9,8 +9,8 @@ import android.widget.TabHost;
 
 
 public class StudentTabHost extends FragmentActivity {
-
     TabHost tHost;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,28 +30,28 @@ public class StudentTabHost extends FragmentActivity {
             @Override
             public void onTabChanged(String tabId) {
                 android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
-                AndroidFragment androidFragment = (AndroidFragment) fm.findFragmentByTag("android");
+                FavoritesFragment favoritesFragment = (FavoritesFragment) fm.findFragmentByTag("favorite");
                 StudentProfileFragment profileFragment = (StudentProfileFragment) fm.findFragmentByTag("profile");
                 SearchFragment searchFragment = (SearchFragment) fm.findFragmentByTag("search");
                 android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
 
                 /** Detaches the androidfragment if exists */
-                if(androidFragment!=null)
-                    ft.detach(androidFragment);
+                if(favoritesFragment!=null)
+                    ft.detach(favoritesFragment);
                 if(profileFragment!=null)
                     ft.detach(profileFragment);
                 if(searchFragment!=null)
                     ft.detach(searchFragment);
 
                 /** If current tab is android */
-                if(tabId.equalsIgnoreCase("android")){
+                if(tabId.equalsIgnoreCase("favorite")){
 
-                    if(androidFragment==null){
+                    if(favoritesFragment==null){
                         /** Create AndroidFragment and adding to fragmenttransaction */
-                        ft.add(R.id.realtabcontent,new AndroidFragment(), "android");
+                        ft.add(R.id.realtabcontent,new FavoritesFragment(), "favorite");
                     }else{
                         /** Bring to the front, if already exists in the fragmenttransaction */
-                        ft.attach(androidFragment);
+                        ft.attach(favoritesFragment);
                     }
 
                 }
@@ -98,15 +98,15 @@ public class StudentTabHost extends FragmentActivity {
 
         /** Defining tab builder for Favorite tab */
         TabHost.TabSpec tSpecFavorite = tHost.newTabSpec("favorite");
-        tSpecFavorite.setIndicator("Favorite");
+        tSpecFavorite.setIndicator("Favorites");
         tSpecFavorite.setContent(new TabContent(getBaseContext()));
         tHost.addTab(tSpecFavorite);
 
-        /** Defining tab builder for Android (test) tab */
-        TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");
-        tSpecAnd.setIndicator("Android");
-        tSpecAnd.setContent(new TabContent(getBaseContext()));
-        tHost.addTab(tSpecAnd);
+//        /** Defining tab builder for Android (test) tab */
+//        TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");
+//        tSpecAnd.setIndicator("Android");
+//        tSpecAnd.setContent(new TabContent(getBaseContext()));
+//        tHost.addTab(tSpecAnd);
 
     }
 }

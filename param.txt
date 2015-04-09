@@ -1,0 +1,53 @@
+
+@myApp.route('/server/test', methods=['GET'])
+parameters : subject
+returns 'test'
+
+@myApp.route('/server/locSearch', methods=['GET'])
+parameters: latitude, longitude
+returns noSuccess , success
+
+@myApp.route('/server/search', methods=['GET'])
+parameters: latitude, longitude , rating, subject
+returns 'error' , 'noSuccess' , finalTutors (//list of tutors)
+ 
+@myApp.route('/server/signin', methods=['GET', 'POST'])
+parameters: email, password
+//if successful 
+returns: 'success', 'id' , 'firstname' , 'lastname', 'email'
+//if unsuccessful
+returns: 'invalid email and password'
+
+@myApp.route('/server/signup', methods=['POST'])
+parameters: email, firstName, lastName, password
+//if successful
+returns: 'success', 'id' , 'firstname' , 'lastname', 'email'
+//if unsuccessful
+returns: 'noSuccess'
+
+@myApp.route('/server/tutor', methods=['POST'])
+parameters: id
+returns: 'success' / 'student with this ID has not been registered'
+
+@myApp.route('/server/getTutor', methods=['GET'])
+parameters: id
+//if successful
+returns: 'success','id','firstname','lastname','email'
+//else
+returns: 'tutor with this ID has not been registered'
+
+
+@myApp.route('/server/ratings',methods=['POST'])
+parameters: tutID, stuID, ratings, reviews
+returns: ' Tutor cant rate himself' / 'Please give a rating between 0 to 5'/ 'Student has already rated this tutor' / 'rating added'
+
+@myApp.route('/server/addSubjects', methods=['POST'])
+parameters: id, subjects
+returns: 'error' / 'success','id'
+
+@myApp.route('/server/getSubjects', methods=['GET'])
+parameters: id
+returns: 'no success' / 'subjectList'(//list of subjects)
+
+@myApp.route('/testdb', methods=['GET'])
+returns 'success','Something is broken'

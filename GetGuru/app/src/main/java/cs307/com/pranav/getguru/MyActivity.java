@@ -164,6 +164,10 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         ApplicationManager.URL = testURL.getText().toString();
         URL = ApplicationManager.URL;
 
+
+        URL += ApplicationManager.routes.get("mainActivity");
+        Log.d("string", URL);
+
         switch (v.getId()) {
             case R.id.sibutton:
                 buttonPressed = 1;
@@ -176,6 +180,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                     new NetworkTask().execute();
                 break;
             case R.id.buttontest:
+                ApplicationManager.user = new User("Bruce", "Wayne", "ceo@wayneIndustries.com", 1);
                 Intent j = new Intent(MyActivity.this, StudentTabHost.class);
                 startActivity(j);
                 break;
@@ -285,18 +290,18 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 //Populate shared prefrences, Add data to ApplicationManager.user
                 //Server must return all user data so it can be stored on sign in/ sign up
 
-                switch (buttonPressed) {
-                    case 0:
-                        break;
-                    case 1:
-                        ApplicationManager.user = new User("", "", signInEmail.getText().toString(), 1);
-                        break;
-                    case 2:
-                        ApplicationManager.user = new User(signUpName1.getText().toString(), signUpName2.getText().toString(),
-                                signUpEmail.getText().toString(), 1
-                        );
-                        break;
-                }
+//                switch (buttonPressed) {
+//                    case 0:
+//                        break;
+//                    case 1:
+//
+//                        ApplicationManager.user = new User("", "", signInEmail.getText().toString(), 1);
+//                        break;
+//                    case 2:
+//                        ApplicationManager.user = new User(signUpName1.getText().toString(), signUpName2.getText().toString(),
+//                                signUpEmail.getText().toString(), 1);
+//                        break;
+//                }
 
                 prefs.edit().putString("UserFirstName", ApplicationManager.user.firstName);
                 prefs.edit().putString("UserLastName", ApplicationManager.user.lastName);
@@ -351,6 +356,14 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 Log.d("Http Post Response:", json.getString("return"));
                 if (json.getString("return").equals("success")) {
                     success = true;
+                    ApplicationManager.user = new User(json.getString("firstname"),
+                            json.getString("lastname"), json.getString("email"), json.getInt("id"));
+
+                    if (buttonPressed == 1) {
+                        if (json.getInt("ifTutor") == 1) {
+                            ApplicationManager.user.isTutor = true;
+                        }
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -387,6 +400,14 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 Log.d("Http Get Response:", json.getString("return"));
                 if (json.getString("return").equals("success")) {
                     success = true;
+                    ApplicationManager.user = new User(json.getString("firstname"),
+                            json.getString("lastname"), json.getString("email"), json.getInt("id"));
+
+                    if (buttonPressed == 1) {
+                        if (json.getInt("ifTutor") == 1) {
+                            ApplicationManager.user.isTutor = true;
+                        }
+                    }
                 }
 
             } catch (ClientProtocolException e) {
