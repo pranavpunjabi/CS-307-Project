@@ -50,7 +50,7 @@ def search():
 	finalTutors = []
 	latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
-        tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)))
+        tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)), timeout=10)
         if tempLoc.address is None:
         	return jsonify({'return':'error'})
 	tempZip = tempLoc.raw["address"]["postcode"]
@@ -83,6 +83,8 @@ def search():
 		idlist = []
 		for subject in subjects:
 			ids = Subjects.query.filter(Subjects.subject == subject).first()
+			if(ids is None):
+				return jsonify({'return':'noSuccess'})
 			curr_ids = ids.ids.split(',')
 			idlist.extend(curr_ids)
 		idslist =  [x for x, y in collections.Counter(idlist).items() if y > 1]
@@ -94,7 +96,9 @@ def search():
 		return jsonify ({'return':'noSuccess'})
 	else:
 		for myTutor in tutor:
-			finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects})
+			student = User.query.filter_by(id = myTutor.id).first()
+			print student.id
+			finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
 		return jsonify({'return':finalTutors})
 
 @myApp.route('/server/index', methods=['GET', 'POST'])
@@ -146,8 +150,9 @@ def tutdetails():
      if tut.ifTutor == 0:
 		return jsonify({'return':'tutor with this ID has not been registered'})
      else:
-	     subjects = Tutor.query.filter_by(id = request.args.get('id')).first()
-	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email, 'subjects':subjects.subjects})
+	     tutor = Tutor.query.filter_by(id = request.args.get('id')).first()
+	     subjectsA = tutor.subjects.split(',')
+	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'rating':tutor.avgRatings,'email':tut.email, 'subjects':subjectsA})
 
 @myApp.route('/server/getStudent', methods=['GET'])
 def studetails():
