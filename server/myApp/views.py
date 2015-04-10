@@ -179,13 +179,12 @@ def getfav():
 		finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects, "firstName":student.firstname, "lastName":student.lastname})
 	return jsonify({'return':finalTutors})
 
-
-
-
-
 @myApp.route('/server/getTutor', methods=['GET'])
 def tutdetails():
      tut = User.query.filter_by(id = request.args.get('id')).first()
+     if tut is None:
+          return jsonify({'return':'noSuccess'})
+    
      if tut.ifTutor == 0:
 		return jsonify({'return':'tutor with this ID has not been registered'})
      else:
@@ -193,7 +192,6 @@ def tutdetails():
 	     subjectsA = tutor.subjects.split(',')
 	     print type(tutor.avgRatings)
 	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'rating':tutor.avgRatings,'email':tut.email, 'subjects':subjectsA})
-
 @myApp.route('/server/getStudent', methods=['GET'])
 def studetails():
      tut = User.query.filter_by(id = request.args.get('id')).first()
@@ -201,6 +199,26 @@ def studetails():
                 return jsonify({'return':'noSuccess'})
      else:
              	return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
+
+
+
+@myApp.route('/server/getTutinfo', methods=['GET'])
+def tutInfo():
+     newtut = Tutor.query.filter_by(id = request.args.get('id')).first()
+     tutorInfo = []
+     if newtut is None:
+          return jsonify({'return':'noSuccess'})
+     else:
+          rate = Rating.query.filter_by(tutID = request.args.get('id')).all()
+          count = Rating.query.filter_by(tutID = request.args.get('id')).count()
+          #print count
+          #ratelist = " "
+          for i in range(0,count):
+                tutorInfo.append({'ratings':(rate[i].ratings) , 'reviews':(rate[i].reviews)})
+          #ratelist = list(ratelist)
+          #print ratelist
+          #print reviewlist
+          return jsonify({'return':tutorInfo , 'avgRatings':newtut.avgRatings })
 
 @myApp.route('/server/ratings',methods=['POST'])
 def ratetut():
@@ -226,7 +244,6 @@ def ratetut():
                db.session.add(newrate)
                db.session.commit()
                return jsonify({'return':'rating added'})
-
 @myApp.route('/server/addSubjects', methods=['POST'])
 def makesubjects():
 	#adding to tutor table here
