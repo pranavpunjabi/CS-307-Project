@@ -180,7 +180,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                     new NetworkTask().execute();
                 break;
             case R.id.buttontest:
-                ApplicationManager.user = new User("", "", "", 1);
+                ApplicationManager.user = new User("Bruce", "Wayne", "ceo@wayneIndustries.com", 1);
                 Intent j = new Intent(MyActivity.this, StudentTabHost.class);
                 startActivity(j);
                 break;

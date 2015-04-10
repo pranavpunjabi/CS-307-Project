@@ -11,6 +11,7 @@ class User(db.Model):
 	email = db.Column(db.String(100))
 	pwdhash = db.Column(db.String(54))
 	ifTutor = db.Column(db.String(5))
+	favorites = db.Column(db.String(1000))
 	
 	def __init__(self, firstname, lastname, email, password):
 		self.firstname = firstname.title()
@@ -51,12 +52,12 @@ class Rating(db.Model):
      __tablename__ = 'rating'
      tutID = db.Column(db.Integer, db.ForeignKey('tutors.id'),primary_key = True)
      stuID = db.Column(db.Integer, db.ForeignKey('students.id'),primary_key = True)
-     ratings = db.Column(db.Integer)
+     ratings = db.Column(db.Float)
      reviews = db.Column(db.String(300))
 
      def __init__(self, tutID, stuID, ratings, reviews):
-          self.tutID = tutID.title()
-          self.stuID = stuID.title()
-          self.ratings = ratings.title()
+          self.tutID = tutID
+          self.stuID = stuID
+          self.ratings = ratings
           self.reviews = reviews.title()
 

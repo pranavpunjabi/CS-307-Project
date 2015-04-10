@@ -144,6 +144,45 @@ def maketutor():
 		db.session.commit()
 		return jsonify({'return':'success'})
 
+@myApp.route('/server/addtutorlocation', methods=['POST'])
+def addlocation():
+	tutor = Tutor.query.filter(Tutor.id == request.json['id']).first()
+	if tutor is None:
+		return jsonify({'return':'noSuccess'})
+	tutor.location = request.json['location']
+	db.session.commit()
+	return jsonify({'return':'success','id':request.json['id']})
+
+@myApp.route('/server/addfavorites', methods=['POST'])
+def addfav():
+	student = User.query.filter(User.id == request.json['studentID']).first()
+	if student is None:
+		return jsonify({'return':'noSuccess'})
+	if not student.favorites:
+		student.favorites = request.json['tutorID']
+	else:
+		student.favorites = student.favorites + "," + request.json['tutorID']
+	db.session.commit()
+	return jsonify({'return':'Success','studentID':request.json['studentID']})	
+	
+@myApp.route('/server/getfavorites', methods=['GET'])
+def getfav():
+	finalTutors = []
+	student = User.query.filter(User.id == request.args.get('studentID')).first()
+	if not student.favorites:
+		return jsonify({'return':'noSuccess'})
+	tutors = student.favorites.split(',')
+	tutor = Tutor.query.filter(Tutor.id.in_(tutors)).all()
+
+	for myTutor in tutor:
+		student = User.query.filter_by(id = myTutor.id).first()
+		finalTutors.append({"id":myTutor.id, "location":myTutor.location, "subjects":myTutor.subjects, "firstName":student.firstname, "lastName":student.lastname})
+	return jsonify({'return':finalTutors})
+
+
+
+
+
 @myApp.route('/server/getTutor', methods=['GET'])
 def tutdetails():
      tut = User.query.filter_by(id = request.args.get('id')).first()
@@ -152,18 +191,20 @@ def tutdetails():
      else:
 	     tutor = Tutor.query.filter_by(id = request.args.get('id')).first()
 	     subjectsA = tutor.subjects.split(',')
+	     print type(tutor.avgRatings)
 	     return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'rating':tutor.avgRatings,'email':tut.email, 'subjects':subjectsA})
 
 @myApp.route('/server/getStudent', methods=['GET'])
 def studetails():
      tut = User.query.filter_by(id = request.args.get('id')).first()
-     if tut.ifTutor == 0:
-                return jsonify({'return':'tutor with this ID has not been registered'})
+     if tut is None:
+                return jsonify({'return':'noSuccess'})
      else:
-             return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
+             	return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
 
 @myApp.route('/server/ratings',methods=['POST'])
 def ratetut():
+     print request.json['ratings']
      newrate = Rating(request.json['tutID'], request.json['stuID'], request.json['ratings'], request.json['reviews'])    
      tutor = Tutor.query.filter_by(id = request.json['tutID']).first()
      

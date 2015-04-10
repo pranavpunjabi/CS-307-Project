@@ -49,6 +49,10 @@
             android:name=".SearchOptions"
             android:label="@string/title_activity_search_options" >
         </activity>
+        <activity
+            android:name=".TutorDisplay"
+            android:label="@string/title_activity_tutor_display" >
+        </activity>
     </application>
 
 </manifest>
