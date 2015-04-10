@@ -82,7 +82,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         ApplicationManager.initApplication();
         prefs = this.getSharedPreferences("GetGuruPrefs", Context.MODE_PRIVATE);
-        ApplicationManager.URL = testURL.getText().toString();
+        ApplicationManager.URL = "http://3817d5e8.ngrok.com";//testURL.getText().toString();
         //URL = ApplicationManager.URL;
 
     }
@@ -161,10 +161,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
 
-        ApplicationManager.URL = testURL.getText().toString();
+        //ApplicationManager.URL = testURL.getText().toString();
         URL = ApplicationManager.URL;
-
-
         URL += ApplicationManager.routes.get("mainActivity");
         Log.d("string", URL);
 

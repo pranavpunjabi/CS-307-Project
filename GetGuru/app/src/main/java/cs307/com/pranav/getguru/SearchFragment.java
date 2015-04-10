@@ -28,6 +28,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,6 +62,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
     ArrayAdapter<String> searchAdapter;
     ArrayList<String> searchResults;
+    ArrayList<Integer> tutorIDs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,13 +78,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
         searchHolder = (ListView) masterView.findViewById(R.id.listViewSearch);
 
+        tutorIDs = new ArrayList<Integer>();
         searchResults = new ArrayList<String>();
-        searchResults.add("Tutor 1");
-        searchResults.add("Tutor 2");
-        searchResults.add("Tutor 3");
-        searchResults.add("Tutor 4");
-        searchResults.add("Tutor 5");
-        searchResults.add("Tutor 6");
 
         searchAdapter = new ArrayAdapter<String>(ApplicationManager.context, android.R.layout.simple_list_item_1, searchResults);
 
@@ -162,6 +159,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
         Log.d("Parent", parent.toString());
         Log.d("Position", Integer.toString(position));
 
+        ApplicationManager.searchTutorID = tutorIDs.get(position);
         Intent i = new Intent(this.getActivity(), TutorDisplay.class);
         startActivity(i);
     }
@@ -177,6 +175,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
         @Override
         protected void onPostExecute(Object o) {
+            //searchAdapter.clear();
+            searchAdapter.notifyDataSetChanged();
+            //for (int i = 0; i < searchResults.size(); i++) {
+                //searchAdapter.add(searchResults.get(i));
+            //}
 
         }
 
@@ -262,6 +265,26 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
                 Log.d("Http Get Response:", responseString);
                 JSONObject json = new JSONObject(responseString);
                 Log.d("Http Get Response:", json.getString("return"));
+
+
+                JSONArray iter = json.getJSONArray("return");
+                Log.d("iter:", iter.toString());
+
+                searchResults.clear();
+                tutorIDs.clear();
+
+                for (int i = 0; i < iter.length(); i++) {
+                    JSONObject tutObj = (JSONObject) iter.get(i);
+                    Log.d("Object in loop:", tutObj.toString());
+                    String name = tutObj.getString("firstName");
+                    name += " ";
+                    name += tutObj.getString("lastName");
+                    Log.d("Name found:", name);
+                    searchResults.add(name);
+                    tutorIDs.add(tutObj.getInt("id"));
+                }
+
+
 
                 //json.get("return").toString();
 

@@ -18,6 +18,8 @@ public final class ApplicationManager {
     public static ArrayList<String> subjects;
     public static Map<String, String> userPrefrences;
 
+    public static int searchTutorID;
+
     public static void initApplication() {
         routes = new HashMap<String, String>();
         userPrefrences = new HashMap<String, String>();
@@ -29,12 +31,13 @@ public final class ApplicationManager {
         routes.put("Toggle", "/server/tutor");
         routes.put("TutorInfo", "/server/getTutor"); //GET
         routes.put("StudentInfo", "/server/getStudent"); //GET
-        routes.put("Rate", "");
-        routes.put("Favorite", "");
+        routes.put("Rate", "/server/ratings"); //tutID, stuID, ratings, reviews, POST
+        routes.put("Favorite", "/server/addfavorites"); //studentID, tutorID, POST
+        routes.put("getFavorite", "/server/getfavorites"); //studentID, GET
 
         userPrefrences.put("searchRadius", "10");
         userPrefrences.put("searchSubject", "Mathematics");
-        userPrefrences.put("searchRating", "1");
+        userPrefrences.put("searchRating", "0");
 
         subjects.add("Mathematics");
         subjects.add("Physics");
@@ -42,6 +45,8 @@ public final class ApplicationManager {
         subjects.add("Biology");
         subjects.add("Computer Science");
         subjects.add("Business");
+
+        searchTutorID = 0;
     }
 
     public static void resetApplication() {
