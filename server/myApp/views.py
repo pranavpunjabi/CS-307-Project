@@ -191,10 +191,10 @@ def tutdetails():
 @myApp.route('/server/getStudent', methods=['GET'])
 def studetails():
      tut = User.query.filter_by(id = request.args.get('id')).first()
-     if tut.ifTutor == 0:
-                return jsonify({'return':'tutor with this ID has not been registered'})
+     if tut is None:
+                return jsonify({'return':'noSuccess'})
      else:
-             return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
+             	return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
 
 @myApp.route('/server/ratings',methods=['POST'])
 def ratetut():
