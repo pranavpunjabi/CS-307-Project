@@ -21,6 +21,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,22 +56,15 @@ public class FavoritesFragment extends Fragment implements View.OnClickListener 
 
 
         favorites = new ArrayList<String>();
-        favorites.add("Tutor 1");
-        favorites.add("Tutor 2");
-        favorites.add("Tutor 3");
-        favorites.add("Tutor 4");
-        favorites.add("Tutor 5");
-        favorites.add("Tutor 6");
-
-
-
 
         favoriteAdapter = new ArrayAdapter<String>(ApplicationManager.context, android.R.layout.simple_list_item_1, favorites);
 
         favoriteHolder.setAdapter(favoriteAdapter);
 
         URL = ApplicationManager.URL;
-        URL += ApplicationManager.routes.get("Favorite");
+        URL += ApplicationManager.routes.get("getFavorite");
+
+        new NetworkTask().execute();
 
         return masterView;
 
@@ -93,10 +87,7 @@ public class FavoritesFragment extends Fragment implements View.OnClickListener 
         List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
 
 
-        params.add(new BasicNameValuePair("requestType", "locSearch"));
-        params.add(new BasicNameValuePair("radius", ApplicationManager.userPrefrences.get("searchRadius")));
-        params.add(new BasicNameValuePair("subject", ApplicationManager.userPrefrences.get("searchSubject")));
-        params.add(new BasicNameValuePair("rating", ApplicationManager.userPrefrences.get("searchRating")));
+        params.add(new BasicNameValuePair("studentID", Integer.toString(ApplicationManager.user.ID)));
 
 
         String paramString = URLEncodedUtils.format(params, "utf-8");
@@ -110,13 +101,12 @@ public class FavoritesFragment extends Fragment implements View.OnClickListener 
         @Override
         protected Object doInBackground(Object... params) {
             //makePostRequest();
-            makeGetRequest();
-            return null;
+            return makeGetRequest();
         }
 
         @Override
         protected void onPostExecute(Object o) {
-
+            favoriteAdapter.notifyDataSetChanged();
         }
 
         protected Object makePostRequest() {
@@ -175,9 +165,11 @@ public class FavoritesFragment extends Fragment implements View.OnClickListener 
             return null;
         }
 
-        protected void makeGetRequest() {
+        protected Object makeGetRequest() {
             HttpClient httpClient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(addParametersToUrl(URL));
+
+            JSONObject json = null;
 
             //making GET request.
             InputStream inputStream = null;
@@ -197,10 +189,24 @@ public class FavoritesFragment extends Fragment implements View.OnClickListener 
 
                 responseString = sb.toString();
                 Log.d("Http Get Response:", responseString);
-                JSONObject json = new JSONObject(responseString);
+                json = new JSONObject(responseString);
                 Log.d("Http Get Response:", json.getString("return"));
 
-                //json.get("return").toString();
+
+                JSONArray iter = json.getJSONArray("return");
+                Log.d("iter:", iter.toString());
+
+                favorites.clear();
+
+                for (int i = 0; i < iter.length(); i++) {
+                    JSONObject tutObj = (JSONObject) iter.get(i);
+                    Log.d("Object in loop:", tutObj.toString());
+                    String name = tutObj.getString("firstName");
+                    name += " ";
+                    name += tutObj.getString("lastName");
+                    Log.d("Name found:", name);
+                    favorites.add(name);
+                }
 
             } catch (ClientProtocolException e) {
 
@@ -209,6 +215,8 @@ public class FavoritesFragment extends Fragment implements View.OnClickListener 
             } catch (JSONException e) {
 
             }
+
+            return json;
         }
     }
 }

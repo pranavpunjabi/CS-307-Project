@@ -53,6 +53,10 @@
             android:name=".TutorDisplay"
             android:label="@string/title_activity_tutor_display" >
         </activity>
+        <activity
+            android:name=".SubmitRating"
+            android:label="@string/title_activity_submit_rating" >
+        </activity>
     </application>
 
 </manifest>

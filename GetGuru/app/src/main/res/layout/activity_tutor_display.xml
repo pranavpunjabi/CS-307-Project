@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Name"
-        android:id="@+id/textView2"
+        android:id="@+id/textViewtutorname"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -30,9 +30,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Location"
-        android:id="@+id/textView3"
+        android:text="Email"
+        android:id="@+id/textViewtutoremail"
+        android:layout_below="@+id/textViewtutorname"
+        android:layout_alignRight="@+id/textViewtutorname"
+        android:layout_alignEnd="@+id/textViewtutorname" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewtutorsubs"
         android:layout_below="@+id/textView2"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2" />
+        android:layout_alignRight="@+id/textViewtutorname"
+        android:layout_alignEnd="@+id/textViewtutorname"
+        android:layout_above="@+id/buttonfav" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Subjects Tutored"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add to favorites"
+        android:id="@+id/buttonfav"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/listViewtutorsubs"
+        android:layout_alignEnd="@+id/listViewtutorsubs" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate this tutor"
+        android:id="@+id/buttonrate"
+        android:layout_alignTop="@+id/buttonfav"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Rating"
+        android:id="@+id/textViewavgrating"
+        android:layout_below="@+id/textViewtutoremail"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
