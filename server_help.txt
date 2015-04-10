@@ -11,8 +11,13 @@ curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/
 
 Rate tutor: curl --ipv4 -i -H "Content-Type: application/json" -X POST -d '{"tutID":"1", "stuID":"36", "ratings":"2", "reviews":"no problem"}' http://localhost:5000/server/ratings
 
+Add tutor location: curl -i -H "Content-type: application/json" -X POST -d '{"id":"1", "location":"47906"}' http://localhost:5000/server/addtutorlocation
+
 //rating table created and tutor table has two extra columns. SEE BELOW for DETAILS
 
+Add favorites for a student: curl -i -H "Content-type: application/json" -X POST -d '{"studentID":"1", "tutorID":"2"}' http://localhost:5000/server/addfavorites
+
+Get favorites for a student: curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/getfavorites?"studentID=1"
 
 Testing database connection: curl -i http://localhost:5000/testdb (returns ({'return':'success'}) in json format)
 
@@ -20,9 +25,8 @@ Add new user : curl -i -H "Content-Type: application/json" -X POST -d '{"request
 
 Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestType":"signIn","firstName":"asad", "lastName":"kumar", "email":"srivas5@purdue.edu", "password":"hello"}' http://localhost:5000/server/index
 
-Sign-up user as a tutor: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1", "location":"47906"}' http://localhost:5000/server/tutor 
-
-Get Tutor information: curl --ipv4 -i -H "Content-Type: application/json" -X GET -d '{"id":"1"}' http://localhost:5000/server/getTutor
+Sign-up user as a tutor:
+curl --ipv4 -i -H "Content-Type: application/json" -X GET http://localhost:5000/server/getTutor?"id=1"
 
 Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
 
@@ -129,6 +133,7 @@ ratingCount int
 alter table tutors add column location varchar(100) after id;
 alter table tutors add column avgRatings double after subjects;
 alter table tutors add column ratingCount int after avgRatings;
+alter table tutors add column favorites varchar(1000) after ifTutor;
 
 //create rating table
 create table rating(
