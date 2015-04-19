@@ -1,6 +1,5 @@
 package cs307.com.pranav.getguru;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -8,73 +7,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.CheckBox;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 
 public class SearchOptions extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+    MaterialEditText pin;
+    NumberPicker ratingPicker;
 
-    Spinner subjects, ratings, loc;
-    ArrayAdapter subAdapter, ratAdapter, locAdapter;
-    ArrayList<String> subList, ratList, locList;
+    CheckBox s1, s2, s3, s4, s5, s6, s7, s8;
 
-    Button save, cancel;
+    ButtonRectangle save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_options);
 
-        save = (Button) findViewById(R.id.button2Save);
-        cancel = (Button) findViewById(R.id.buttonCancel);
+        save = (ButtonRectangle) findViewById(R.id.button2Save);
+        ratingPicker = (NumberPicker) findViewById(R.id.numberPickerRating);
+        pin = (MaterialEditText) findViewById(R.id.editTextZIPCODE);
 
-        subjects = (Spinner) findViewById(R.id.spinner2Sub);
-        ratings = (Spinner) findViewById(R.id.spinner3Rat);
-        loc = (Spinner) findViewById(R.id.spinnerLoc);
+        s1 = (CheckBox) findViewById(R.id.checkBoxmath);
+        s2 = (CheckBox) findViewById(R.id.checkBoxEnglish);
+        s3 = (CheckBox) findViewById(R.id.checkBoxPhy);
+        s4 = (CheckBox) findViewById(R.id.checkBoxChem);
+        s5 = (CheckBox) findViewById(R.id.checkBoxBio);
+        s6 = (CheckBox) findViewById(R.id.checkBoxBuss);
+        s7 = (CheckBox) findViewById(R.id.checkBoxCS);
+        s8 = (CheckBox) findViewById(R.id.checkBoxEcon);
 
+        s1.setChecked(ApplicationManager.subjectsBools.get(0));
+        s2.setChecked(ApplicationManager.subjectsBools.get(1));
+        s3.setChecked(ApplicationManager.subjectsBools.get(2));
+        s4.setChecked(ApplicationManager.subjectsBools.get(3));
+        s5.setChecked(ApplicationManager.subjectsBools.get(4));
+        s6.setChecked(ApplicationManager.subjectsBools.get(5));
+        s7.setChecked(ApplicationManager.subjectsBools.get(6));
+        s8.setChecked(ApplicationManager.subjectsBools.get(7));
 
-        subList = new ArrayList<String>();
-        ratList = new ArrayList<String>();
-        locList = new ArrayList<String>();
-
-        for (int i = 0; i < ApplicationManager.subjects.size(); i++) {
-            subList.add(ApplicationManager.subjects.get(i));
-        }
-        ratList.add("None");
-        ratList.add("1 and above");
-        ratList.add("2 and above");
-        ratList.add("3 and above");
-        ratList.add("4 and above");
-        ratList.add("5 and above");
-        locList.add("10");
-        locList.add("20");
-        locList.add("30");
-        locList.add("40");
-
-
-        subAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, subList);
-        ratAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, ratList);
-        locAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, locList);
-
-
-        subjects.setAdapter(subAdapter);
-        ratings.setAdapter(ratAdapter);
-        loc.setAdapter(locAdapter);
-
-        subjects.setOnItemSelectedListener(this);
-        ratings.setOnItemSelectedListener(this);
-        loc.setOnItemSelectedListener(this);
+        ratingPicker.setMinValue(0);
+        ratingPicker.setMaxValue(5);
+        ratingPicker.setOnClickListener(this);
 
         save.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-
     }
 
 
@@ -103,11 +84,20 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button2Save) {
+            ApplicationManager.userPrefrences.put("searchCode", pin.getText().toString());
+            ApplicationManager.userPrefrences.put("searchRating", Integer.toString(ratingPicker.getValue()));
 
-        }
-        if (v.getId() == R.id.buttonCancel) {
-            Intent i = new Intent(this, StudentTabHost.class);
-            startActivity(i);
+            ApplicationManager.subjectsBools.set(0, s1.isChecked());
+            ApplicationManager.subjectsBools.set(1, s2.isChecked());
+            ApplicationManager.subjectsBools.set(2, s3.isChecked());
+            ApplicationManager.subjectsBools.set(3, s4.isChecked());
+            ApplicationManager.subjectsBools.set(4, s5.isChecked());
+            ApplicationManager.subjectsBools.set(5, s6.isChecked());
+            ApplicationManager.subjectsBools.set(6, s7.isChecked());
+            ApplicationManager.subjectsBools.set(7, s8.isChecked());
+
+            Toast.makeText(getApplicationContext(), "Your search preferences have been saved",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -119,47 +109,6 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
         Log.d("ID:", Long.toString(id));
 
 
-        if (parent.getId() == R.id.spinner2Sub) {
-            ApplicationManager.userPrefrences.put("searchSubject", ApplicationManager.subjects.get(position));
-        }
-        if (parent.getId() == R.id.spinner3Rat) {
-            switch (position) {
-                case 0:
-                    ApplicationManager.userPrefrences.put("searchRating", "0");
-                    break;
-                case 1:
-                    ApplicationManager.userPrefrences.put("searchRating", "1");
-                    break;
-                case 2:
-                    ApplicationManager.userPrefrences.put("searchRating", "2");
-                    break;
-                case 3:
-                    ApplicationManager.userPrefrences.put("searchRating", "3");
-                    break;
-                case 4:
-                    ApplicationManager.userPrefrences.put("searchRating", "4");
-                    break;
-                case 5:
-                    ApplicationManager.userPrefrences.put("searchRating", "5");
-                    break;
-            }
-        }
-        if (parent.getId() == R.id.spinnerLoc) {
-            switch (position) {
-                case 0:
-                    ApplicationManager.userPrefrences.put("searchRadius", "10");
-                    break;
-                case 1:
-                    ApplicationManager.userPrefrences.put("searchRadius", "20");
-                    break;
-                case 2:
-                    ApplicationManager.userPrefrences.put("searchRadius", "30");
-                    break;
-                case 3:
-                    ApplicationManager.userPrefrences.put("searchRadius", "40");
-                    break;
-            }
-        }
         Log.d("Changes", ApplicationManager.userPrefrences.toString());
     }
 

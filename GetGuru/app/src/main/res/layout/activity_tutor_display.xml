@@ -7,24 +7,15 @@
     tools:context="cs307.com.pranav.getguru.TutorDisplay">
 
 
-    <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:src="#ffffec61"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Name"
         android:id="@+id/textViewtutorname"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/textView11"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,18 +23,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Email"
         android:id="@+id/textViewtutoremail"
-        android:layout_below="@+id/textViewtutorname"
-        android:layout_alignRight="@+id/textViewtutorname"
-        android:layout_alignEnd="@+id/textViewtutorname" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewtutorname"/>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listViewtutorsubs"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/textView2"
-        android:layout_alignRight="@+id/textViewtutorname"
-        android:layout_alignEnd="@+id/textViewtutorname"
-        android:layout_above="@+id/buttonfav" />
+        android:layout_above="@+id/buttonrate" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,26 +40,25 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Subjects Tutored"
         android:id="@+id/textView2"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/textViewavgrating"
+        android:layout_centerHorizontal="true"/>
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to favorites"
         android:id="@+id/buttonfav"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/listViewtutorsubs"
-        android:layout_alignEnd="@+id/listViewtutorsubs" />
+        android:layout_centerHorizontal="true" />
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rate this tutor"
+        android:text="Rate"
         android:id="@+id/buttonrate"
-        android:layout_alignTop="@+id/buttonfav"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/buttonviewRatings"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,7 +66,25 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Rating"
         android:id="@+id/textViewavgrating"
-        android:layout_below="@+id/textViewtutoremail"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewtutoremail"/>
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Ratings"
+        android:id="@+id/buttonviewRatings"
+        android:layout_above="@+id/buttonfav"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Search Result"
+        android:id="@+id/textView11"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

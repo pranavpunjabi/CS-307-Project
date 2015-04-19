@@ -9,23 +9,22 @@
     tools:context=".MyActivity">
 
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
         android:id="@+id/buttonsendc"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toLeftOf="@+id/buttonsrchpts"
+        android:layout_toStartOf="@+id/buttonsrchpts" />
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search Options"
         android:id="@+id/buttonsrchpts"
-        android:layout_alignBottom="@+id/buttonsendc"
-        android:layout_toRightOf="@+id/buttonsendc"
-        android:layout_toEndOf="@+id/buttonsendc" />
+        android:layout_above="@+id/listViewSearch"
+        android:layout_centerHorizontal="true" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -35,7 +34,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/buttonsendc" />
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Test"
