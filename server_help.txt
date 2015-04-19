@@ -115,6 +115,7 @@ email varchar(120) not null unique,
 pwdhash varchar(100) not null,
 ifTutor boolean NOT NULL default 0
 );
+alter table student add column favorites varchar(1000) after ifTutor;
 
 //to create a subject table
 create table subjects( 
@@ -133,7 +134,7 @@ ratingCount int
 alter table tutors add column location varchar(100) after id;
 alter table tutors add column avgRatings double after subjects;
 alter table tutors add column ratingCount int after avgRatings;
-alter table tutors add column favorites varchar(1000) after ifTutor;
+
 
 //create rating table
 create table rating(
