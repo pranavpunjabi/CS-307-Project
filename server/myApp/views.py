@@ -8,7 +8,6 @@ from flask.ext.httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 geolocator = Nominatim()
 
-
 @auth.verify_password
 def verify_password(email, password):
     user = User.query.filter_by(email = email).first()
@@ -124,6 +123,10 @@ def editinfo():
           User.query.filter_by(id = request.json['id']).update(dict(firstname=request.json['firstname']))
      if (request.json['email'] != ""):
           User.query.filter_by(id = request.json['id']).update(dict(email=request.json['email']))
+     if (request.json['password'] != ""):
+          User.set_password(student,request.json['password'])
+          User.query.filter_by(id = request.json['id']).update(dict(pwdhash=student.pwdhash))
+     
      db.session.commit()
      return jsonify({'return':'success','id':student.id,'firstname':student.firstname,'lastname':student.lastname,'email':student.email})
 
