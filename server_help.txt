@@ -6,6 +6,10 @@ $ python run.py
 Search by location : 
 (NOT IN USE) -------- curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066}' http://localhost:5000/server/locSearch
 
+edit info:curl -i --ipv4 -H "Content-type: application/json" -X POST -d '{"id":"1","lastname":"vijay","firstname":"bssala","emil":"isdads@purdue.edu"}' http://localhost:5000/server/editInfo
+
+unregister tutor :curl -i --ipv4 -H "Content-type: application/json" -X POST -d '{"id":"3"}' http://localhost:5000/server/untutor
+
 Search by location + subjects + ratings: 
 curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/search?"latitude=40.42&longitude=-86.9&subject=math&subject=chem&rating=0"
 
