@@ -4,7 +4,19 @@ from models import db, User, Subjects, Tutor, Rating
 from sqlalchemy import update
 from geopy.geocoders import Nominatim
 import collections
+from flask.ext.httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
 geolocator = Nominatim()
+
+
+@auth.verify_password
+def verify_password(email, password):
+    user = User.query.filter_by(email = email).first()
+    #password1 = str(password)
+    if user and user.check_password(password):
+        return True
+    #g.user = user
+    return False
 
 @myApp.route('/server/test', methods=['GET'])
 def testing():
@@ -66,11 +78,6 @@ def search():
 	
 	subjects = request.args.getlist('subject')
 	pincodes = []
-	#pincodes.append(tempZip + 0)
-	#pincodes.append(tempZip + 1)
-	#pincodes.append(tempZip - 1)
-	#var = tempZip + 1
-	#var1 = tempZip - 1
 	pincodes = pincodes + [int(tempZip)]
 	pincodes = pincodes + [int(tempZip) + 1]
 	pincodes = pincodes + [int(tempZip) - 1]
@@ -82,15 +89,16 @@ def search():
 	else:
 		idlist = []
 		for subject in subjects:
-			ids = Subjects.query.filter(Subjects.subject == subject).first()
-			if(ids is None):
+			ids = Subjects.query.filter(Subjects.subject == subject).first() #get the row with the subject
+			if(ids is None): #if none of the subjects searched are there
 				return jsonify({'return':'noSuccess'})
-			curr_ids = ids.ids.split(',')
-			idlist.extend(curr_ids)
-		idslist =  [x for x, y in collections.Counter(idlist).items() if y > 1]
-		if not idslist:
+			curr_ids = ids.ids.split(',') #split ids into array
+			idlist.extend(curr_ids) #put ids into the list
+
+		idslist =  [x for x, y in collections.Counter(idlist).items() if y > 1] #get the intersection of the ids
+		if not idslist: #if no common subjects
 			return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
-		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all()
+		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all() #
 	
 	if(len(tutor) == 0):
 		return jsonify ({'return':'noSuccess'})
@@ -145,6 +153,7 @@ def maketutor():
 		return jsonify({'return':'success'})
 
 @myApp.route('/server/addtutorlocation', methods=['POST'])
+@auth.login_required
 def addlocation():
 	tutor = Tutor.query.filter(Tutor.id == request.json['id']).first()
 	if tutor is None:
@@ -161,7 +170,7 @@ def addfav():
 	if not student.favorites:
 		student.favorites = request.json['tutorID']
 	else:
-		student.favorites = student.favorites + "," + request.json['tutorID']
+		student.favorites = str(student.favorites) + "," + str(request.json['tutorID'])
 	db.session.commit()
 	return jsonify({'return':'Success','studentID':request.json['studentID']})	
 	
