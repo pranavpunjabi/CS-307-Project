@@ -165,7 +165,7 @@ def maketutor():
 	else:
 		tutor.ifTutor = 1
 		db.session.commit()
-		newTutor = Tutor(request.json['id'],'', '',0,0)
+		newTutor = Tutor(request.json['id'],request.json['location'], '',0,0)
 		db.session.add(newTutor)
 		db.session.commit()
 		return jsonify({'return':'success'})
@@ -178,7 +178,9 @@ def unmaketut():
      elif (tutuser.ifTutor == 0):
           return jsonify({'return':'student was NEVER a tutor'})
      else:
+          str = ","
           subjects = Subjects.query.all()
+          favorites = User.query.all()
           tutuser.ifTutor = 0
           tutor = Tutor.query.filter_by(id = request.json['id']).first()
           count = Rating.query.filter_by(tutID = request.json['id']).count()
@@ -198,9 +200,23 @@ def unmaketut():
                           index += 1
                if (indexCount > -1):
                     idlist.pop(indexCount)
-               str = ","
                newid = str.join(idlist)
                Subjects.query.filter_by(subject = subject.subject).update(dict(ids=newid))
+          for favorite in favorites:
+               if(favorite.favorites != None):
+                    favlist = favorite.favorites.split(',')
+                    newindex = 0
+                    newindexCount = -1
+                    for favval in favlist:
+                         if favval == request.json['id']:
+                              newindexCount = newindex
+                              break
+                         else:
+                              newindex += 1
+                    if(newindexCount > -1):
+                         favlist.pop(newindexCount)
+                    newfav = str.join(favlist)
+                    User.query.filter_by(favorites = favorite.favorites).update(dict(favorites=newfav))
           db.session.delete(tutor)
           db.session.commit()
           return jsonify({'return':'success'})
