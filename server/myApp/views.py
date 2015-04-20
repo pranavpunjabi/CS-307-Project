@@ -48,13 +48,17 @@ def locSearch():
 @myApp.route('/server/search', methods=['GET'])
 def search():
 	finalTutors = []
-	latitude = request.args.get('latitude')
-        longitude = request.args.get('longitude')
-        tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)), timeout=10)
-        if tempLoc.address is None:
-        	return jsonify({'return':'error'})
-	tempZip = tempLoc.raw["address"]["postcode"]
-	print tempZip
+	jusChecking = request.args.get('zipcode')
+	if jusChecking is None:
+		latitude = request.args.get('latitude')
+        	longitude = request.args.get('longitude')
+        	tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)), timeout=10)
+        	if tempLoc.address is None:
+        		return jsonify({'return':'error'})
+		tempZip = tempLoc.raw["address"]["postcode"]
+		#print tempZip
+	else:
+		tempZip = jusChecking
 	tutor = []
 	rating = 0
 	rate = request.args.get('rating')
@@ -97,7 +101,7 @@ def search():
 	else:
 		for myTutor in tutor:
 			student = User.query.filter_by(id = myTutor.id).first()
-			print student.id
+			#print student.id
 			finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
 		return jsonify({'return':finalTutors})
 
@@ -139,7 +143,7 @@ def maketutor():
 	else:
 		tutor.ifTutor = 1
 		db.session.commit()
-		newTutor = Tutor(request.json['id'],request.json['location'], '',0,0)
+		newTutor = Tutor(request.json['id'],'', '',0,0)
 		db.session.add(newTutor)
 		db.session.commit()
 		return jsonify({'return':'success'})
@@ -161,7 +165,7 @@ def addfav():
 	if not student.favorites:
 		student.favorites = request.json['tutorID']
 	else:
-		student.favorites = student.favorites + "," + request.json['tutorID']
+		student.favorites = str(student.favorites) + "," + str(request.json['tutorID'])
 	db.session.commit()
 	return jsonify({'return':'Success','studentID':request.json['studentID']})	
 	
@@ -214,7 +218,7 @@ def tutInfo():
           #print count
           #ratelist = " "
           for i in range(0,count):
-                tutorInfo.append({'ratings':(rate[i].ratings) , 'reviews':(rate[i].reviews)})
+                tutorInfo.append({'rating':(rate[i].ratings) , 'review':(rate[i].reviews)})
           #ratelist = list(ratelist)
           #print ratelist
           #print reviewlist
@@ -300,6 +304,12 @@ def makesubjects():
 			else:
 				sub.ids = sub.ids + "," + request.json['id']
 			db.session.commit()
+	tutor1 = Tutor.query.filter(Tutor.id == request.json['id']).first()
+	if tutor1 is None:
+		return jsonify({'return':'noSuccess'})
+	tutor1.location = request.json['location']
+	db.session.commit()
+
 	return jsonify({'return':'success','id':request.json['id']})	
 
 @myApp.route('/server/getSubjects', methods=['GET'])
