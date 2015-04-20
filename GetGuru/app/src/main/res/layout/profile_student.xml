@@ -2,21 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/psrl">
 
-
-    <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-
-        android:id="@+id/profilePictureStudent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="42dp"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="44dp"
-        android:src="#ffffec61" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,74 +12,53 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NAME"
         android:id="@+id/nameStudent"
-        android:layout_alignTop="@+id/profilePictureStudent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/profilePictureStudent"
-        android:layout_toEndOf="@+id/profilePictureStudent"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="AGE"
-        android:id="@+id/ageStudent"
+        android:text="EMAIL"
+        android:id="@+id/emailStudent"
+        android:gravity="center_horizontal"
         android:layout_below="@+id/nameStudent"
-        android:layout_toRightOf="@+id/profilePictureStudent"
-        android:gravity="center_horizontal"
-        android:layout_alignRight="@+id/nameStudent"
-        android:layout_alignEnd="@+id/nameStudent" />
+        android:layout_centerHorizontal="true" />
 
-    <TextView
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="MAJOR"
-        android:id="@+id/education"
-        android:layout_below="@+id/ageStudent"
-        android:layout_toRightOf="@+id/profilePictureStudent"
-        android:gravity="center_horizontal"
-        android:layout_alignRight="@+id/ageStudent"
-        android:layout_alignEnd="@+id/ageStudent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="CLASSIFICATION"
-        android:id="@+id/classification"
-        android:layout_below="@+id/education"
-        android:layout_toRightOf="@+id/profilePictureStudent"
-        android:gravity="center_horizontal"
-        android:layout_alignRight="@+id/education"
-        android:layout_alignEnd="@+id/education" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SWITCH TO TUTOR"
+        android:text="Switch To Tutor"
         android:id="@+id/toggle"
         android:layout_below="@+id/editInfo"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EDIT YOUR INFO"
+        android:text="Edit Your Info"
         android:id="@+id/editInfo"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
         android:id="@+id/buttonlogout"
         android:layout_below="@+id/toggle"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Your Student Profile"
+        android:id="@+id/textView10"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp" />
+        android:layout_marginTop="45dp" />
 
 </RelativeLayout>

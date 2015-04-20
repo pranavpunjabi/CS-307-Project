@@ -7,8 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CheckBox;
+import android.widget.Toast;
+
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -26,13 +29,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 
 public class Edit extends ActionBarActivity implements View.OnClickListener{
 
-    EditText sub1, sub2, sub3;
-    Button sendSubjects;
+    MaterialEditText loc;
+    ButtonRectangle sendSubjects;
     String URL;
+
+    ArrayList<Boolean> tutored;
+
+    CheckBox s1, s2, s3, s4, s5, s6, s7, s8;
 
 
     @Override
@@ -40,13 +48,25 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        sub1 = (EditText) findViewById(R.id.sub1);
-        sub2 = (EditText) findViewById(R.id.sub2);
-        sub3 = (EditText) findViewById(R.id.sub3);
-        sendSubjects = (Button) findViewById(R.id.buttonsendsubs);
+        loc = (MaterialEditText) findViewById(R.id.editTexttutZIPCODE);
+        sendSubjects = (ButtonRectangle) findViewById(R.id.buttonsendsubs);
+
+        s1 = (CheckBox) findViewById(R.id.checkBoxmathtut);
+        s2 = (CheckBox) findViewById(R.id.checkBoxEnglishtut);
+        s3 = (CheckBox) findViewById(R.id.checkBoxPhytut);
+        s4 = (CheckBox) findViewById(R.id.checkBoxChemtut);
+        s5 = (CheckBox) findViewById(R.id.checkBoxBiotut);
+        s6 = (CheckBox) findViewById(R.id.checkBoxBusstut);
+        s7 = (CheckBox) findViewById(R.id.checkBoxCStut);
+        s8 = (CheckBox) findViewById(R.id.checkBoxEcontut);
+
+        tutored = new ArrayList<Boolean>();
+        for (int i = 0; i < 8; i++) {
+            tutored.add(true);
+        }
+
         URL = ApplicationManager.URL;
         URL += ApplicationManager.routes.get("Edit");
-        //Log.d("");
         sendSubjects.setOnClickListener(this);
     }
 
@@ -76,6 +96,16 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonsendsubs) {
+
+            tutored.set(0, s1.isChecked());
+            tutored.set(1, s2.isChecked());
+            tutored.set(2, s3.isChecked());
+            tutored.set(3, s4.isChecked());
+            tutored.set(4, s5.isChecked());
+            tutored.set(5, s6.isChecked());
+            tutored.set(6, s7.isChecked());
+            tutored.set(7, s8.isChecked());
+
             new NetworkTask().execute();
         }
     }
@@ -89,7 +119,8 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
 
         @Override
         protected void onPostExecute(Object o) {
-
+            Toast.makeText(getApplicationContext(), "Your information has been updated.",
+                    Toast.LENGTH_LONG).show();
         }
 
         protected Object makePostRequest() {
@@ -101,12 +132,14 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
             JSONObject holder = new JSONObject();
 
             try {
-
-                list.put(new JSONObject().put("subject", sub1.getText().toString()));
-                list.put(new JSONObject().put("subject", sub2.getText().toString()));
-                list.put(new JSONObject().put("subject", sub3.getText().toString()));
+                for (int i = 0; i < tutored.size(); i++) {
+                    if (tutored.get(i)) {
+                        list.put(new JSONObject().put("subject", ApplicationManager.subjects.get(i)));
+                    }
+                }
 
                 holder.put("id", Integer.toString(ApplicationManager.user.ID));
+                holder.put("location", loc.getText().toString());
                 holder.put("subjects", list);
 
             } catch (JSONException e) {

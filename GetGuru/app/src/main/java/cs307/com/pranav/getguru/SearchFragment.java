@@ -14,18 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+
+import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -36,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,11 +42,9 @@ import java.util.List;
  */
 public class SearchFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    //
-
     View masterView;
     String URL;
-    Button searchOptions, sendC, test;
+    ButtonRectangle searchOptions, sendC, test;
     ListView searchHolder;
 
     private String provider;
@@ -66,14 +60,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
         masterView = inflater.inflate(R.layout.search_student, container, false);
-        searchOptions = (Button) masterView.findViewById(R.id.buttonsrchpts);
+        searchOptions = (ButtonRectangle) masterView.findViewById(R.id.buttonsrchpts);
         searchOptions.setOnClickListener(this);
-        sendC = (Button) masterView.findViewById(R.id.buttonsendc);
+        sendC = (ButtonRectangle) masterView.findViewById(R.id.buttonsendc);
         sendC.setOnClickListener(this);
-        test = (Button) masterView.findViewById(R.id.buttontest);
+        test = (ButtonRectangle) masterView.findViewById(R.id.buttontest);
         test.setOnClickListener(this);
 
         searchHolder = (ListView) masterView.findViewById(R.id.listViewSearch);
@@ -104,7 +96,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
         URL += ApplicationManager.routes.get("Search");
 
         return masterView;
-
     }
 
     public void onLocationChanged(Location location) {
@@ -139,18 +130,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
 
         List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
 
-
         params.add(new BasicNameValuePair("requestType", "locSearch"));
         params.add(new BasicNameValuePair("latitude", String.valueOf(lat)));
         params.add(new BasicNameValuePair("longitude", String.valueOf(lng)));
-        params.add(new BasicNameValuePair("radius", ApplicationManager.userPrefrences.get("searchRadius")));
-        params.add(new BasicNameValuePair("subject", ApplicationManager.userPrefrences.get("searchSubject")));
+        params.add(new BasicNameValuePair("zip", ApplicationManager.userPrefrences.get("searchCode")));
         params.add(new BasicNameValuePair("rating", ApplicationManager.userPrefrences.get("searchRating")));
-
+        for (int j = 0; j < ApplicationManager.subjects.size(); j++) {
+            if (ApplicationManager.subjectsBools.get(j)) {
+                params.add(new BasicNameValuePair("subject", ApplicationManager.subjects.get(j)));
+            }
+        }
 
         String paramString = URLEncodedUtils.format(params, "utf-8");
         url += paramString;
-
         return url;
     }
 
@@ -168,77 +160,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
     private class NetworkTask extends AsyncTask {
         @Override
         protected Object doInBackground(Object... params) {
-            //makePostRequest();
             makeGetRequest();
             return null;
         }
 
         @Override
         protected void onPostExecute(Object o) {
-            //searchAdapter.clear();
             searchAdapter.notifyDataSetChanged();
-            //for (int i = 0; i < searchResults.size(); i++) {
-                //searchAdapter.add(searchResults.get(i));
-            //}
-
-        }
-
-        protected Object makePostRequest() {
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(URL);
-
-            JSONObject holder = new JSONObject();
-
-            try {
-                holder.put("latitude", lat);
-                holder.put("longitude", lng);
-                holder.put("radius", ApplicationManager.userPrefrences.get("searchRadius"));
-                holder.put("subject", ApplicationManager.userPrefrences.get("searchSubject"));
-                holder.put("rating", ApplicationManager.userPrefrences.get("searchRating"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-            //passes the results to a string builder/entity
-            StringEntity se = null;
-            try {
-                se = new StringEntity(holder.toString());
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-            //sets the post request as the resulting string
-            httpPost.setEntity(se);
-            //sets a request header so the page receving the request
-            //will know what to do with it
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-
-            //Handles what is returned from the page
-            ResponseHandler responseHandler = new BasicResponseHandler();
-            InputStream inputStream = null;
-            String responseString = "";
-            try {
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                inputStream = httpResponse.getEntity().getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-                StringBuilder sb = new StringBuilder();
-
-                String line = null;
-                while ((line = reader.readLine()) != null)
-                {
-                    sb.append(line + "\n");
-                }
-
-                responseString = sb.toString();
-                Log.d("Http Post Response:", responseString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
         }
 
         protected void makeGetRequest() {
@@ -283,10 +211,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
                     searchResults.add(name);
                     tutorIDs.add(tutObj.getInt("id"));
                 }
-
-
-
-                //json.get("return").toString();
 
             } catch (ClientProtocolException e) {
 

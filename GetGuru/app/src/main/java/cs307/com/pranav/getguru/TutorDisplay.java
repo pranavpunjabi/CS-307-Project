@@ -9,10 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -45,7 +46,7 @@ public class TutorDisplay extends ActionBarActivity implements View.OnClickListe
     TextView name, email, avgRating;
     ListView subs;
 
-    Button fav, rate, viewRat;
+    ButtonRectangle fav, rate, viewRat;
 
     ArrayAdapter<String> subAdapter;
     ArrayList<String> subResults;
@@ -61,11 +62,13 @@ public class TutorDisplay extends ActionBarActivity implements View.OnClickListe
         email = (TextView) findViewById(R.id.textViewtutoremail);
         avgRating = (TextView) findViewById(R.id.textViewavgrating);
 
-        fav = (Button) findViewById(R.id.buttonfav);
-        rate = (Button) findViewById(R.id.buttonrate);
+        fav = (ButtonRectangle) findViewById(R.id.buttonfav);
+        rate = (ButtonRectangle) findViewById(R.id.buttonrate);
+        viewRat = (ButtonRectangle) findViewById(R.id.buttonviewRatings);
 
         rate.setOnClickListener(this);
         fav.setOnClickListener(this);
+        viewRat.setOnClickListener(this);
 
         subs = (ListView) findViewById(R.id.listViewtutorsubs);
 
@@ -129,6 +132,11 @@ public class TutorDisplay extends ActionBarActivity implements View.OnClickListe
 
         if (v.getId() == R.id.buttonrate) {
             Intent i = new Intent(TutorDisplay.this, SubmitRating.class);
+            startActivity(i);
+        }
+
+        if (v.getId() == R.id.buttonviewRatings) {
+            Intent i = new Intent(TutorDisplay.this, RatingDisplay.class);
             startActivity(i);
         }
     }

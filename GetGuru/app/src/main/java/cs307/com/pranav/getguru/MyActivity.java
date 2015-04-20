@@ -12,9 +12,11 @@ import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.Window;
 import android.widget.Toast;
+
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -45,9 +47,9 @@ import java.util.Map;
 public class MyActivity extends ActionBarActivity implements View.OnClickListener {
 
 
-    Button signUpButton, signInButton, test;
-    EditText signInEmail, signInPass, signUpName1, signUpName2, signUpEmail, signUpPass, signUpRepass;
-    EditText testURL;
+    ButtonRectangle signUpButton, signInButton, test;
+    MaterialEditText signInEmail, signInPass, signUpName1, signUpName2, signUpEmail, signUpPass, signUpRepass;
+    MaterialEditText testURL;
 
     protected String URL;
 
@@ -58,23 +60,24 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        signInEmail = (EditText) findViewById(R.id.sieditTextemail);
-        signInPass = (EditText) findViewById(R.id.sieditTextpass);
-        signUpName1 = (EditText) findViewById(R.id.suedittextfirstname);
-        signUpName2 = (EditText) findViewById(R.id.suedittextlastname);
-        signUpEmail = (EditText) findViewById(R.id.suedittextemail);
-        signUpPass = (EditText) findViewById(R.id.suedittextpass);
-        signUpRepass = (EditText) findViewById(R.id.suedittextrepass);
+        signInEmail = (MaterialEditText) findViewById(R.id.sieditTextemail);
+        signInPass = (MaterialEditText) findViewById(R.id.sieditTextpass);
+        signUpName1 = (MaterialEditText) findViewById(R.id.suedittextfirstname);
+        signUpName2 = (MaterialEditText) findViewById(R.id.suedittextlastname);
+        signUpEmail = (MaterialEditText) findViewById(R.id.suedittextemail);
+        signUpPass = (MaterialEditText) findViewById(R.id.suedittextpass);
+        signUpRepass = (MaterialEditText) findViewById(R.id.suedittextrepass);
 
-        testURL = (EditText) findViewById(R.id.testURL);
+        testURL = (MaterialEditText) findViewById(R.id.testURL);
 
-        signInButton = (Button) findViewById(R.id.sibutton);
-        signUpButton = (Button) findViewById(R.id.subutton);
-        test = (Button) findViewById(R.id.buttontest);
+        signInButton = (ButtonRectangle) findViewById(R.id.sibutton);
+        signUpButton = (ButtonRectangle) findViewById(R.id.subutton);
+        test = (ButtonRectangle) findViewById(R.id.buttontest);
 
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
@@ -82,7 +85,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         ApplicationManager.initApplication();
         prefs = this.getSharedPreferences("GetGuruPrefs", Context.MODE_PRIVATE);
-        ApplicationManager.URL = "http://3817d5e8.ngrok.com";//testURL.getText().toString();
+        ApplicationManager.URL = "http://3f31e619.ngrok.com";//testURL.getText().toString();
         //URL = ApplicationManager.URL;
 
     }

@@ -13,6 +13,7 @@
     <string name="title_activity_search_options">SearchOptions</string>
     <string name="title_activity_tutor_display">TutorDisplay</string>
     <string name="title_activity_submit_rating">SubmitRating</string>
+    <string name="title_activity_rating_display">RatingDisplay</string>
 
 
 
