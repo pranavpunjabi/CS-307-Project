@@ -7,43 +7,165 @@
     tools:context="cs307.com.pranav.getguru.SearchOptions">
 
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerLoc"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner2Sub"
-        android:layout_below="@+id/spinnerLoc"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner3Rat"
-        android:layout_below="@+id/spinner2Sub"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:id="@+id/buttonCancel"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/button2Save"
-        android:layout_above="@+id/buttonCancel"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2"
+        android:layout_above="@+id/button2Save"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Location"
+                android:id="@+id/textView6"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editTextZIPCODE"
+                android:layout_below="@+id/textView6"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Rating"
+                android:id="@+id/textView7"
+                android:layout_below="@+id/editTextZIPCODE"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp" />
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numberPickerRating"
+                android:layout_below="@+id/textView7"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Subjects"
+                android:id="@+id/textView8"
+                android:layout_below="@+id/numberPickerRating"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mathematics"
+                android:id="@+id/checkBoxmath"
+                android:layout_below="@+id/textView8"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="English"
+                android:id="@+id/checkBoxEnglish"
+                android:layout_below="@+id/checkBoxmath"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Physics"
+                android:id="@+id/checkBoxPhy"
+                android:layout_below="@+id/checkBoxEnglish"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chemistry"
+                android:id="@+id/checkBoxChem"
+                android:layout_below="@+id/checkBoxPhy"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Biology"
+                android:id="@+id/checkBoxBio"
+                android:layout_below="@+id/checkBoxChem"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Business"
+                android:id="@+id/checkBoxBuss"
+                android:layout_below="@+id/checkBoxBio"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Computer Science"
+                android:id="@+id/checkBoxCS"
+                android:layout_below="@+id/checkBoxBuss"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Economics"
+                android:id="@+id/checkBoxEcon"
+                android:layout_below="@+id/checkBoxCS"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentStart="true"/>
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+
 </RelativeLayout>

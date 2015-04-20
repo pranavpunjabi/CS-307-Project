@@ -7,10 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -31,9 +32,9 @@ import java.io.UnsupportedEncodingException;
 
 public class SubmitRating extends ActionBarActivity implements View.OnClickListener{
 
-    EditText review;
+    MaterialEditText review;
     RatingBar rating;
-    Button submit;
+    ButtonRectangle submit;
 
     String URL;
 
@@ -42,10 +43,10 @@ public class SubmitRating extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_rating);
 
-        review = (EditText) findViewById(R.id.editTextreview);
+        review = (MaterialEditText) findViewById(R.id.editTextreview);
         rating = (RatingBar) findViewById(R.id.ratingBar);
 
-        submit = (Button) findViewById(R.id.buttonsubmitrating);
+        submit = (ButtonRectangle) findViewById(R.id.buttonsubmitrating);
         submit.setOnClickListener(this);
 
         URL = ApplicationManager.URL;

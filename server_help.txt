@@ -4,14 +4,21 @@ run the code by typing
 $ python run.py
 
 Search by location : 
-curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066}' http://localhost:5000/server/locSearch
+(NOT IN USE) -------- curl -i -H "Content-Type: application/json" -X GET -d '{"latitude":"40.425869", "longitude":"-86.908066}' http://localhost:5000/server/locSearch
+
+edit info:curl -i --ipv4 -H "Content-type: application/json" -X POST -d '{"id":"1","lastname":"vijay","firstname":"bssala","emil":"isdads@purdue.edu"}' http://localhost:5000/server/editInfo
+
+unregister tutor :curl -i --ipv4 -H "Content-type: application/json" -X POST -d '{"id":"3"}' http://localhost:5000/server/untutor
 
 Search by location + subjects + ratings: 
 curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/search?"latitude=40.42&longitude=-86.9&subject=math&subject=chem&rating=0"
 
+Search by specific location:
+curl -i -H "Content-type: application/json" -X GET http://localhost:5000/server/search?"latitude=40.42&longitude=-86.9&subject=mathematics&rating=0&zipcode=47908"
+
 Rate tutor: curl --ipv4 -i -H "Content-Type: application/json" -X POST -d '{"tutID":"1", "stuID":"36", "ratings":"2", "reviews":"no problem"}' http://localhost:5000/server/ratings
 
-Add tutor location: curl -i -H "Content-type: application/json" -X POST -d '{"id":"1", "location":"47906"}' http://localhost:5000/server/addtutorlocation
+(NOT IN USE) -------- Add tutor location: curl -i -H "Content-type: application/json" -X POST -d '{"id":"1", "location":"47906"}' http://localhost:5000/server/addtutorlocation
 
 //rating table created and tutor table has two extra columns. SEE BELOW for DETAILS
 
@@ -28,9 +35,9 @@ Sign-in user : curl -i -H "Content-Type: application/json" -X GET -d '{"requestT
 Sign-up user as a tutor:
 curl --ipv4 -i -H "Content-Type: application/json" -X GET http://localhost:5000/server/getTutor?"id=1"
 
-Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
+Add subjects for a particular tutor in the tutor and subjects tables: curl -i -H "Content-Type: application/json" -X POST -d '{"id":"1","location":"47906","subjects":[{"subject":"chem"}, {"subject":"phy"}]}' http://localhost:5000/server/addSubjects
 
-Test query : curl -i -H "Content-Type: application/json" -X GET -d '{"firstName":"arun"}' http://localhost:5000/server/test (Changed - not updated)
+(NOT IN USE) ------------------- Test query : curl -i -H "Content-Type: application/json" -X GET -d '{"firstName":"arun"}' http://localhost:5000/server/test (Changed - not updated)
 NOTE : make sure you have at least 3 or more students with the same first name arun for the original code to work. You can change the code to test it accordingly. It's a small fix.
 
 Get subjects for a particular tutor: curl -i -H "Content-Type: application/json" -X GET -d '{"id":"3"}' http://localhost:5000/server/getSubjects

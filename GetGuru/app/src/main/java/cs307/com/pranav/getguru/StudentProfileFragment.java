@@ -4,6 +4,7 @@ package cs307.com.pranav.getguru;
  * Created by DiGiT_WiZARD on 2/26/15.
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,8 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -38,8 +40,8 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
 
     View masterView;
-    Button toggle, edit, logout;
-    TextView name, major, clss, age;
+    ButtonRectangle toggle, edit, logout;
+    TextView name, email;
     String URL;
 
     SharedPreferences prefs;
@@ -47,24 +49,21 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         masterView = inflater.inflate(R.layout.profile_student, container, false);
-        toggle = (Button) masterView.findViewById(R.id.toggle);
-        edit = (Button) masterView.findViewById(R.id.editInfo);
-        logout = (Button) masterView.findViewById(R.id.buttonlogout);
+        toggle = (ButtonRectangle) masterView.findViewById(R.id.toggle);
+        edit = (ButtonRectangle) masterView.findViewById(R.id.editInfo);
+        logout = (ButtonRectangle) masterView.findViewById(R.id.buttonlogout);
 
         name = (TextView) masterView.findViewById(R.id.nameStudent);
-        major = (TextView) masterView.findViewById(R.id.education);
-        clss = (TextView) masterView.findViewById(R.id.classification);
-        age = (TextView) masterView.findViewById(R.id.ageStudent);
+        email = (TextView) masterView.findViewById(R.id.emailStudent);
 
+        prefs = this.getActivity().getSharedPreferences("GetGuruPrefrences", Context.MODE_PRIVATE);
 
         String namestr = ApplicationManager.user.firstName;
         namestr += " ";
         namestr += ApplicationManager.user.lastName;
         name.setText(namestr);
-
-
+        email.setText(ApplicationManager.user.email);
 
         toggle.setOnClickListener(this);
         edit.setOnClickListener(this);
@@ -73,10 +72,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         URL = ApplicationManager.URL;
         URL += ApplicationManager.routes.get("Toggle");
 
-        //return super.onCreateView(inflater, container, savedInstanceState);
-
         return masterView;
-
     }
 
     @Override

@@ -57,6 +57,10 @@
             android:name=".SubmitRating"
             android:label="@string/title_activity_submit_rating" >
         </activity>
+        <activity
+            android:name=".RatingDisplay"
+            android:label="@string/title_activity_rating_display" >
+        </activity>
     </application>
 
 </manifest>
