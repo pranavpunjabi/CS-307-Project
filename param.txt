@@ -51,3 +51,15 @@ returns: 'no success' / 'subjectList'(//list of subjects)
 
 @myApp.route('/testdb', methods=['GET'])
 returns 'success','Something is broken'
+
+
+@myApp.route('/server/editInfo', methods = ['POST'])
+parameters: id
+if parameter is not changed--> assumed to get ""
+return jsonify({'return':'success','id':student.id,'firstname':student.firstname,'lastname':student.lastname,'email':student.email})
+
+
+
+@myApp.route('/server/untutor',methods=['POST'])
+parameter id
+return success/ student with this ID was not registered / student was NEVER a tutor
