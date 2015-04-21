@@ -10,10 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -105,7 +108,11 @@ public class RatingDisplay extends ActionBarActivity {
         }
 
         protected void makeGetRequest() {
-            HttpClient httpClient = new DefaultHttpClient();
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            CredentialsProvider credProvider = new BasicCredentialsProvider();
+            credProvider.setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+                    new UsernamePasswordCredentials(ApplicationManager.user.email, ApplicationManager.user.password));
+            httpClient.setCredentialsProvider(credProvider);
             HttpGet httpGet = new HttpGet(addParametersToUrl(URL));
 
             //making GET request.

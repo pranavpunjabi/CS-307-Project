@@ -25,9 +25,9 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="First Name"
                 android:id="@+id/setteditfn"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"/>
@@ -35,9 +35,9 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="Last Name"
                 android:id="@+id/setteditln"
                 android:layout_below="@+id/setteditfn"
                 android:layout_centerHorizontal="true" />
@@ -55,11 +55,11 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="Password"
                 android:id="@+id/setteditpass"
-                android:layout_below="@+id/sitextview"
+                android:layout_below="@+id/setteditEmail"
                 android:layout_centerHorizontal="true" />
 
 

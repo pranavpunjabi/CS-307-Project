@@ -14,10 +14,13 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -124,7 +127,11 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
         }
 
         protected Object makePostRequest() {
-            HttpClient httpClient = new DefaultHttpClient();
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            CredentialsProvider credProvider = new BasicCredentialsProvider();
+            credProvider.setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+                    new UsernamePasswordCredentials(ApplicationManager.user.email, ApplicationManager.user.password));
+            httpClient.setCredentialsProvider(credProvider);
             HttpPost httpPost = new HttpPost(URL);
 
 

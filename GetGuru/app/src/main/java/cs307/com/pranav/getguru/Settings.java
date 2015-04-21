@@ -23,6 +23,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -146,10 +147,12 @@ public class Settings extends ActionBarActivity implements View.OnClickListener 
                     startActivity(k);
                     break;
                 case 2:
+                    ApplicationManager.user.isTutor = false;
                     Toast.makeText(getApplicationContext(), "You have unregistered as tutor.",
                             Toast.LENGTH_LONG).show();
                     break;
                 case 3:
+                    //ApplicationManager.user.
                     Toast.makeText(getApplicationContext(), "Your information has been updated.",
                             Toast.LENGTH_LONG).show();
                     break;
@@ -199,7 +202,24 @@ public class Settings extends ActionBarActivity implements View.OnClickListener 
 
                 responseString = sb.toString();
                 Log.d("Http Post Response:", responseString);
+                JSONObject json = new JSONObject(responseString);
+                if (buttonPressed == 3) {
+                    if (pass.getText().toString().equals("")) {
+                        String oldPass = ApplicationManager.user.password;
+                        ApplicationManager.user = new User(json.getString("firstname"),
+                                json.getString("lastname"), json.getString("email"),
+                                json.getInt("id"), oldPass);
+                    }
+                    else {
+                        ApplicationManager.user = new User(json.getString("firstname"),
+                                json.getString("lastname"), json.getString("email"),
+                                json.getInt("id"), json.getString("password"));
+                    }
+
+                }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
