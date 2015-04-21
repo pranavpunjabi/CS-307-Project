@@ -1,5 +1,6 @@
 package cs307.com.pranav.getguru;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -101,6 +103,8 @@ public class Settings extends ActionBarActivity implements View.OnClickListener 
             new NetworkTask().execute();
         }
         if (v.getId() == R.id.buttoneditsett) {
+            URL = ApplicationManager.URL;
+            URL += ApplicationManager.routes.get("EditUserInfo");
             buttonPressed = 3;
             new NetworkTask().execute();
         }
@@ -134,7 +138,22 @@ public class Settings extends ActionBarActivity implements View.OnClickListener 
 
         @Override
         protected void onPostExecute(Object o) {
-
+            switch (buttonPressed) {
+                case 0:
+                    break;
+                case 1:
+                    Intent k = new Intent(Settings.this, MyActivity.class);
+                    startActivity(k);
+                    break;
+                case 2:
+                    Toast.makeText(getApplicationContext(), "You have unregistered as tutor.",
+                            Toast.LENGTH_LONG).show();
+                    break;
+                case 3:
+                    Toast.makeText(getApplicationContext(), "Your information has been updated.",
+                            Toast.LENGTH_LONG).show();
+                    break;
+            }
         }
 
         protected Object makePostRequest(Map params) {
