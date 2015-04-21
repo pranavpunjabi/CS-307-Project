@@ -123,7 +123,7 @@ def editinfo():
      if (request.json['firstname'] != ""):
           User.query.filter_by(id = request.json['id']).update(dict(firstname=request.json['firstname']))
      if (request.json['email'] != ""):
-          User.query.filter_by(id = request.json['id']).update(dict(email=request.json['email']))
+     	  User.query.filter_by(id = request.json['id']).update(dict(email=request.json['email']))
      db.session.commit()
      return jsonify({'return':'success','id':student.id,'firstname':student.firstname,'lastname':student.lastname,'email':student.email})
 
@@ -224,6 +224,10 @@ def addfav():
 	if not student.favorites:
 		student.favorites = request.json['tutorID']
 	else:
+		favorites = student.favorites.split(',')
+		for fav in favorites:
+			if fav == request.json['tutorID']:
+				return jsonify({'return':'tutor already a favorite'})
 		student.favorites = str(student.favorites) + "," + str(request.json['tutorID'])
 	db.session.commit()
 	return jsonify({'return':'Success','studentID':request.json['studentID']})	
