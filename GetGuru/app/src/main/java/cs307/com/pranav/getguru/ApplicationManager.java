@@ -40,6 +40,9 @@ public final class ApplicationManager {
         routes.put("getRatings", "/server/getRatings"); //
         routes.put("Favorite", "/server/addfavorites"); //studentID, tutorID, POST
         routes.put("getFavorite", "/server/getfavorites"); //studentID, GET
+        routes.put("Unregister", "/server/untutor");
+        routes.put("EditUserInfo", "/server/editInfo"); //POST
+        routes.put("Delete","/server/delete");
 
         userPrefrences.put("searchCode", "47906");
         userPrefrences.put("searchSubject", "Mathematics");

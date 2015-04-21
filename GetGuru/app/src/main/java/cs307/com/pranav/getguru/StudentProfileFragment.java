@@ -7,6 +7,7 @@ package cs307.com.pranav.getguru;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         masterView = inflater.inflate(R.layout.profile_student, container, false);
+        masterView.setBackgroundColor(Color.WHITE);
         toggle = (ButtonRectangle) masterView.findViewById(R.id.toggle);
         edit = (ButtonRectangle) masterView.findViewById(R.id.editInfo);
         logout = (ButtonRectangle) masterView.findViewById(R.id.buttonlogout);
@@ -85,7 +87,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.editInfo:
-                Intent i = new Intent(this.getActivity(), Edit.class);
+                Intent i = new Intent(this.getActivity(), Settings.class);
                 startActivity(i);
                 break;
             case R.id.toggle:

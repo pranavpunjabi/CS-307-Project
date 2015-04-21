@@ -1,12 +1,12 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MyActivity extends ActionBarActivity implements View.OnClickListener {
+public class MyActivity extends Activity implements View.OnClickListener {
 
 
     ButtonRectangle signUpButton, signInButton, test;
@@ -85,9 +85,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         ApplicationManager.initApplication();
         prefs = this.getSharedPreferences("GetGuruPrefs", Context.MODE_PRIVATE);
-        ApplicationManager.URL = "http://3f31e619.ngrok.com";//testURL.getText().toString();
-        //URL = ApplicationManager.URL;
-
+        ApplicationManager.URL = "http://4c8502db.ngrok.com";
     }
 
 
@@ -181,7 +179,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                     new NetworkTask().execute();
                 break;
             case R.id.buttontest:
-                ApplicationManager.user = new User("Bruce", "Wayne", "ceo@wayneIndustries.com", 1);
+                ApplicationManager.user = new User("Bruce", "Wayne", "ceo@wayneIndustries.com", 1, "test");
+
                 Intent j = new Intent(MyActivity.this, StudentTabHost.class);
                 startActivity(j);
                 break;
@@ -357,8 +356,17 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 Log.d("Http Post Response:", json.getString("return"));
                 if (json.getString("return").equals("success")) {
                     success = true;
-                    ApplicationManager.user = new User(json.getString("firstname"),
-                            json.getString("lastname"), json.getString("email"), json.getInt("id"));
+                    if (buttonPressed == 1) {
+                        ApplicationManager.user = new User(json.getString("firstname"),
+                                json.getString("lastname"), json.getString("email"),
+                                json.getInt("id"), signInPass.getText().toString());
+                    }
+                    else if (buttonPressed == 2) {
+                        ApplicationManager.user = new User(json.getString("firstname"),
+                                json.getString("lastname"), json.getString("email"),
+                                json.getInt("id"), signUpPass.getText().toString());
+                    }
+
 
                     if (buttonPressed == 1) {
                         if (json.getInt("ifTutor") == 1) {
@@ -402,7 +410,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 if (json.getString("return").equals("success")) {
                     success = true;
                     ApplicationManager.user = new User(json.getString("firstname"),
-                            json.getString("lastname"), json.getString("email"), json.getInt("id"));
+                            json.getString("lastname"), json.getString("email"), json.getInt("id"), "");
 
                     if (buttonPressed == 1) {
                         if (json.getInt("ifTutor") == 1) {

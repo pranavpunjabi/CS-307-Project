@@ -2,6 +2,7 @@ package cs307.com.pranav.getguru;
 
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
@@ -20,6 +21,7 @@ public class StudentTabHost extends FragmentActivity {
         setContentView(R.layout.activity_student_tab_host);
 
         tHost = (TabHost) findViewById(R.id.tabhost1);
+        tHost.setBackgroundColor(Color.parseColor("#1E88E5"));
         tHost.setup();
 
         ApplicationManager.context = this.getBaseContext();
@@ -43,7 +45,6 @@ public class StudentTabHost extends FragmentActivity {
                 if(searchFragment!=null)
                     ft.detach(searchFragment);
 
-                /** If current tab is android */
                 if(tabId.equalsIgnoreCase("favorite")){
 
                     if(favoritesFragment==null){
@@ -98,9 +99,15 @@ public class StudentTabHost extends FragmentActivity {
 
         /** Defining tab builder for Favorite tab */
         TabHost.TabSpec tSpecFavorite = tHost.newTabSpec("favorite");
-        tSpecFavorite.setIndicator("Favorites");
+        tSpecFavorite.setIndicator("Favorite");
         tSpecFavorite.setContent(new TabContent(getBaseContext()));
         tHost.addTab(tSpecFavorite);
+
+        /** Defining tab builder for Chat tab */
+        TabHost.TabSpec tSpecChat = tHost.newTabSpec("chat");
+        tSpecChat.setIndicator("Chat");
+        tSpecChat.setContent(new TabContent(getBaseContext()));
+        tHost.addTab(tSpecChat);
 
 //        /** Defining tab builder for Android (test) tab */
 //        TabHost.TabSpec tSpecAnd = tHost.newTabSpec("android");

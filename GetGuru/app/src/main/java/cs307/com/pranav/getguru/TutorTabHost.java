@@ -1,6 +1,7 @@
 package cs307.com.pranav.getguru;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
@@ -19,40 +20,44 @@ public class TutorTabHost extends FragmentActivity {
         setContentView(R.layout.activity_tutor_tab_host);
 
         tHost = (TabHost) findViewById(R.id.tabhost2);
+        tHost.setBackgroundColor(Color.parseColor("#1E88E5"));
         tHost.setup();
 
+        /** Defining Tab Change Listener event. This is invoked when tab is changed */
         TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
-            android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
-            TutorProfileFragment profileFragment = (TutorProfileFragment) fm.findFragmentByTag("profile");
-            android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
 
             @Override
             public void onTabChanged(String tabId) {
+                android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                TutorProfileFragment profileFragment = (TutorProfileFragment) fm.findFragmentByTag("profile");
+                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+
                 if(profileFragment!=null)
                     ft.detach(profileFragment);
 
                 if(tabId.equalsIgnoreCase("profile")){
 
                     if(profileFragment==null){
-                        /** Create AndroidFragment and adding to fragmenttransaction */
                         ft.add(R.id.realtabcontent2,new TutorProfileFragment(), "profile");
                     }else{
-                        /** Bring to the front, if already exists in the fragmenttransaction */
                         ft.attach(profileFragment);
                     }
 
                 }
                 ft.commit();
-
             }
-
         };
-
         tHost.setOnTabChangedListener(tabChangeListener);
 
         TabHost.TabSpec tSpecProfile = tHost.newTabSpec("profile");
         tSpecProfile.setIndicator("Profile");
         tSpecProfile.setContent(new TabContent(getBaseContext()));
         tHost.addTab(tSpecProfile);
+
+        /** Defining tab builder for Chat tab */
+        TabHost.TabSpec tSpecChat = tHost.newTabSpec("chat");
+        tSpecChat.setIndicator("Chat");
+        tSpecChat.setContent(new TabContent(getBaseContext()));
+        tHost.addTab(tSpecChat);
     }
 }

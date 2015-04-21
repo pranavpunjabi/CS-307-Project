@@ -17,7 +17,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/gg2"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -42,10 +42,6 @@
             android:label="@string/title_activity_edit" >
         </activity>
         <activity
-            android:name=".SearchSettingsActivity"
-            android:label="@string/title_activity_search_settings" >
-        </activity>
-        <activity
             android:name=".SearchOptions"
             android:label="@string/title_activity_search_options" >
         </activity>
@@ -60,6 +56,10 @@
         <activity
             android:name=".RatingDisplay"
             android:label="@string/title_activity_rating_display" >
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

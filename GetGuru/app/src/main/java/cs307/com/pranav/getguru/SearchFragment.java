@@ -2,6 +2,7 @@ package cs307.com.pranav.getguru;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -19,10 +20,13 @@ import android.widget.ListView;
 import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -61,6 +65,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         masterView = inflater.inflate(R.layout.search_student, container, false);
+        masterView.setBackgroundColor(Color.WHITE);
         searchOptions = (ButtonRectangle) masterView.findViewById(R.id.buttonsrchpts);
         searchOptions.setOnClickListener(this);
         sendC = (ButtonRectangle) masterView.findViewById(R.id.buttonsendc);
@@ -133,7 +138,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
         params.add(new BasicNameValuePair("requestType", "locSearch"));
         params.add(new BasicNameValuePair("latitude", String.valueOf(lat)));
         params.add(new BasicNameValuePair("longitude", String.valueOf(lng)));
-        params.add(new BasicNameValuePair("zip", ApplicationManager.userPrefrences.get("searchCode")));
+        params.add(new BasicNameValuePair("zipcode", ApplicationManager.userPrefrences.get("searchCode")));
         params.add(new BasicNameValuePair("rating", ApplicationManager.userPrefrences.get("searchRating")));
         for (int j = 0; j < ApplicationManager.subjects.size(); j++) {
             if (ApplicationManager.subjectsBools.get(j)) {
@@ -170,7 +175,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
         }
 
         protected void makeGetRequest() {
-            HttpClient httpClient = new DefaultHttpClient();
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            CredentialsProvider credProvider = new BasicCredentialsProvider();
+            credProvider.setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+                    new UsernamePasswordCredentials(ApplicationManager.user.email, ApplicationManager.user.password));
+            httpClient.setCredentialsProvider(credProvider);
             HttpGet httpGet = new HttpGet(addParametersToUrl(URL));
 
             //making GET request.

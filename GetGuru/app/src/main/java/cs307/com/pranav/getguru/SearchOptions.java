@@ -84,7 +84,13 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button2Save) {
-            ApplicationManager.userPrefrences.put("searchCode", pin.getText().toString());
+            if (pin.getText().toString().equals("")) {
+
+            }
+            else {
+                ApplicationManager.userPrefrences.put("searchCode", pin.getText().toString());
+            }
+
             ApplicationManager.userPrefrences.put("searchRating", Integer.toString(ratingPicker.getValue()));
 
             ApplicationManager.subjectsBools.set(0, s1.isChecked());

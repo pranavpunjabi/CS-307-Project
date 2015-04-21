@@ -1,6 +1,7 @@
 package cs307.com.pranav.getguru;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -66,7 +67,7 @@ public class TutorProfileFragment extends Fragment implements OnClickListener {
 
         //return super.onCreateView(inflater, container, savedInstanceState);
         masterView = inflater.inflate(R.layout.profile_tutor, container, false);
-
+        masterView.setBackgroundColor(Color.WHITE);
         toggle = (ButtonRectangle) masterView.findViewById(R.id.toggle2);
         edit = (ButtonRectangle) masterView.findViewById(R.id.editInfo2);
         vyr = (ButtonRectangle) masterView.findViewById(R.id.buttonvyr);

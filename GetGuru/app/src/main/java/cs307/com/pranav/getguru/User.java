@@ -11,6 +11,7 @@ public class User {
     String firstName;
     String lastName;
     String email;
+    String password;
     int ID;
 
     //Secondary data
@@ -21,11 +22,12 @@ public class User {
     ArrayList<String> Subjects, Favorites;
 
 
-    public User(String fn, String ln, String em, int id) {
+    public User(String fn, String ln, String em, int id, String pw) {
         this.firstName = fn;
         this.lastName = ln;
         this.email = em;
         this.ID = id;
+        this.password = pw;
     }
 
     public void populateUser() {
