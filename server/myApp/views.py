@@ -223,6 +223,14 @@ def unmaketut():
           db.session.commit()
           return jsonify({'return':'success'})
 
+@myApp.route('/server/delete', methods=['POST'])
+def delUser():
+     student = User.query.filter_by(id = request.json['id']).first()
+     if student.ifTutor == 1:
+          unmaketut()          
+     db.session.delete(student)
+     db.session.commit()
+     return jsonify({'return':'user deleted'})
 
 @myApp.route('/server/addtutorlocation', methods=['POST'])
 @auth.login_required
@@ -307,7 +315,6 @@ def tutInfo():
 
 @myApp.route('/server/ratings',methods=['POST'])
 def ratetut():
-     print request.json['ratings']
      newrate = Rating(request.json['tutID'], request.json['stuID'], request.json['ratings'], request.json['reviews'])    
      tutor = Tutor.query.filter_by(id = request.json['tutID']).first()
      
@@ -318,9 +325,21 @@ def ratetut():
      elif float(newrate.ratings) < 0:
           return jsonify({'return':'Please give a rating between 0 to 5'})
      else:
-          sturate = Rating.query.filter_by(tutID = request.json['tutID'], stuID = request.json['stuID']).all()
+          sturate = Rating.query.filter_by(tutID = request.json['tutID'], stuID = request.json['stuID']).first()
           if sturate:
-		     return jsonify({'return':'Student has already rated this tutor'})
+               oldrate = sturate.ratings
+               sturate.reviews = newrate.reviews
+               sturate.ratings = newrate.ratings
+               
+               Rating.query.filter_by(tutID = request.json['tutID'], stuID = request.json['stuID']).update(dict(reviews=sturate.reviews))
+               Rating.query.filter_by(tutID = request.json['tutID'], stuID = request.json['stuID']).update(dict(ratings=sturate.ratings))
+               
+               newCount = tutor.ratingCount
+               newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings) - oldrate) / newCount
+               Tutor.query.filter_by(id = request.json['tutID']).update(dict(avgRatings=newAvg))
+               
+               db.session.commit()
+               return jsonify({'return':'rating edited'})
           else:
                newCount = tutor.ratingCount + 1
                newAvg = (tutor.avgRatings * tutor.ratingCount + float(newrate.ratings)) / newCount
@@ -371,6 +390,8 @@ def makesubjects():
 		subject.ids = ids
 		if not ids:
 			db.session.delete(subject)
+         # print student.pwdhash
+         # print student.pwdhash
 		db.session.commit()
 	for subject in request.json['subjects']:
 		sub = Subjects.query.filter_by(subject = subject["subject"]).first()
