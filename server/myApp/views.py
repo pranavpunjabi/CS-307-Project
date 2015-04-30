@@ -78,7 +78,6 @@ def search():
 		rating = 0
 	else:
 		rating = int(rate)
-	
 	subjects = request.args.getlist('subject')
 	pincodes = []
 	pincodes = pincodes + [int(tempZip)]
@@ -102,7 +101,6 @@ def search():
 		if not idslist: #if no common subjects
 			return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
 		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all() #
-	
 	if(len(tutor) == 0):
 		return jsonify ({'return':'noSuccess'})
 	else:
@@ -111,6 +109,22 @@ def search():
 			#print student.id
 			finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
 		return jsonify({'return':finalTutors})
+
+@myApp.route('/server/nameS', methods = ['GET'])
+def namesearch():
+     retName = []
+     firstname = "%" + request.args.get('firstname') + "%"
+     lastname = "%" + request.args.get('lastname') + "%"
+     allName = User.query.filter(User.firstname.like(firstname), User.lastname.like(lastname)).all()
+     count = User.query.filter(User.firstname.like(firstname), User.lastname.like(lastname)).count()
+     if allName:
+          for i in range(0,count):
+               print allName[i].ifTutor
+               if (allName[i].ifTutor == 1):
+                    retName.append({"id":allName[i].id})
+     else:
+          return jsonify({'return':'No such tutors'})
+     return jsonify({'return':retName})
 
 @myApp.route('/server/editInfo', methods = ['POST'])
 def editinfo():
