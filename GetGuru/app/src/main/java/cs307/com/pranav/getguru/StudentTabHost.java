@@ -33,6 +33,7 @@ public class StudentTabHost extends FragmentActivity {
             public void onTabChanged(String tabId) {
                 android.support.v4.app.FragmentManager fm =   getSupportFragmentManager();
                 FavoritesFragment favoritesFragment = (FavoritesFragment) fm.findFragmentByTag("favorite");
+                ChatFragment chatFragment = (ChatFragment) fm.findFragmentByTag("chat");
                 StudentProfileFragment profileFragment = (StudentProfileFragment) fm.findFragmentByTag("profile");
                 SearchFragment searchFragment = (SearchFragment) fm.findFragmentByTag("search");
                 android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
@@ -44,7 +45,20 @@ public class StudentTabHost extends FragmentActivity {
                     ft.detach(profileFragment);
                 if(searchFragment!=null)
                     ft.detach(searchFragment);
+                if(chatFragment!=null)
+                    ft.detach(chatFragment);
 
+                if(tabId.equalsIgnoreCase("chat")){
+
+                    if(chatFragment==null){
+                        /** Create AndroidFragment and adding to fragmenttransaction */
+                        ft.add(R.id.realtabcontent,new ChatFragment(), "chat");
+                    }else{
+                        /** Bring to the front, if already exists in the fragmenttransaction */
+                        ft.attach(chatFragment);
+                    }
+
+                }
                 if(tabId.equalsIgnoreCase("favorite")){
 
                     if(favoritesFragment==null){
