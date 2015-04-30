@@ -1,13 +1,15 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -35,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Settings extends ActionBarActivity implements View.OnClickListener {
+public class Settings extends Activity implements View.OnClickListener {
 
     ButtonRectangle delAcc, unReg, edit;
     MaterialEditText fn, ln, em, pass;
@@ -45,6 +47,9 @@ public class Settings extends ActionBarActivity implements View.OnClickListener 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
@@ -87,6 +92,12 @@ public class Settings extends ActionBarActivity implements View.OnClickListener 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent k = new Intent(Settings.this, StudentTabHost.class);
+        startActivity(k);
     }
 
     @Override

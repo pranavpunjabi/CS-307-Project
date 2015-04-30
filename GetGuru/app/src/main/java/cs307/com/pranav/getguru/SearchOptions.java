@@ -1,11 +1,13 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
@@ -15,9 +17,9 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 
-public class SearchOptions extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class SearchOptions extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    MaterialEditText pin;
+    MaterialEditText fn, ln, pin;
     NumberPicker ratingPicker;
 
     CheckBox s1, s2, s3, s4, s5, s6, s7, s8;
@@ -26,12 +28,17 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_options);
 
         save = (ButtonRectangle) findViewById(R.id.button2Save);
         ratingPicker = (NumberPicker) findViewById(R.id.numberPickerRating);
         pin = (MaterialEditText) findViewById(R.id.editTextZIPCODE);
+        fn = (MaterialEditText) findViewById(R.id.sofn);
+        ln = (MaterialEditText) findViewById(R.id.soln);
 
         s1 = (CheckBox) findViewById(R.id.checkBoxmath);
         s2 = (CheckBox) findViewById(R.id.checkBoxEnglish);
@@ -91,6 +98,8 @@ public class SearchOptions extends ActionBarActivity implements View.OnClickList
                 ApplicationManager.userPrefrences.put("searchCode", pin.getText().toString());
             }
 
+            ApplicationManager.userPrefrences.put("searchFN", fn.getText().toString());
+            ApplicationManager.userPrefrences.put("searchLN", ln.getText().toString());
             ApplicationManager.userPrefrences.put("searchRating", Integer.toString(ratingPicker.getValue()));
 
             ApplicationManager.subjectsBools.set(0, s1.isChecked());

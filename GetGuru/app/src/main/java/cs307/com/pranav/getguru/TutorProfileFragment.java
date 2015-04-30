@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,9 +169,14 @@ public class TutorProfileFragment extends Fragment implements OnClickListener {
                     e.printStackTrace();
                 }
 
+                DecimalFormat format = new DecimalFormat("#.##");
+                avgrat = Double.valueOf(format.format(avgrat));
+                String ratStr = "Average Rating: ";
+                ratStr += Double.toString(avgrat);
+
                 name.setText(nmStr);
                 email.setText(emStr);
-                avgRating.setText(Double.toString(avgrat));
+                avgRating.setText(ratStr);
                 subAdapter.notifyDataSetChanged();
 
         }

@@ -1,12 +1,15 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -35,7 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 
-public class Edit extends ActionBarActivity implements View.OnClickListener{
+public class Edit extends Activity implements View.OnClickListener{
 
     MaterialEditText loc;
     ButtonRectangle sendSubjects;
@@ -48,6 +51,9 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
@@ -94,6 +100,12 @@ public class Edit extends ActionBarActivity implements View.OnClickListener{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent k = new Intent(Edit.this, TutorTabHost.class);
+        startActivity(k);
     }
 
     @Override

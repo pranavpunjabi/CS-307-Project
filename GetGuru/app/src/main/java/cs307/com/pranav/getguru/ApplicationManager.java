@@ -49,6 +49,9 @@ public final class ApplicationManager {
         userPrefrences.put("searchSubject2", "None");
         userPrefrences.put("searchSubject3", "None");
         userPrefrences.put("searchRating", "0");
+        userPrefrences.put("searchRating", "0");
+        userPrefrences.put("searchFN", "");
+        userPrefrences.put("searchLN", "");
 
         subjects.add("Mathematics");
         subjects.add("English");
