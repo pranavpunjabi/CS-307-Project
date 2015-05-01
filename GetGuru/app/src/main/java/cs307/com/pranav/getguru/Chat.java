@@ -302,8 +302,8 @@ public class Chat extends Activity implements View.OnClickListener {
             url += "?";
 
         List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-        params.add(new BasicNameValuePair("id", "1"));//Integer.toString(ApplicationManager.user.ID)));
-        params.add(new BasicNameValuePair("id", "2"));//Integer.toString(ApplicationManager.searchTutorID)));
+        params.add(new BasicNameValuePair("id", Integer.toString(ApplicationManager.user.ID)));
+        params.add(new BasicNameValuePair("id", Integer.toString(ApplicationManager.searchTutorID)));
         params.add(new BasicNameValuePair("senderid", "1"));//Integer.toString(ApplicationManager.user.ID)));
 
         String paramString = URLEncodedUtils.format(params, "utf-8");
