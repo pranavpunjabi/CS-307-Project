@@ -1,6 +1,8 @@
 package cs307.com.pranav.getguru;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -86,6 +88,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         LayoutParams lparams = new LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lparams.rightMargin = 50;
+        lparams.leftMargin = 100;
         lparams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         if (flag) {
             lparams.addRule(RelativeLayout.BELOW, chatArray.get(chatArray.size() - 1).getId());
@@ -99,11 +102,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         TextView newMess = new TextView(ApplicationManager.context);
         newMess.setId(vid++);
         newMess.setBackgroundColor(Color.LTGRAY);
-        newMess.setTextSize(25);
+        newMess.setTextSize(20);
         newMess.setTextColor(Color.BLACK);
         newMess.setLayoutParams(lparams);
         newMess.setPadding(10, 10, 10, 10);
         newMess.setText(broadcastText.getText().toString());
+
+
+        newMess.setBackground(getResources().getDrawable(R.drawable.rounded_button));
         chatArray.add(newMess);
         chatScroll.addView(newMess);
 
@@ -115,6 +121,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         @Override
         public void call(final Object... args) {
             getActivity().runOnUiThread(new Runnable() {
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                 @Override
                 public void run() {
                     Log.d("Response: ", args[0].toString());
@@ -140,15 +147,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                         lparams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
                     }
                     lparams.topMargin = 50;
+                    lparams.rightMargin = 100;
 
                     TextView newMess = new TextView(ApplicationManager.context);
                     newMess.setId(vid++);
                     newMess.setBackgroundColor(Color.parseColor("#1E88E5"));
-                    newMess.setTextSize(25);
+                    newMess.setTextSize(20);
                     newMess.setPadding(10, 10, 10, 10);
                     newMess.setTextColor(Color.BLACK);
                     newMess.setLayoutParams(lparams);
                     newMess.setText(message);
+
+                    newMess.setBackground(getResources().getDrawable(R.drawable.rounded_button));
                     chatArray.add(newMess);
                     chatScroll.addView(newMess);
                 }
