@@ -79,22 +79,19 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
-        public void call(final Object.. args) {
+        public void call(final Object... args) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-                    String username;
                     String message;
                     try {
-                        username = data.getString("username");
                         message = data.getString("message");
                     } catch (JSONException e) {
                         return;
                     }
 
-                    // add the message to view
-                    addMessage(username, message);
+                    broadcastText.setText(message);
                 }
             });
         }
