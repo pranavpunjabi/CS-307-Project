@@ -86,9 +86,16 @@ public class Chat extends Activity implements View.OnClickListener {
 
         int senderId = ApplicationManager.user.ID;
         int receiverId = ApplicationManager.searchTutorID;
-        int[] fromToId = {senderId, receiverId};
+       // JSONArray fromToId = new JSONArray();
+       // fromToId.put(senderId);
+       // fromToId.put(receiverId);
+       // Log.d("fromId: " , Integer.toString(fromToId[0]));
+       // Log.d("toId: " , Integer.toString(fromToId[1]));
 
-        mSocket.emit("fromToId",fromToId);
+
+
+        mSocket.emit("sessionMembers", senderId);
+        mSocket.emit("sessionMembers1", receiverId);
 
 
 
