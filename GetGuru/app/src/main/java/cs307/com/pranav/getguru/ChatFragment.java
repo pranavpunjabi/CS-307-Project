@@ -110,9 +110,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         newMess.setText(broadcastText.getText().toString());
 
 
-        newMess.setBackground(getResources().getDrawable(R.drawable.rounded_button));
+        newMess.setBackground(getResources().getDrawable(R.drawable.rounded_button2));
         chatArray.add(newMess);
         chatScroll.addView(newMess);
+
+        broadcastText.setText("");
+        broadcastText.clearFocus();
 
     }
 
