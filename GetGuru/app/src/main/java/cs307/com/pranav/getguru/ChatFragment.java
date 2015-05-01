@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class ChatFragment extends Fragment implements View.OnClickListener {
 
@@ -28,11 +29,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     String URL;
     boolean flag = false;
 
-    int id = 223;
+    int vid = 223;
 
     ButtonRectangle emit;
     EditText broadcastText;
     RelativeLayout chatScroll;
+
+    ArrayList<TextView> chatArray;
 
     private String provider;
 
@@ -41,12 +44,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         masterView = inflater.inflate(R.layout.fragment_chat, container, false);
         masterView.setBackgroundColor(Color.WHITE);
 
+        chatArray = new ArrayList<TextView>();
 
         chatScroll = (RelativeLayout) masterView.findViewById(R.id.rlchat);
         emit = (ButtonRectangle) masterView.findViewById(R.id.buttonemit);
         emit.setOnClickListener(this);
-        mSocket.connect();
-
 
         broadcastText = (EditText)masterView.findViewById(R.id.broadcastText);
 
@@ -83,26 +85,28 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
         LayoutParams lparams = new LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.
-                LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.rightMargin = 50;
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        lparams.rightMargin = 50;
+        lparams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         if (flag) {
-            params.addRule(RelativeLayout.BELOW, id);
+            lparams.addRule(RelativeLayout.BELOW, chatArray.get(chatArray.size() - 1).getId());
         }
         else {
             flag = true;
+            lparams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         }
+        lparams.topMargin = 50;
 
         TextView newMess = new TextView(ApplicationManager.context);
-        newMess.setId(id++);
+        newMess.setId(vid++);
         newMess.setBackgroundColor(Color.LTGRAY);
         newMess.setTextSize(25);
         newMess.setTextColor(Color.BLACK);
         newMess.setLayoutParams(lparams);
+        newMess.setPadding(10, 10, 10, 10);
+        newMess.setShadowLayer(50, 10, 10, Color.BLACK);
         newMess.setText(broadcastText.getText().toString());
-        chatScroll.addView(newMess, params);
+        chatArray.add(newMess);
+        chatScroll.addView(newMess);
 
     }
 
@@ -127,27 +131,28 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
                     LayoutParams lparams = new LayoutParams(
                             LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                    RelativeLayout.LayoutParams params = new RelativeLayout.
-                            LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.leftMargin = 50;
-                    params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                    lparams.leftMargin = 50;
+                    lparams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
                     if (flag) {
-                        params.addRule(RelativeLayout.BELOW, id);
+                        lparams.addRule(RelativeLayout.BELOW, chatArray.get(chatArray.size() - 1).getId());
                     }
                     else {
                         flag = true;
+                        lparams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
                     }
-
+                    lparams.topMargin = 50;
 
                     TextView newMess = new TextView(ApplicationManager.context);
-                    newMess.setId(id++);
+                    newMess.setId(vid++);
                     newMess.setBackgroundColor(Color.parseColor("#1E88E5"));
                     newMess.setTextSize(25);
+                    newMess.setPadding(10, 10, 10, 10);
+                    newMess.setShadowLayer(50, 10, 10, Color.BLACK);
                     newMess.setTextColor(Color.BLACK);
                     newMess.setLayoutParams(lparams);
                     newMess.setText(message);
-                    chatScroll.addView(newMess, params);
+                    chatArray.add(newMess);
+                    chatScroll.addView(newMess);
                 }
             });
         }
