@@ -3,6 +3,7 @@ package cs307.com.pranav.getguru;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
         broadcastText = (EditText)masterView.findViewById(R.id.broadcastText);
 
+        mSocket.on("new message", onNewMessage);
+        mSocket.connect();
+
 
         return masterView;
+
+
 
     }
 
@@ -63,18 +69,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.buttonemit) {
 
             mSocket.emit("new message", "This message");
-            mSocket.connect();
         }
 
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mSocket.on("new message", onNewMessage);
-        mSocket.connect();
-    }
 
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
@@ -83,10 +81,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("Response: ", args[0].toString());
+
                     JSONObject data = (JSONObject) args[0];
+
                     String message;
                     try {
-                        message = data.getString("message");
+                        message = data.getString("key");
                     } catch (JSONException e) {
                         return;
                     }
