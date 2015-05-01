@@ -23,6 +23,8 @@ public class TutorTabHost extends FragmentActivity {
         tHost.setBackgroundColor(Color.parseColor("#1E88E5"));
         tHost.setup();
 
+        ApplicationManager.context = this.getBaseContext();
+
         /** Defining Tab Change Listener event. This is invoked when tab is changed */
         TabHost.OnTabChangeListener tabChangeListener = new TabHost.OnTabChangeListener() {
 
@@ -31,10 +33,24 @@ public class TutorTabHost extends FragmentActivity {
                 android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
                 TutorProfileFragment profileFragment = (TutorProfileFragment) fm.findFragmentByTag("profile");
                 android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+                ChatFragment chatFragment = (ChatFragment) fm.findFragmentByTag("chat");
 
                 if(profileFragment!=null)
                     ft.detach(profileFragment);
+                if(chatFragment!=null)
+                    ft.detach(chatFragment);
 
+                if(tabId.equalsIgnoreCase("chat")){
+
+                    if(chatFragment==null){
+                        /** Create AndroidFragment and adding to fragmenttransaction */
+                        ft.add(R.id.realtabcontent,new ChatFragment(), "chat");
+                    }else{
+                        /** Bring to the front, if already exists in the fragmenttransaction */
+                        ft.attach(chatFragment);
+                    }
+
+                }
                 if(tabId.equalsIgnoreCase("profile")){
 
                     if(profileFragment==null){
