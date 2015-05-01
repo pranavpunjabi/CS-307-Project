@@ -88,6 +88,17 @@ public class Chat extends Activity implements View.OnClickListener {
 
         mSocket.on("new message", onNewMessage);
         mSocket.connect();
+
+        int senderId = ApplicationManager.user.ID;
+        int receiverId = ApplicationManager.searchTutorID;
+       // JSONArray fromToId = new JSONArray();
+       // fromToId.put(senderId);
+       // fromToId.put(receiverId);
+       // Log.d("fromId: " , Integer.toString(fromToId[0]));
+       // Log.d("toId: " , Integer.toString(fromToId[1]));
+
+        mSocket.emit("sessionMembers", senderId);
+        mSocket.emit("sessionMembers1", receiverId);
     }
 
 
@@ -187,6 +198,8 @@ public class Chat extends Activity implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v.getId() == R.id.buttonemit) {
+
+
 
             String sendMessage = broadcastText.getText().toString();
             mSocket.emit("new message", sendMessage);
