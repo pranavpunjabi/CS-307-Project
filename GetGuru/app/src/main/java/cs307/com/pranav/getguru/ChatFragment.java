@@ -103,7 +103,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         newMess.setTextColor(Color.BLACK);
         newMess.setLayoutParams(lparams);
         newMess.setPadding(10, 10, 10, 10);
-        newMess.setShadowLayer(50, 10, 10, Color.BLACK);
         newMess.setText(broadcastText.getText().toString());
         chatArray.add(newMess);
         chatScroll.addView(newMess);
@@ -147,7 +146,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
                     newMess.setBackgroundColor(Color.parseColor("#1E88E5"));
                     newMess.setTextSize(25);
                     newMess.setPadding(10, 10, 10, 10);
-                    newMess.setShadowLayer(50, 10, 10, Color.BLACK);
                     newMess.setTextColor(Color.BLACK);
                     newMess.setLayoutParams(lparams);
                     newMess.setText(message);
