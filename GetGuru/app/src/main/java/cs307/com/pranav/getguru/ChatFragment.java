@@ -68,7 +68,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
         if (v.getId() == R.id.buttonemit) {
 
-            mSocket.emit("new message", "This message");
+            String sendMessage = broadcastText.getText().toString();
+
+            mSocket.emit("new message", sendMessage);
         }
 
     }
