@@ -32,7 +32,7 @@
         android:id="@+id/listViewtutorsubs"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textView2"
-        android:layout_above="@+id/buttonrate" />
+        android:layout_above="@+id/buttonviewRatings" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,10 +55,18 @@
     <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rate"
+        android:text="Chat Now!"
+        android:id="@+id/buttonchatwithtutor"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate Now!"
         android:id="@+id/buttonrate"
-        android:layout_above="@+id/buttonviewRatings"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:layout_width="wrap_content"

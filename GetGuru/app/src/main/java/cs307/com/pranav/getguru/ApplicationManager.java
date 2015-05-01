@@ -43,6 +43,8 @@ public final class ApplicationManager {
         routes.put("Unregister", "/server/untutor");
         routes.put("EditUserInfo", "/server/editInfo"); //POST
         routes.put("Delete","/server/delete");
+        routes.put("ActiveChats","/server/delete"); //TODO
+        routes.put("ChatHistory","/server/delete");
 
         userPrefrences.put("searchCode", "47906");
         userPrefrences.put("searchSubject", "Mathematics");
