@@ -1,12 +1,14 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -33,7 +35,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 
-public class SubmitRating extends ActionBarActivity implements View.OnClickListener{
+public class SubmitRating extends Activity implements View.OnClickListener{
 
     MaterialEditText review;
     RatingBar rating;
@@ -43,6 +45,9 @@ public class SubmitRating extends ActionBarActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_rating);
 

@@ -30,6 +30,7 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
         android:layout_above="@+id/buttonsendsubs"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" >

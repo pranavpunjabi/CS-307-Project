@@ -140,6 +140,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Ad
         params.add(new BasicNameValuePair("longitude", String.valueOf(lng)));
         params.add(new BasicNameValuePair("zipcode", ApplicationManager.userPrefrences.get("searchCode")));
         params.add(new BasicNameValuePair("rating", ApplicationManager.userPrefrences.get("searchRating")));
+        params.add(new BasicNameValuePair("firstname", ApplicationManager.userPrefrences.get("searchFN")));
+        params.add(new BasicNameValuePair("lastname", ApplicationManager.userPrefrences.get("searchLN")));
         for (int j = 0; j < ApplicationManager.subjects.size(); j++) {
             if (ApplicationManager.subjectsBools.get(j)) {
                 params.add(new BasicNameValuePair("subject", ApplicationManager.subjects.get(j)));

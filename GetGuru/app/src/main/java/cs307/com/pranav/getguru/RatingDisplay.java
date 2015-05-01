@@ -1,11 +1,13 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -32,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class RatingDisplay extends ActionBarActivity {
+public class RatingDisplay extends Activity {
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -42,6 +44,9 @@ public class RatingDisplay extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating_display);
 

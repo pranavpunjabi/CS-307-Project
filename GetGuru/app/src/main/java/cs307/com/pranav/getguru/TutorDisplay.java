@@ -1,13 +1,15 @@
 package cs307.com.pranav.getguru;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,12 +40,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class TutorDisplay extends ActionBarActivity implements View.OnClickListener {
+public class TutorDisplay extends Activity implements View.OnClickListener {
 
     String URL;
     TextView name, email, avgRating;
@@ -58,6 +61,9 @@ public class TutorDisplay extends ActionBarActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_display);
 
@@ -181,9 +187,14 @@ public class TutorDisplay extends ActionBarActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
 
+                DecimalFormat format = new DecimalFormat("#.##");
+                avgrat = Double.valueOf(format.format(avgrat));
+                String ratStr = "Average Rating: ";
+                ratStr += Double.toString(avgrat);
+
                 name.setText(nmStr);
                 email.setText(emStr);
-                avgRating.setText(Double.toString(avgrat));
+                avgRating.setText(ratStr);
                 subAdapter.notifyDataSetChanged();
 
             }
