@@ -1,6 +1,6 @@
 from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
-from models import db, User, Subjects, Tutor, Rating
+from models import db, User, Subjects, Tutor, Rating, chat
 from sqlalchemy import update
 from geopy.geocoders import Nominatim
 import collections
@@ -82,25 +82,25 @@ def search():
         		return jsonify({'return':'error'})
 		tempZip = tempLoc.raw["address"]["postcode"]
 	'''
-	if request.args.get('firstname') == "" and request.args.get('lastname') == "":
+	if request.args.get('firstname') is None and request.args.get('lastname') is None:
 		print 'no name given for search'
 		finalTutors = []
 		jusChecking = request.args.get('zipcode')
 		if jusChecking is None:
-      			latitude = request.args.get('latitude')
+      			print 'no zipcode'
+			latitude = request.args.get('latitude')
       			longitude = request.args.get('longitude')
       			tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)), timeout=10)
       			if tempLoc.address is None:
         			return jsonify({'return':'error'})
 			tempZip = tempLoc.raw["address"]["postcode"]
->>>>>>> 3639598098246e3d923efc292da9378133624ffe
-		#print tempZip
+			print tempZip
 		else:
+			print 'lat and long'
 			tempZip = jusChecking
 			tutor = []
 			rating = 0
 			rate = request.args.get('rating')
-		
 			if not rate:
 				rating = 0
 			else:
@@ -112,11 +112,14 @@ def search():
 			pincodes = pincodes + [int(tempZip) + 1]
 			pincodes = pincodes + [int(tempZip) - 1]
 			if not subjects:
+				print 'no subject'
 				tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
 			elif len(subjects) == 1:
+				print 'one subject'
 				sub = "%" + request.args.get('subject') + "%"
 				tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
 			else:
+				print 'multiple subjects'
 				idlist = []
 				for subject in subjects:
 					ids = Subjects.query.filter(Subjects.subject == subject).first() #get the row with the subject
@@ -130,14 +133,14 @@ def search():
 					return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
 				tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all() #
 	
-				if(len(tutor) == 0):
-					return jsonify ({'return':'noSuccess'})
-				else:
-					for myTutor in tutor:
-						student = User.query.filter_by(id = myTutor.id).first()
-						#print student.id
-						finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
-					return jsonify({'return':finalTutors})
+			if(len(tutor) == 0):
+				return jsonify ({'return':'noSuccess'})
+			else:
+				for myTutor in tutor:
+					student = User.query.filter_by(id = myTutor.id).first()
+					#print student.id
+					finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
+				return jsonify({'return':finalTutors})
 		'''
 		if not rate:
 			rating = 0
@@ -186,7 +189,7 @@ def search():
      	     		for i in range(0,count):
      	          		print allName[i].ifTutor
      	          		if (allName[i].ifTutor == 1):
-     	               			retName.append({"id":allName[i].id})
+     	               			retName.append({"id":allName[i].id, "firstName":allName[i].firstname, "lastName":allName[i].lastname})
      		else:
      	     		return jsonify({'return':'No such tutors'})
      		return jsonify({'return':retName})
@@ -423,7 +426,7 @@ def activechats():
   id2 = request.args.get('id')
   id3 = int(id2)
   messages = chat.query.filter(or_(chat.sender == id2,chat.reciever == id2)).all()
-  if len(messages) == 0;
+  if len(messages) == 0:
     return jsonify({'return':'noSuccess'})
   allmessages = []
   for mess in messages:

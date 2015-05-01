@@ -1,78 +1,141 @@
-var mysql      = require('mysql');
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app).listen(8000);
+var io = require('socket.io').listen(server);
+
+var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'ankush',
-  password : 'password',
-  database : 'getguru'
+	host:'localhost',
+	user:'sharoons',
+	password:'password',
+	database:'getguru'
 });
 
 connection.connect(function(err) {
-  // connected! (unless `err` is set)
 });
-
-/*var post  = {lastname: 'Hello MySQL'};
-var query = connection.query('INSERT INTO students SET ?', post, function(err, result) {
-  // Neat!
-});
-connection.query(mysql);*/
-
-/*connection.query(sql, function(err, res) {
- 
-  // Create row, using the insert id of the first query
-  // as the exhibit_id foreign key.
-  sql = 'INSERT INTO students (exhibit_id) '+
-    'VALUES('+res.insertId+')';
- 
-  client.query(sql);
- 
-});*/
-
-var post = {sender:'1', reciever:'2',message:'ggand marao yaar'};
-connection.query( 'INSERT INTO chat SET ?', post, function(err, result) {
-            //console.log("SELECT * FROM mytable ");
-
-            //for(var i=0; i<rows.length; i++){
-              //  console.log(rows[i]);
-            //}
-        });
-
-var express = require('express');
-var app = express();
-//var port = (process.env.PORT || 8000);
-var server = require('http').createServer(app).listen(5000);
-var io = require('socket.io').listen(server);
 
 console.log("server running");
-/*app.listen(port,'localhost', function() {
 
-	console.log("Connection made");
-});*/
-
-var usernames = {};
-var numUsers = 0;
-//var rooms = {room1,room2,room3,room4,room5,room6,room7};
+var clients = [];
+var clients1 = [
+	{"id":0, "client":0}
+]; 
 
 io.sockets.on('connection', function(client){
+    var senderId;
+    var receiverId;
+    client.on('sessionMembers', function(data) {
+    
+    senderId = data;
+    //console.log("sender: "+senderId);
+    var text = {"id":senderId, "client":client.id}
+    console.log(text);
+    clients1.push(text);
+});
 
-    console.log("client connected: " + client.id);
-    //console.log("printing: ");
+    client.on('sessionMembers1', function(data) {
+    
+    receiverId = data;
+    /*var toClient = 0;
+    for(var c in clients1)
+    {
+	if(c.id == receiverId)
+        	toClient = c.client;
+    }
+    if(toClient == 0)
+    {
+	var text = {"id":receiverId, "client":toClient}
+	//clients1.push(text);
+    }*/
+	    
+    console.log("Receiver is : "+ data);
+});
+
+    //clients.push(client.id);
+    //var text = {"id":"1", "client":client.id};
+    //clients1.push(text);
+    //console.log("id = "+clients1[0].id+" client = "+clients1[0].client);
+    //console.log("id = "+clients1[1].id+" client = "+clients1[1].client);
+    //console.log("client connected: " + client.id);
     client.on('new message', function(data){
 	console.log(data);
 	//client.broadcast.emit('new message', {
-	//if (err) throw err;
-	//io.sockets.client(client.id).emit('new message', {'key':'for your legs only'});
-	//io.sockets.emit('new message', {'key':'for your eyes only'});
-	//client(client.id).emit('new message', {'key':'for your mouth only'});
-	client.emit('new message', {'key':data});
-
-
-	//client[client.id].emit('new message', {'key':'for your eyes only'});
-	//username: client.username,
-      	//message: data
+	console.log("sender client iD : " + client.id);
+	/*if(client.id == clients[0])
+	{
+		io.sockets.connected[clients[1]].emit('new message', {'key':data});
+	}
+	else
+		io.sockets.connected[clients[0]].emit('new message', {'key':data});
+	*/
+	var toClient = 0;
+	var fromClient = 0;
+	for(i = 0 ; i < clients1.length ; i++)
+	{
+		if(clients1[i].id == receiverId)
+			toClient = clients1[i].client;
+		if(clients1[i].id == senderId)
+			fromClient = clients1[i].client;
+	}
+	if(toClient == 0)
+	{
+		var post = {sender:senderId, reciever:receiverId, message:data};
+		connection.query( 'INSERT INTO chat SET ?', post, function(err, result){
+		});
+	}//history
+	else
+	{
+		console.log("GONNA SEND coz receiver is online\n");
+		io.sockets.connected[toClient].emit('new message', {'key':data});
+		var post = {sender:senderId, reciever:receiverId, message:data};
+                connection.query( 'INSERT INTO chat SET ?', post, function(err, result){
+                });
+	}
+	//console.log("SENT TO FIRST\n");
+	//client.emit('new message', {'key':data});
 	//'key':data
 	//});
 	
     });	
+	
+    client.on('disconnect', function(dat){
+
+	//console.log(dat);
+	var current = client.id;
+	console.log("trying to delete "+current);
+        console.log(clients1[1].client);
+	/*for(var c in clients1)
+        {
+		console.log(c);
+		console.log(c.client);
+                console.log(c.id);
+		if(c.client == current)
+        	{
+			console.log("FOUND TO DELETE");
+			delete c;
+		}
+	}*/
+	for(i = 0 ; i < 2; i++)
+	{
+		console.log(clients1[i]);
+		if(clients1[i].client == current)
+		{
+			console.log("MATCH")
+			delete clients1[i];
+		}
+		//console.log(c);
+                //console.log(c.client);
+                //console.log(c.id);
+                //if(c.client == current)
+                //{
+                  //      console.log("FOUND TO DELETE");
+                    //    delete c;
+                //}
+	}
+	console.log("deleted");
+	console.log(clients1);
+
+    });
     /*client.on('my message', function(client){
 	console.log(data);
 	client.join(rooms[0]);
