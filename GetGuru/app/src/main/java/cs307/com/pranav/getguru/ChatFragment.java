@@ -71,6 +71,8 @@ public class ChatFragment extends Fragment implements AdapterView.OnItemClickLis
         URL = ApplicationManager.URL;
         URL += ApplicationManager.routes.get("ActiveChats");
 
+        new NetworkTask().execute();
+
         return masterView;
     }
 

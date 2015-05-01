@@ -85,7 +85,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
 
         ApplicationManager.initApplication();
         prefs = this.getSharedPreferences("GetGuruPrefs", Context.MODE_PRIVATE);
-        ApplicationManager.URL = "http://4c8502db.ngrok.com";
+        ApplicationManager.URL = "http://9395340.ngrok.com";
     }
 
 

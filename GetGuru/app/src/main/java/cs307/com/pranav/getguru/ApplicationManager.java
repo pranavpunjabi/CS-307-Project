@@ -43,8 +43,8 @@ public final class ApplicationManager {
         routes.put("Unregister", "/server/untutor");
         routes.put("EditUserInfo", "/server/editInfo"); //POST
         routes.put("Delete","/server/delete");
-        routes.put("ActiveChats","/server/delete"); //TODO
-        routes.put("ChatHistory","/server/delete");
+        routes.put("ActiveChats","/server/getactivechats");
+        routes.put("ChatHistory","/server/getchat");
 
         userPrefrences.put("searchCode", "47906");
         userPrefrences.put("searchSubject", "Mathematics");
@@ -73,7 +73,7 @@ public final class ApplicationManager {
         subjectsBools.add(false);
         subjectsBools.add(false);
 
-        searchTutorID = 0;
+        searchTutorID = 2;
     }
 
     public static void resetApplication() {

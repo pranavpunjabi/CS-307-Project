@@ -81,9 +81,13 @@ public class Chat extends Activity implements View.OnClickListener {
 
         ApplicationManager.context = this;
 
+        URL = ApplicationManager.URL;
+        URL += ApplicationManager.routes.get("ChatHistory");
+
+        new NetworkTask().execute();
+
         mSocket.on("new message", onNewMessage);
         mSocket.connect();
-
     }
 
 
@@ -285,7 +289,9 @@ public class Chat extends Activity implements View.OnClickListener {
             url += "?";
 
         List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-        params.add(new BasicNameValuePair("id", Integer.toString(ApplicationManager.user.ID)));
+        params.add(new BasicNameValuePair("id", "1"));//Integer.toString(ApplicationManager.user.ID)));
+        params.add(new BasicNameValuePair("id", "2"));//Integer.toString(ApplicationManager.searchTutorID)));
+        params.add(new BasicNameValuePair("senderid", "1"));//Integer.toString(ApplicationManager.user.ID)));
 
         String paramString = URLEncodedUtils.format(params, "utf-8");
         url += paramString;
@@ -302,7 +308,7 @@ public class Chat extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Object o) {
-
+            populateChat();
         }
 
         protected void makeGetRequest() {
@@ -342,11 +348,12 @@ public class Chat extends Activity implements View.OnClickListener {
                 for (int i = 0; i < iter.length(); i++) {
                     JSONObject tutObj = (JSONObject) iter.get(i);
                     Log.d("Object in loop:", tutObj.toString());
-                    String name = tutObj.getString("firstName");
-                    name += " ";
-                    name += tutObj.getString("lastName");
-                    Log.d("Name found:", name);
+                    String message = tutObj.getString("message");
+                    int ifs = tutObj.getInt("ifsender");
+                    Log.d("Name found:", message);
 
+                    chatHist.add(message);
+                    chatInd.add(ifs);
                 }
 
             } catch (ClientProtocolException e) {
