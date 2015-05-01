@@ -3,13 +3,19 @@ package cs307.com.pranav.getguru;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
@@ -19,6 +25,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     String URL;
 
     ButtonRectangle emit;
+    EditText broadcastText;
 
     private String provider;
 
@@ -32,7 +39,15 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         mSocket.connect();
 
 
+        broadcastText = (EditText)masterView.findViewById(R.id.broadcastText);
+
+        mSocket.on("new message", onNewMessage);
+        mSocket.connect();
+
+
         return masterView;
+
+
 
     }
 
@@ -52,8 +67,49 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v.getId() == R.id.buttonemit) {
-            mSocket.emit("new message", "This message");
+
+            String sendMessage = broadcastText.getText().toString();
+
+            mSocket.emit("new message", sendMessage);
         }
 
     }
+
+
+
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Response: ", args[0].toString());
+
+                    JSONObject data = (JSONObject) args[0];
+
+                    String message;
+                    try {
+                        message = data.getString("key");
+                    } catch (JSONException e) {
+                        return;
+                    }
+
+                    broadcastText.setText(message);
+                }
+            });
+        }
+    };
+
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
+    }
+
+
 }
