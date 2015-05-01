@@ -76,6 +76,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         } catch (URISyntaxException e) {}
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
 
@@ -172,6 +173,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        mSocket.emit("new message", "Disconnecting...");
 
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
