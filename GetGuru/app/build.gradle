@@ -27,4 +27,5 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.0.3'
     compile 'it.neokree:MaterialTabs:0.11'
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
+
 }

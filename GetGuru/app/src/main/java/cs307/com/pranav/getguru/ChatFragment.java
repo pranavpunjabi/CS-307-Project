@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
@@ -19,6 +24,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     String URL;
 
     ButtonRectangle emit;
+    EditText broadcastText;
 
     private String provider;
 
@@ -30,6 +36,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         emit = (ButtonRectangle) masterView.findViewById(R.id.buttonemit);
         emit.setOnClickListener(this);
         mSocket.connect();
+
+
+        broadcastText = (EditText)masterView.findViewById(R.id.broadcastText);
 
 
         return masterView;
@@ -52,8 +61,55 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v.getId() == R.id.buttonemit) {
+
             mSocket.emit("new message", "This message");
+            mSocket.connect();
         }
 
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mSocket.on("new message", onNewMessage);
+        mSocket.connect();
+    }
+
+
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object.. args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String username;
+                    String message;
+                    try {
+                        username = data.getString("username");
+                        message = data.getString("message");
+                    } catch (JSONException e) {
+                        return;
+                    }
+
+                    // add the message to view
+                    addMessage(username, message);
+                }
+            });
+        }
+    };
+
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
+    }
+
+
 }
