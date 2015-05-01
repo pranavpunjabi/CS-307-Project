@@ -1,3 +1,41 @@
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'ankush',
+  password : 'password',
+  database : 'getguru'
+});
+
+connection.connect(function(err) {
+  // connected! (unless `err` is set)
+});
+
+/*var post  = {lastname: 'Hello MySQL'};
+var query = connection.query('INSERT INTO students SET ?', post, function(err, result) {
+  // Neat!
+});
+connection.query(mysql);*/
+
+/*connection.query(sql, function(err, res) {
+ 
+  // Create row, using the insert id of the first query
+  // as the exhibit_id foreign key.
+  sql = 'INSERT INTO students (exhibit_id) '+
+    'VALUES('+res.insertId+')';
+ 
+  client.query(sql);
+ 
+});*/
+
+var post = {sender:'1', reciever:'2',message:'ggand marao yaar'};
+connection.query( 'INSERT INTO chat SET ?', post, function(err, result) {
+            //console.log("SELECT * FROM mytable ");
+
+            //for(var i=0; i<rows.length; i++){
+              //  console.log(rows[i]);
+            //}
+        });
+
 var express = require('express');
 var app = express();
 //var port = (process.env.PORT || 8000);
@@ -26,6 +64,8 @@ io.sockets.on('connection', function(client){
 	//io.sockets.emit('new message', {'key':'for your eyes only'});
 	//client(client.id).emit('new message', {'key':'for your mouth only'});
 	client.emit('new message', {'key':data});
+
+
 	//client[client.id].emit('new message', {'key':'for your eyes only'});
 	//username: client.username,
       	//message: data

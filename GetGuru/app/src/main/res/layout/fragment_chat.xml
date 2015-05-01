@@ -3,24 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    android:id="@+id/psrl">
-
+    android:id="@+id/somerl">
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PRESS ME"
-        android:id="@+id/buttonemit"
-        android:layout_centerVertical="true"
+        android:text="Test"
+        android:id="@+id/buttonchattest"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <EditText
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/broadcastText"
-        android:layout_above="@+id/buttonemit"
+        android:id="@+id/listViewchatdisplay"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="58dp"
-        android:text="Hello World" />
-
+        android:layout_below="@+id/buttonchattest" />
 </RelativeLayout>

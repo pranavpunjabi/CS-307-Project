@@ -1,6 +1,5 @@
 from myApp import myApp
-from flask import Flask, jsonify, request, abort, make_response, session, render_template
-from flask.ext.socketio import SocketIO, emit
+from flask import Flask, jsonify, request, abort, make_response, session
 from models import db, User, Subjects, Tutor, Rating
 from sqlalchemy import update
 from geopy.geocoders import Nominatim
@@ -8,12 +7,6 @@ import collections
 from flask.ext.httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 geolocator = Nominatim()
-
-#myApp = Flask(__name__)
-#myApp.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(myApp)
-#if __name__ == '__main__':
-#	socketio.run(myApp)
 
 @auth.verify_password
 def verify_password(email, password):
@@ -23,14 +16,6 @@ def verify_password(email, password):
         return True
     #g.user = user
     return False
-
-@myApp.route('/tryit')
-def index1():
-	return render_template('index.html')
-
-@socketio.on('my event', namespace='/test')
-def test_message(message):
-	emit('my response', {'data': message['data']})
 
 @myApp.route('/server/test', methods=['GET'])
 def testing():
@@ -85,6 +70,7 @@ def delete():
 @myApp.route('/server/search', methods=['GET'])
 @auth.login_required
 def search():
+	'''
 	finalTutors = []
 	jusChecking = request.args.get('zipcode')
 	#print jusChecking
@@ -95,50 +81,131 @@ def search():
         	if tempLoc.address is None:
         		return jsonify({'return':'error'})
 		tempZip = tempLoc.raw["address"]["postcode"]
+	'''
+	if request.args.get('firstname') == "" and request.args.get('lastname') == "":
+		print 'no name given for search'
+		finalTutors = []
+		jusChecking = request.args.get('zipcode')
+		if jusChecking is None:
+      			latitude = request.args.get('latitude')
+      			longitude = request.args.get('longitude')
+      			tempLoc = geolocator.reverse("%f, %f"%(float(latitude),float(longitude)), timeout=10)
+      			if tempLoc.address is None:
+        			return jsonify({'return':'error'})
+			tempZip = tempLoc.raw["address"]["postcode"]
+>>>>>>> 3639598098246e3d923efc292da9378133624ffe
 		#print tempZip
-	else:
-		tempZip = jusChecking
-	tutor = []
-	rating = 0
-	rate = request.args.get('rating')
+		else:
+			tempZip = jusChecking
+			tutor = []
+			rating = 0
+			rate = request.args.get('rating')
+		
+			if not rate:
+				rating = 0
+			else:
+				rating = int(rate)
 	
-	if not rate:
-		rating = 0
-	else:
-		rating = int(rate)
-	
-	subjects = request.args.getlist('subject')
-	pincodes = []
-	pincodes = pincodes + [int(tempZip)]
-	pincodes = pincodes + [int(tempZip) + 1]
-	pincodes = pincodes + [int(tempZip) - 1]
-	if not subjects:
-		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
-	elif len(subjects) == 1:
-		sub = "%" + request.args.get('subject') + "%"
-		tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
-	else:
-		idlist = []
-		for subject in subjects:
-			ids = Subjects.query.filter(Subjects.subject == subject).first() #get the row with the subject
-			if(ids is None): #if none of the subjects searched are there
-				return jsonify({'return':'noSuccess'})
-			curr_ids = ids.ids.split(',') #split ids into array
-			idlist.extend(curr_ids) #put ids into the list
+			subjects = request.args.getlist('subject')
+			pincodes = []
+			pincodes = pincodes + [int(tempZip)]
+			pincodes = pincodes + [int(tempZip) + 1]
+			pincodes = pincodes + [int(tempZip) - 1]
+			if not subjects:
+				tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
+			elif len(subjects) == 1:
+				sub = "%" + request.args.get('subject') + "%"
+				tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
+			else:
+				idlist = []
+				for subject in subjects:
+					ids = Subjects.query.filter(Subjects.subject == subject).first() #get the row with the subject
+					if(ids is None): #if none of the subjects searched are there
+						return jsonify({'return':'noSuccess'})
+					curr_ids = ids.ids.split(',') #split ids into array
+					idlist.extend(curr_ids) #put ids into the list
 
-		idslist =  [x for x, y in collections.Counter(idlist).items() if y == len(subjects)] #get the intersection of the ids
-		if not idslist: #if no common subjects
-			return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
-		tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all() #
+				idslist =  [x for x, y in collections.Counter(idlist).items() if y == len(subjects)] #get the intersection of the ids
+				if not idslist: #if no common subjects
+					return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
+				tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all() #
 	
-	if(len(tutor) == 0):
-		return jsonify ({'return':'noSuccess'})
-	else:
-		for myTutor in tutor:
-			student = User.query.filter_by(id = myTutor.id).first()
+				if(len(tutor) == 0):
+					return jsonify ({'return':'noSuccess'})
+				else:
+					for myTutor in tutor:
+						student = User.query.filter_by(id = myTutor.id).first()
+						#print student.id
+						finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
+					return jsonify({'return':finalTutors})
+		'''
+		if not rate:
+			rating = 0
+		else:
+			rating = int(rate)
+		subjects = request.args.getlist('subject')
+		pincodes = []
+		pincodes = pincodes + [int(tempZip)]
+		pincodes = pincodes + [int(tempZip) + 1]
+		pincodes = pincodes + [int(tempZip) - 1]
+		if not subjects:
+			tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
+		elif len(subjects) == 1:
+			sub = "%" + request.args.get('subject') + "%"
+			tutor = Tutor.query.filter(Tutor.subjects.like(sub), Tutor.location.in_(pincodes), Tutor.avgRatings >= rating).all()
+		else:
+			idlist = []
+			for subject in subjects:
+				ids = Subjects.query.filter(Subjects.subject == subject).first() #get the row with the subject
+				if(ids is None): #if none of the subjects searched are there
+					return jsonify({'return':'noSuccess'})
+				curr_ids = ids.ids.split(',') #split ids into array
+				idlist.extend(curr_ids) #put ids into the list
+
+			idslist =  [x for x, y in collections.Counter(idlist).items() if y == len(subjects)] #get the intersection of the ids
+			if not idslist: #if no common subjects
+				return jsonify({'return':'noSuccess'}) #check if no match for multiple subjects
+			tutor = Tutor.query.filter(Tutor.location.in_(pincodes), Tutor.avgRatings >= rating, Tutor.id.in_(idslist)).all() #
+		if(len(tutor) == 0):
+			return jsonify ({'return':'noSuccess'})
+		else:
+			for myTutor in tutor:
+				student = User.query.filter_by(id = myTutor.id).first()
 			#print student.id
-			finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
-		return jsonify({'return':finalTutors})
+				finalTutors.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id, "location":myTutor.location, "subjects":myTutor.subjects})
+			return jsonify({'return':finalTutors})
+		'''
+	else:
+		print 'name provided for search'
+		retName = []
+      		firstname = "%" + request.args.get('firstname') + "%"
+    		lastname = "%" + request.args.get('lastname') + "%"
+     		allName = User.query.filter(User.firstname.like(firstname), User.lastname.like(lastname)).all()
+     		count = User.query.filter(User.firstname.like(firstname), User.lastname.like(lastname)).count()
+     		if allName:
+     	     		for i in range(0,count):
+     	          		print allName[i].ifTutor
+     	          		if (allName[i].ifTutor == 1):
+     	               			retName.append({"id":allName[i].id})
+     		else:
+     	     		return jsonify({'return':'No such tutors'})
+     		return jsonify({'return':retName})
+
+@myApp.route('/server/nameS', methods = ['GET'])
+def namesearch():
+     retName = []
+     firstname = "%" + request.args.get('firstname') + "%"
+     lastname = "%" + request.args.get('lastname') + "%"
+     allName = User.query.filter(User.firstname.like(firstname), User.lastname.like(lastname)).all()
+     count = User.query.filter(User.firstname.like(firstname), User.lastname.like(lastname)).count()
+     if allName:
+          for i in range(0,count):
+               print allName[i].ifTutor
+               if (allName[i].ifTutor == 1):
+                    retName.append({"id":allName[i].id})
+     else:
+          return jsonify({'return':'No such tutors'})
+     return jsonify({'return':retName})
 
 @myApp.route('/server/editInfo', methods = ['POST'])
 @auth.login_required
@@ -323,6 +390,53 @@ def studetails():
                 return jsonify({'return':'noSuccess'})
      else:
              	return jsonify({'return':'success','id':tut.id,'firstname':tut.firstname,'lastname':tut.lastname,'email':tut.email})
+
+@myApp.route('/server/getchat', methods=['GET'])
+def chats():
+  ids = request.args.getlist('id')
+  print ids
+  #list2 = []
+  #for i in range(len(ids)):
+  # t = int(ids[i])
+    # list2.append(t)
+  messages = chat.query.filter(chat.sender.in_(ids),chat.reciever.in_(ids)).all()
+  sender = request.args.get('senderid')
+  send = int(sender)
+  if len(messages) == 0:
+    return jsonify({'return':'noSuccess'})
+  allmessages = []
+  messageswithid = []
+  #print "asdsad"
+  for mess in messages:
+  # print "ASas"
+    print mess.sender
+    if(mess.sender == send):
+      messageswithid.append({"message":mess.message,"ifsender":"1"})
+    else:
+      messageswithid.append({"message":mess.message,"ifsender":"0"})
+    allmessages.append({"message":mess.message})
+  #tutor = Tutor.query.filter(Tutor.id.in_(tutors)).all()
+  return jsonify({'return':messageswithid})
+
+@myApp.route('/server/getactivechats', methods=['GET'])
+def activechats():
+  id2 = request.args.get('id')
+  id3 = int(id2)
+  messages = chat.query.filter(or_(chat.sender == id2,chat.reciever == id2)).all()
+  if len(messages) == 0;
+    return jsonify({'return':'noSuccess'})
+  allmessages = []
+  for mess in messages:
+    print mess.sender
+    allmessages.append(mess.sender)
+    allmessages.append(mess.reciever)
+  allusers = []
+  ids = list(set(allmessages))
+  for id1 in ids:
+    if id1 != id3:
+      student = User.query.filter(User.id == id1).first()
+      allusers.append({"firstName":student.firstname, "lastName":student.lastname, "id":student.id})
+  return jsonify({'return':allusers})
 
 
 

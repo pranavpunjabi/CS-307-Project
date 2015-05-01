@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:id="@+id/someotherrl">
+
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/buttonemit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/broadcastText"
+        android:hint="Message"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/buttonemit"
+        android:layout_toStartOf="@+id/buttonemit"
+        android:layout_alignTop="@+id/buttonemit" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView4"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/buttonemit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/broadcastText"
+        android:layout_alignStart="@+id/broadcastText"
+        android:fillViewport="false">
+
+        <RelativeLayout
+            android:id="@+id/rlchat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/buttonemit">
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

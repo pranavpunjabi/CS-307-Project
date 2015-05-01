@@ -26,6 +26,18 @@ class User(db.Model):
 	def check_password(self, password):
 		return check_password_hash(self.pwdhash, password)
 
+class chat(db.Model):
+	__tablename__ = 'chat'
+	id = db.Column(db.Integer, primary_key = True)
+	sender = db.Column(db.Integer)
+	reciever = db.Column(db.Integer)
+	message = db.Column(db.String(10000))
+
+	def __init__(self, sender, reciever, message):
+		self.sender = sender
+		self.reciever = reciever
+		self.message = message
+
 class Subjects(db.Model):
 	__tablename__ = 'subjects'
 	subject = db.Column(db.String(100), primary_key = True)
