@@ -292,6 +292,9 @@ public class Chat extends Activity implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
 
+        int userId = ApplicationManager.user.ID;
+        mSocket.emit("disconnect", userId);
+
         mSocket.disconnect();
         mSocket.off("new message", onNewMessage);
     }
