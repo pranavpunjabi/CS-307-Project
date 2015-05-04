@@ -1,7 +1,12 @@
 from myApp import myApp
 from flask import Flask, jsonify, request, abort, make_response, session
+<<<<<<< HEAD
+from models import db, User, Subjects, Tutor, Rating
+from sqlalchemy import update, or_
+=======
 from models import db, User, Subjects, Tutor, Rating, chat
 from sqlalchemy import update
+>>>>>>> 67b7afa2d319a9adb9ba4bb2ea5313c5d3fd71e0
 from geopy.geocoders import Nominatim
 import collections
 from flask.ext.httpauth import HTTPBasicAuth
@@ -397,27 +402,19 @@ def studetails():
 @myApp.route('/server/getchat', methods=['GET'])
 def chats():
   ids = request.args.getlist('id')
-  print ids
-  #list2 = []
-  #for i in range(len(ids)):
-  # t = int(ids[i])
-    # list2.append(t)
   messages = chat.query.filter(chat.sender.in_(ids),chat.reciever.in_(ids)).all()
   sender = request.args.get('senderid')
   send = int(sender)
   if len(messages) == 0:
     return jsonify({'return':'noSuccess'})
-  allmessages = []
+  #allmessages = []
   messageswithid = []
-  #print "asdsad"
   for mess in messages:
-  # print "ASas"
-    print mess.sender
     if(mess.sender == send):
       messageswithid.append({"message":mess.message,"ifsender":"1"})
     else:
       messageswithid.append({"message":mess.message,"ifsender":"0"})
-    allmessages.append({"message":mess.message})
+    #allmessages.append({"message":mess.message})
   #tutor = Tutor.query.filter(Tutor.id.in_(tutors)).all()
   return jsonify({'return':messageswithid})
 
@@ -430,7 +427,7 @@ def activechats():
     return jsonify({'return':'noSuccess'})
   allmessages = []
   for mess in messages:
-    print mess.sender
+    #print mess.sender
     allmessages.append(mess.sender)
     allmessages.append(mess.reciever)
   allusers = []
